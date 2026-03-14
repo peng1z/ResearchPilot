@@ -1,0 +1,8 @@
+dspy-ai>=2.5.0
+fastapi>=0.115.0
+httpx>=0.28.0
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+qdrant-client>=1.13.0,<1.15.0
+sentence-transformers>=3.0.0
+uvicorn[standard]>=0.32.0

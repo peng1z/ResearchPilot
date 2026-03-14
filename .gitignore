@@ -1,0 +1,16 @@
+.DS_Store
+.env
+.env.local
+.env.*
+!.env.example
+!**/.env.example
+.pytest_cache/
+.venv/
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+.next/
+coverage/
+node_modules/
+backend/data/
