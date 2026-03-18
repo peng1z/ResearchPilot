@@ -14,3 +14,4 @@ __pycache__/
 coverage/
 node_modules/
 backend/data/
+paper/

@@ -2,6 +2,8 @@
 
 ResearchPilot is a multi-agent research co-pilot for literature review workflows. Give it a research question and it will search papers, extract structured findings from abstracts, synthesize the field, and draft a citation-aware Related Work section.
 
+Paper: [ResearchPilot on arXiv](https://arxiv.org/abs/2603.14629)
+
 It is designed as a portfolio-grade full-stack AI project:
 
 - FastAPI backend with SSE streaming
