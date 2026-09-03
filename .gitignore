@@ -15,3 +15,34 @@ coverage/
 node_modules/
 backend/data/
 paper/
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
+*.tsbuildinfo
+.turbo/
+
+# Suffixed virtualenvs (.venv/ alone misses .venv313, .venv-bench, ...)
+.venv*/
+venv/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+._*
+.AppleDouble
+Thumbs.db
+Desktop.ini
+

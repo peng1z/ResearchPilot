@@ -8,7 +8,12 @@ version = "0.1.0"
 description = "FastAPI backend for the ResearchPilot multi-agent research copilot."
 requires-python = ">=3.11"
 dependencies = [
-  "dspy-ai>=2.5.0",
+  # Pinned below 3: dspy 3.x installs a lazy proxy into sys.modules["numpy"],
+  # and any later import of numpy through another package (qdrant-client
+  # here) then fails with TypeError: data type 'bool' not understood.
+  # Declared as dspy rather than the dspy-ai shim, which is what the code
+  # imports and what the constraint has to bind to.
+  "dspy>=2.6.0,<3",
   "fastapi>=0.115.0",
   "httpx>=0.28.0",
   "pydantic>=2.9.0",
