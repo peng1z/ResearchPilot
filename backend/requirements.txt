@@ -1,8 +1,5 @@
-dspy>=2.6.0,<3
-fastapi>=0.115.0
-httpx>=0.28.0
-pydantic>=2.9.0
-pydantic-settings>=2.5.0
-qdrant-client>=1.13.0,<1.15.0
-sentence-transformers>=3.0.0
-uvicorn[standard]>=0.32.0
+# Runtime dependencies are declared in pyproject.toml. This file exists only
+# so the Docker build has something to install. Deriving it from pyproject
+# instead of restating the list means the two cannot drift apart -- they had,
+# on both qdrant-client's version bound and sentence-transformers.
+.[local-embeddings]

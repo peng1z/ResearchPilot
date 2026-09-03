@@ -128,6 +128,15 @@ cp .env.example .env
 uvicorn app.main:app --reload
 ```
 
+Dependencies are declared once, in `backend/pyproject.toml`; the requirements
+files derive from it. `sentence-transformers` sits behind the
+`local-embeddings` extra because it pulls in torch, and it is only needed for
+`EMBEDDING_BACKEND=local`. `requirements-dev.txt` includes it. To skip it:
+
+```bash
+pip install -e ".[dev]"
+```
+
 Frontend:
 
 ```bash

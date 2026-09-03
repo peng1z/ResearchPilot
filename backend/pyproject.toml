@@ -18,13 +18,19 @@ dependencies = [
   "httpx>=0.28.0",
   "pydantic>=2.9.0",
   "pydantic-settings>=2.5.0",
-  "qdrant-client>=1.12.0",
+  "qdrant-client>=1.13.0,<1.15.0",
   "uvicorn[standard]>=0.32.0",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.3.0",
+]
+# Only needed for EMBEDDING_BACKEND=local. sentence-transformers pulls in torch,
+# so it stays out of the default install; app/embeddings.py imports it lazily
+# and only on that code path.
+local-embeddings = [
+  "sentence-transformers>=3.0.0",
 ]
 
 [tool.setuptools.packages.find]

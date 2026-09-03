@@ -1,3 +1,2 @@
--r requirements.txt
-pytest>=8.3.0
-
+# Editable install with the test and local-embedding extras.
+-e .[dev,local-embeddings]
