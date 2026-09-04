@@ -266,7 +266,11 @@ class ResearchPipeline:
                 await self.artifact_store.store_papers(report.id, papers, extractions)
                 await self.artifact_store.store_report(report)
             except Exception as exc:
-                warnings.append(f"Artifact persistence warning: {exc}")
+                # Append to the report's own list. `warnings` was copied by
+                # pydantic during construction above, so appending there left
+                # the stored and returned report with no record of the failure
+                # -- only a transient status event nobody could go back to.
+                report.warnings.append(f"Artifact persistence warning: {exc}")
                 await status(
                     StatusEvent(
                         event="agent_progress",

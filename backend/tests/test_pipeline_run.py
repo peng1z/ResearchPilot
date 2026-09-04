@@ -1,0 +1,158 @@
+from __future__ import annotations
+
+from types import SimpleNamespace
+
+import pytest
+
+from app.config import Settings
+from app.models import (
+    Paper,
+    PaperExtraction,
+    RelatedWorkDraft,
+    SearchResults,
+    StatusEvent,
+    SynthesisOutput,
+)
+from app.services.pipeline import ResearchPipeline
+
+
+def _settings() -> Settings:
+    return Settings(llm_provider="openai", llm_model="gpt-4.1-mini", llm_api_key="sk-test")
+
+
+def _paper(pid: str) -> Paper:
+    return Paper(id=pid, title=f"Title {pid}", abstract="Abstract", source="arxiv")
+
+
+class FakeSearch:
+    def __init__(self, papers, warnings=None):
+        self.result = SearchResults(papers=papers, warnings=list(warnings or []))
+
+    async def run(self, question, limit=10):
+        return self.result
+
+
+class FakeStore:
+    def __init__(self, fail: Exception | None = None):
+        self.fail = fail
+        self.stored_papers: list = []
+        self.stored_reports: list = []
+
+    async def store_papers(self, report_id, papers, extractions):
+        if self.fail:
+            raise self.fail
+        self.stored_papers.append((report_id, papers, extractions))
+
+    async def store_report(self, report):
+        if self.fail:
+            raise self.fail
+        self.stored_reports.append(report)
+
+
+def _pipeline(papers, *, warnings=None, store=None, monkeypatch=None) -> ResearchPipeline:
+    import app.services.pipeline as module
+    import contextlib
+
+    # dspy_context builds a live LM; the agents are stubbed, so neutralise it.
+    monkeypatch.setattr(module, "dspy_context", lambda settings: contextlib.nullcontext())
+
+    return ResearchPipeline(
+        _settings(),
+        search_agent=FakeSearch(papers, warnings),
+        extraction_agent=lambda q, paper: PaperExtraction(paper_id=paper.id, title=paper.title,
+                                                          claims=["c"]),
+        synthesis_agent=lambda q, extractions: SynthesisOutput(
+            consensus=["agreed"], contradictions=[], open_gaps=["gap"]
+        ),
+        writer_agent=lambda q, synthesis, papers: RelatedWorkDraft(markdown="# Related Work"),
+        artifact_store=store or FakeStore(),
+    )
+
+
+async def _run(pipeline, report_id="r1", question="q"):
+    events: list[StatusEvent] = []
+
+    async def collect(event: StatusEvent) -> None:
+        events.append(event)
+
+    report = await pipeline.run(report_id, question, collect)
+    return report, events
+
+
+@pytest.mark.anyio
+async def test_a_full_run_produces_a_report_and_the_expected_event_sequence(monkeypatch) -> None:
+    pipeline = _pipeline([_paper("p1"), _paper("p2")], monkeypatch=monkeypatch)
+    report, events = await _run(pipeline)
+
+    assert report.id == "r1"
+    assert len(report.papers) == 2
+    assert len(report.extractions) == 2
+    assert report.related_work_markdown == "# Related Work"
+
+    assert events[0].event == "queued"
+    assert events[-1].event == "done"
+    agents_started = [e.agent for e in events if e.event == "agent_started"]
+    assert agents_started == ["SearchAgent", "ExtractionAgent", "SynthesisAgent", "WriterAgent"]
+
+
+@pytest.mark.anyio
+async def test_references_are_numbered_in_paper_order(monkeypatch) -> None:
+    pipeline = _pipeline([_paper("a"), _paper("b"), _paper("c")], monkeypatch=monkeypatch)
+    report, _ = await _run(pipeline)
+    assert [r.label for r in report.references] == ["R1", "R2", "R3"]
+    assert [r.paper_id for r in report.references] == ["a", "b", "c"]
+
+
+@pytest.mark.anyio
+async def test_search_warnings_reach_the_report_and_the_stream(monkeypatch) -> None:
+    pipeline = _pipeline([_paper("p1")], warnings=["arxiv timed out"], monkeypatch=monkeypatch)
+    report, events = await _run(pipeline)
+    assert report.warnings == ["arxiv timed out"]
+    assert any(e.data and e.data.get("warning") for e in events)
+
+
+@pytest.mark.anyio
+async def test_no_papers_still_finishes(monkeypatch) -> None:
+    pipeline = _pipeline([], monkeypatch=monkeypatch)
+    report, events = await _run(pipeline)
+    assert report.papers == []
+    assert events[-1].event == "done"
+
+
+@pytest.mark.anyio
+async def test_a_persistence_failure_is_recorded_in_the_report(monkeypatch) -> None:
+    """Regression: the warning was appended to a list pydantic had already
+    copied, so it reached the event stream and never the report."""
+    store = FakeStore(fail=RuntimeError("qdrant unreachable"))
+    pipeline = _pipeline([_paper("p1")], store=store, monkeypatch=monkeypatch)
+    report, events = await _run(pipeline)
+
+    assert any("qdrant unreachable" in w for w in report.warnings), report.warnings
+    assert any(e.agent == "QdrantArtifactStore" for e in events)
+
+
+@pytest.mark.anyio
+async def test_a_persistence_failure_does_not_abort_the_run(monkeypatch) -> None:
+    store = FakeStore(fail=RuntimeError("boom"))
+    pipeline = _pipeline([_paper("p1")], store=store, monkeypatch=monkeypatch)
+    report, events = await _run(pipeline)
+    assert events[-1].event == "done"
+    assert report.related_work_markdown == "# Related Work"
+
+
+@pytest.mark.anyio
+async def test_artifacts_are_stored_when_persistence_works(monkeypatch) -> None:
+    store = FakeStore()
+    pipeline = _pipeline([_paper("p1")], store=store, monkeypatch=monkeypatch)
+    report, _ = await _run(pipeline)
+    assert store.stored_reports == [report]
+    assert store.stored_papers[0][0] == "r1"
+
+
+@pytest.mark.anyio
+async def test_extraction_progress_is_reported_per_paper(monkeypatch) -> None:
+    pipeline = _pipeline([_paper("p1"), _paper("p2")], monkeypatch=monkeypatch)
+    _, events = await _run(pipeline)
+    progress = [e for e in events if e.event == "agent_progress" and e.agent == "ExtractionAgent"]
+    assert len(progress) == 2
+    assert progress[0].data["total"] == 2

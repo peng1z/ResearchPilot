@@ -39,7 +39,6 @@ def resolve_model_string(settings: Settings) -> str:
 
 
 def configure_dspy(settings: Settings) -> None:
-    _build_lm(settings)
     dspy.settings.configure(lm=_build_lm(settings))
 
 
