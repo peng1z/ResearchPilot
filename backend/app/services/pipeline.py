@@ -136,7 +136,7 @@ class ResearchPipeline:
     ) -> None:
         self.settings = settings
         self.embedder = EmbeddingService(settings)
-        self.search_agent = search_agent or SearchAgent(settings.semantic_scholar_api_key)
+        self.search_agent = search_agent or SearchAgent(settings.semantic_scholar_api_key, settings.openalex_mailto)
         self.extraction_agent = extraction_agent or ExtractionAgent()
         self.synthesis_agent = synthesis_agent or SynthesisAgent()
         self.writer_agent = writer_agent or WriterAgent()
@@ -150,7 +150,7 @@ class ResearchPipeline:
                 StatusEvent(
                     event="agent_started",
                     agent="SearchAgent",
-                    message="Searching Semantic Scholar and arXiv.",
+                    message="Searching Semantic Scholar, arXiv and OpenAlex.",
                     report_id=report_id,
                 )
             )
