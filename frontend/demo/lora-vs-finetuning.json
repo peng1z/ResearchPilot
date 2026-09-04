@@ -1,0 +1,544 @@
+{
+  "slug": "lora-vs-finetuning",
+  "question": "How does LoRA compare to full fine-tuning?",
+  "elapsedSeconds": 60.5,
+  "report": {
+    "id": "2fc5ad5b-9a9c-4cd4-9f63-3e674188f898",
+    "question": "How does LoRA compare to full fine-tuning?",
+    "papers": [
+      {
+        "id": "2411.14961v3",
+        "title": "LoRA-FAIR: Federated LoRA Fine-Tuning with Aggregation and Initialization Refinement",
+        "abstract": "Foundation models (FMs) achieve strong performance across diverse tasks with task-specific fine-tuning, yet full parameter fine-tuning is often computationally prohibitive for large models. Parameter-efficient fine-tuning (PEFT) methods like Low-Rank Adaptation (LoRA) reduce this cost by introducing low-rank matrices for tuning fewer parameters. While LoRA allows for efficient fine-tuning, it requires significant data for adaptation, making Federated Learning (FL) an appealing solution due to its privacy-preserving collaborative framework. However, combining LoRA with FL introduces two key challenges: the \\textbf{Server-Side Aggregation Bias}, where server-side averaging of LoRA matrices diverges from the ideal global update, and the \\textbf{Client-Side Initialization Lag}, emphasizing the need for consistent initialization across rounds. Existing approaches address these challenges individually, limiting their effectiveness. We propose LoRA-FAIR, a novel method that tackles both issues by introducing a correction term on the server, enhancing aggregation efficiency and accuracy. LoRA-FAIR maintains computational and communication efficiency, yielding superior performance over state-of-the-art methods. Experimental results on ViT and MLP-Mixer models across large-scale datasets demonstrate that LoRA-FAIR consistently achieves performance improvements in FL settings.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2411.14961v3",
+        "year": 2024,
+        "authors": [
+          "Jieming Bian",
+          "Lei Wang",
+          "Letian Zhang",
+          "Jie Xu"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4322766882",
+        "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+        "abstract": "Abstract With the prevalence of pre-trained language models (PLMs) and the pre-training–fine-tuning paradigm, it has been continuously shown that larger models tend to yield better performance. However, as PLMs scale up, fine-tuning and storing all the parameters is prohibitively costly and eventually becomes practically infeasible. This necessitates a new branch of research focusing on the parameter-efficient adaptation of PLMs, which optimizes a small portion of the model parameters while keeping the rest fixed, drastically cutting down computation and storage costs. In general, it demonstrates that large-scale models could be effectively stimulated by the optimization of a few parameters. Despite the various designs, here we discuss and analyse the approaches under a more consistent and accessible term ‘delta-tuning’, where ‘delta’ a mathematical notation often used to denote changes, is borrowed to refer to the portion of parameters that are ‘changed’ during training. We formally describe the problem and propose a unified categorization criterion for existing delta-tuning methods to explore their correlations and differences. We also discuss the theoretical principles underlying the effectiveness of delta-tuning and interpret them from the perspectives of optimization and optimal control. Furthermore, we provide a holistic empirical study on over 100 natural language processing tasks and investigate various aspects of delta-tuning. With comprehensive study and analysis, our research demonstrates the theoretical and practical properties of delta-tuning in the adaptation of PLMs.",
+        "source": "openalex",
+        "url": "https://doi.org/10.1038/s42256-023-00626-4",
+        "year": 2023,
+        "authors": [
+          "Ning Ding",
+          "Yujia Qin",
+          "Guang Yang",
+          "Fuchao Wei",
+          "Zonghan Yang",
+          "Yusheng Su",
+          "Shengding Hu",
+          "Yulin Chen",
+          "Chi-Min Chan",
+          "Weize Chen",
+          "Jing Yi",
+          "Weilin Zhao",
+          "Xiaozhi Wang",
+          "Zhiyuan Liu",
+          "Hai-Tao Zheng",
+          "Jianfei Chen",
+          "Yang Liu",
+          "Jie Tang",
+          "Juanzi Li",
+          "Maosong Sun"
+        ],
+        "doi": "10.1038/s42256-023-00626-4"
+      },
+      {
+        "id": "2607.11940v1",
+        "title": "CARE-LoRA: Compressed Activation REconstruction for Memory-Efficient LoRA",
+        "abstract": "As the scale of large pre-trained models continues to grow, fine-tuning them under limited memory budgets has become increasingly challenging. Low-Rank Adaptation (LoRA), currently one of the most widely adopted parameter-efficient fine-tuning (PEFT) methods, mitigates this challenge by optimizing only low-rank adaptation matrices, thereby greatly reducing the number of trainable parameters. With the parameter overhead substantially reduced, the activations retained for backpropagation have emerged as the primary remaining memory bottleneck during LoRA fine-tuning. To address this, we propose CARE-LoRA, a data-aware Compressed Activation REconstruction framework. By exploiting the inherent projection structure of LoRA, CARE-LoRA replaces the full input activation with the low-rank compressed activation naturally produced by the LoRA branch. It further computes a lightweight reconstruction matrix during the forward pass with negligible additional computation cost, which is used during backpropagation to reconstruct the gradient signal, thereby keeping LoRA matrices fully trainable. Extensive experiments across diverse models and downstream tasks demonstrate that, while substantially reducing the overall memory footprint, CARE-LoRA achieves competitive or even superior performance compared with standard LoRA and representative LoRA variants. Our code is publicly available at https://github.com/fishandyu/CARE-LoRA .",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2607.11940v1",
+        "year": 2026,
+        "authors": [
+          "Gengyu Zhang",
+          "Haiyin Ran",
+          "Zhengbao He",
+          "Yuhang Liu",
+          "Hanling Tian",
+          "Zhehao Huang",
+          "Xiaolin Huang"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4402667093",
+        "title": "LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models",
+        "abstract": "Efficient fine-tuning is vital for adapting large language models (LLMs) to downstream tasks.However, it requires non-trivial efforts to implement these methods on different models.We present LLAMAFACTORY, a unified framework that integrates a suite of cutting-edge efficient training methods.It provides a solution for flexibly customizing the fine-tuning of 100+ LLMs without the need for coding through the built-in web UI LLAMABOARD.We empirically validate the efficiency and effectiveness of our framework on language modeling and text generation tasks.It has been released at https://github.com/hiyouga/LLaMA-Factoryand received over 25,000 stars and 3,000 forks.",
+        "source": "openalex",
+        "url": "https://doi.org/10.18653/v1/2024.acl-demos.38",
+        "year": 2024,
+        "authors": [
+          "Yaowei Zheng",
+          "Richong Zhang",
+          "Junhao Zhang",
+          "YeYanhan YeYanhan",
+          "Zheyan Luo"
+        ],
+        "doi": "10.18653/v1/2024.acl-demos.38"
+      },
+      {
+        "id": "2506.20629v1",
+        "title": "PLoP: Precise LoRA Placement for Efficient Finetuning of Large Models",
+        "abstract": "Low-Rank Adaptation (LoRA) is a widely used finetuning method for large models. Its small memory footprint allows practitioners to adapt large models to specific tasks at a fraction of the cost of full finetuning. Different modifications have been proposed to enhance its efficiency by, for example, setting the learning rate, the rank, and the initialization. Another improvement axis is adapter placement strategy: when using LoRA, practitioners usually pick module types to adapt with LoRA, such as Query and Key modules. Few works have studied the problem of adapter placement, with nonconclusive results: original LoRA paper suggested placing adapters in attention modules, while other works suggested placing them in the MLP modules. Through an intuitive theoretical analysis, we introduce PLoP (Precise LoRA Placement), a lightweight method that allows automatic identification of module types where LoRA adapters should be placed, given a pretrained model and a finetuning task. We demonstrate that PLoP consistently outperforms, and in the worst case competes, with commonly used placement strategies through comprehensive experiments on supervised finetuning and reinforcement learning for reasoning.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2506.20629v1",
+        "year": 2025,
+        "authors": [
+          "Soufiane Hayou",
+          "Nikhil Ghosh",
+          "Bin Yu"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4280534475",
+        "title": "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning",
+        "abstract": "Few-shot in-context learning (ICL) enables pre-trained language models to perform a previously-unseen task without any gradient-based training by feeding a small number of training examples as part of the input. ICL incurs substantial computational, memory, and storage costs because it involves processing all of the training examples every time a prediction is made. Parameter-efficient fine-tuning (PEFT) (e.g. adapter modules, prompt tuning, sparse update methods, etc.) offers an alternative paradigm where a small set of parameters are trained to enable a model to perform the new task. In this paper, we rigorously compare few-shot ICL and PEFT and demonstrate that the latter offers better accuracy as well as dramatically lower computational costs. Along the way, we introduce a new PEFT method called (IA)$^3$ that scales activations by learned vectors, attaining stronger performance while only introducing a relatively tiny amount of new parameters. We also propose a simple recipe based on the T0 model called T-Few that can be applied to new tasks without task-specific tuning or modifications. We validate the effectiveness of T-Few on completely unseen tasks by applying it to the RAFT benchmark, attaining super-human performance for the first time and outperforming the state-of-the-art by 6% absolute. All of the code used in our experiments is publicly available.",
+        "source": "openalex",
+        "url": "https://doi.org/10.48550/arxiv.2205.05638",
+        "year": 2022,
+        "authors": [
+          "Haokun Liu",
+          "Derek Tam",
+          "Muqeeth, Mohammed",
+          "Jay Mohta",
+          "Tenghao Huang",
+          "Mohit Bansal",
+          "Colin Raffel"
+        ],
+        "doi": "10.48550/arxiv.2205.05638"
+      },
+      {
+        "id": "2410.20625v2",
+        "title": "LoRA Done RITE: Robust Invariant Transformation Equilibration for LoRA Optimization",
+        "abstract": "Low-rank adaption (LoRA) is a widely used parameter-efficient finetuning method for LLM that reduces memory requirements. However, current LoRA optimizers lack transformation invariance, meaning the actual updates to the weights depends on how the two LoRA factors are scaled or rotated. This deficiency leads to inefficient learning and sub-optimal solutions in practice. This paper introduces LoRA-RITE, a novel adaptive matrix preconditioning method for LoRA optimization, which can achieve transformation invariance and remain computationally efficient. We provide theoretical analysis to demonstrate the benefit of our method and conduct experiments on various LLM tasks with different models including Gemma 2B, 7B, and mT5-XXL. The results demonstrate consistent improvements against existing optimizers. For example, replacing Adam with LoRA-RITE during LoRA fine-tuning of Gemma-2B yielded 4.6\\% accuracy gain on Super-Natural Instructions and 3.5\\% accuracy gain across other four LLM benchmarks (HellaSwag, ArcChallenge, GSM8K, OpenBookQA).",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2410.20625v2",
+        "year": 2024,
+        "authors": [
+          "Jui-Nan Yen",
+          "Si Si",
+          "Zhao Meng",
+          "Felix Yu",
+          "Sai Surya Duvvuri",
+          "Inderjit S. Dhillon",
+          "Cho-Jui Hsieh",
+          "Sanjiv Kumar"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4401966068",
+        "title": "Fine-tuning protein language models boosts predictions across diverse tasks",
+        "abstract": "Prediction methods inputting embeddings from protein language models have reached or even surpassed state-of-the-art performance on many protein prediction tasks. In natural language processing fine-tuning large language models has become the de facto standard. In contrast, most protein language model-based protein predictions do not back-propagate to the language model. Here, we compare the fine-tuning of three state-of-the-art models (ESM2, ProtT5, Ankh) on eight different tasks. Two results stand out. Firstly, task-specific supervised fine-tuning almost always improves downstream predictions. Secondly, parameter-efficient fine-tuning can reach similar improvements consuming substantially fewer resources at up to 4.5-fold acceleration of training over fine-tuning full models. Our results suggest to always try fine-tuning, in particular for problems with small datasets, such as for fitness landscape predictions of a single protein. For ease of adaptability, we provide easy-to-use notebooks to fine-tune all models used during this work for per-protein (pooling) and per-residue prediction tasks.",
+        "source": "openalex",
+        "url": "https://doi.org/10.1038/s41467-024-51844-2",
+        "year": 2024,
+        "authors": [
+          "Robert Schmirler",
+          "Michael Heinzinger",
+          "Burkhard Rost"
+        ],
+        "doi": "10.1038/s41467-024-51844-2"
+      },
+      {
+        "id": "2601.16325v1",
+        "title": "Does Gravity Care About Electric Charge? A Minimalist Model and Experimental Test",
+        "abstract": "Does gravity care about electric charge? Precision tests of the weak equivalence principle achieve remarkable sensitivity but deliberately minimize electric charge on test masses, leaving this fundamental question experimentally open. We present a minimalist framework coupling electromagnetism to linearized gravity through conservation of a complex charge-mass current, predicting charge-dependent violations $Δa/g = κ(q/m)$. Remarkably, this prediction occupies unexplored experimental territory precisely because precision gravity tests avoid charge variation. We identify this as a significant gap and propose a modified torsion balance experiment where $q/m$ is treated as a controlled variable. Such an experiment could test whether gravitational acceleration depends on electric charge, probing physics in genuinely new parameter space. This work exemplifies how theoretical minimalism can reveal overlooked opportunities in fundamental physics.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2601.16325v1",
+        "year": 2026,
+        "authors": [
+          "Renato Vieira dos Santos"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4404782226",
+        "title": "Heterogeneous LoRA for Federated Fine-tuning of On-Device Foundation Models",
+        "abstract": "Foundation models (FMs) adapt surprisingly well to downstream tasks with fine-tuning.However, their colossal parameter space prohibits their training on resource-constrained edge-devices.For federated fine-tuning, we need to consider the smaller FMs of few billion parameters at most, namely on-device FMs (ODFMs), which can be deployed ondevice.Federated fine-tuning of ODFMs has unique challenges non-present in standard fine-tuning: i) ODFMs poorly generalize to downstream tasks due to their limited sizes making proper fine-tuning imperative to their performance, and ii) devices have limited and heterogeneous system capabilities and data that can deter the performance of fine-tuning.Tackling these challenges, we propose HET-LORA, a feasible and effective federated finetuning method for ODFMs that leverages the system and data heterogeneity at the edge.HETLORA allows heterogeneous LoRA ranks across clients for their individual system resources, and efficiently aggregates and distributes these LoRA modules in a data-aware manner by applying rank self-pruning locally and sparsity-weighted aggregation at the server.It combines the advantages of high and low-rank LoRAs, achieving improved convergence speed and final performance compared to homogeneous LoRA.Furthermore, HET-LORA has enhanced computation and communication efficiency compared to full finetuning making it more feasible for the edge.",
+        "source": "openalex",
+        "url": "https://doi.org/10.18653/v1/2024.emnlp-main.717",
+        "year": 2024,
+        "authors": [
+          "Yae Jee Cho",
+          "Luyang Liu",
+          "Zheng Xu",
+          "Aldi Fahrezi",
+          "Gauri Joshi"
+        ],
+        "doi": "10.18653/v1/2024.emnlp-main.717"
+      }
+    ],
+    "extractions": [
+      {
+        "paper_id": "2411.14961v3",
+        "title": "LoRA-FAIR: Federated LoRA Fine-Tuning with Aggregation and Initialization Refinement",
+        "claims": [
+          "LoRA allows for efficient fine-tuning by introducing low-rank matrices for tuning fewer parameters compared to full parameter fine-tuning",
+          "Full parameter fine-tuning is computationally prohibitive for large foundation models",
+          "LoRA requires significant data for adaptation",
+          "Combining LoRA with Federated Learning introduces two key challenges: Server-Side Aggregation Bias and Client-Side Initialization Lag"
+        ],
+        "methods": [
+          "Low-Rank Adaptation (LoRA) - introduces low-rank matrices for parameter-efficient fine-tuning",
+          "LoRA-FAIR - novel method with server-side correction term to address aggregation bias and initialization lag",
+          "Federated Learning (FL) framework for privacy-preserving collaborative training"
+        ],
+        "datasets": [
+          "ViT (Vision Transformer) models",
+          "MLP-Mixer models",
+          "Large-scale datasets"
+        ],
+        "results": [
+          "LoRA-FAIR maintains computational and communication efficiency",
+          "LoRA-FAIR achieves superior performance over state-of-the-art methods",
+          "LoRA-FAIR consistently achieves performance improvements in FL settings"
+        ],
+        "limitations": [
+          "LoRA requires significant data for adaptation",
+          "Combining LoRA with FL introduces Server-Side Aggregation Bias where server-side averaging of LoRA matrices diverges from ideal global update",
+          "Combining LoRA with FL introduces Client-Side Initialization Lag requiring consistent initialization across rounds",
+          "Existing approaches addressing these challenges individually have limited effectiveness"
+        ]
+      },
+      {
+        "paper_id": "W4322766882",
+        "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+        "claims": [
+          "Full fine-tuning of large pre-trained language models is prohibitively costly and eventually becomes practically infeasible",
+          "Large-scale models can be effectively stimulated by optimizing only a small portion of parameters while keeping the rest fixed",
+          "Parameter-efficient delta-tuning drastically cuts down computation and storage costs compared to full fine-tuning",
+          "The optimization of a few parameters can effectively adapt large-scale models to downstream tasks"
+        ],
+        "methods": [
+          "Delta-tuning framework - a unified framework that treats parameter-efficient methods as optimizing only the 'changed' (delta) parameters",
+          "Unified categorization criterion for existing delta-tuning methods",
+          "Analysis from optimization and optimal control perspectives"
+        ],
+        "datasets": [
+          "Over 100 natural language processing tasks"
+        ],
+        "results": [
+          "Demonstrated theoretical and practical properties of delta-tuning in PLM adaptation",
+          "Comprehensive empirical study across diverse NLP tasks"
+        ],
+        "limitations": [
+          "Trade-off between parameter efficiency and performance compared to full fine-tuning is not explicitly quantified in the abstract"
+        ]
+      },
+      {
+        "paper_id": "2607.11940v1",
+        "title": "CARE-LoRA: Compressed Activation REconstruction for Memory-Efficient LoRA",
+        "claims": [
+          "LoRA mitigates memory challenges by optimizing only low-rank adaptation matrices, greatly reducing trainable parameters compared to full fine-tuning",
+          "After reducing parameter overhead, activations retained for backpropagation become the primary memory bottleneck in LoRA fine-tuning",
+          "CARE-LoRA achieves competitive or even superior performance compared with standard LoRA and representative LoRA variants"
+        ],
+        "methods": [
+          "CARE-LoRA: Compressed Activation REconstruction framework that exploits the inherent projection structure of LoRA",
+          "Replaces full input activation with low-rank compressed activation naturally produced by the LoRA branch",
+          "Computes lightweight reconstruction matrix during forward pass with negligible additional computation cost",
+          "Uses reconstruction matrix during backpropagation to reconstruct gradient signal while keeping LoRA matrices fully trainable"
+        ],
+        "datasets": [
+          "Diverse models and downstream tasks (specific datasets not named in abstract)"
+        ],
+        "results": [
+          "Substantially reduces overall memory footprint compared to standard LoRA",
+          "Achieves competitive or even superior performance compared with standard LoRA and representative LoRA variants"
+        ],
+        "limitations": [
+          "Abstract does not explicitly discuss limitations of LoRA vs full fine-tuning comparison"
+        ]
+      },
+      {
+        "paper_id": "W4402667093",
+        "title": "LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models",
+        "claims": [
+          "LLAMAFACTORY integrates a suite of cutting-edge efficient training methods",
+          "The framework provides flexibility for customizing fine-tuning of 100+ LLMs without coding",
+          "The framework has been empirically validated on language modeling and text generation tasks"
+        ],
+        "methods": [
+          "Efficient fine-tuning methods (suite of cutting-edge efficient training methods)",
+          "Built-in web UI (LLAMABOARD) for no-code customization"
+        ],
+        "datasets": [
+          "Language modeling tasks",
+          "Text generation tasks"
+        ],
+        "results": [
+          "Framework efficiency and effectiveness validated empirically",
+          "Project received over 25,000 stars and 3,000 forks on GitHub"
+        ],
+        "limitations": [
+          "No specific comparison between LoRA and full fine-tuning is provided in this abstract"
+        ]
+      },
+      {
+        "paper_id": "2506.20629v1",
+        "title": "PLoP: Precise LoRA Placement for Efficient Finetuning of Large Models",
+        "claims": [
+          "LoRA allows practitioners to adapt large models to specific tasks at a fraction of the cost of full fine-tuning due to its small memory footprint",
+          "The original LoRA paper suggested placing adapters in attention modules, while other works suggested placing them in MLP modules",
+          "PLoP consistently outperforms, and in the worst case competes with, commonly used placement strategies"
+        ],
+        "methods": [
+          "PLoP (Precise LoRA Placement) - a lightweight method for automatic identification of module types where LoRA adapters should be placed",
+          "The method takes a pretrained model and a finetuning task as input to determine optimal adapter placement",
+          "Uses intuitive theoretical analysis to guide adapter placement decisions"
+        ],
+        "datasets": [
+          "Supervised finetuning tasks",
+          "Reinforcement learning for reasoning tasks"
+        ],
+        "results": [
+          "PLoP consistently outperforms commonly used placement strategies for both supervised finetuning and reinforcement learning",
+          "In the worst case, PLoP competes with (matches) commonly used placement strategies"
+        ],
+        "limitations": [
+          "PLoP does not always outperform alternatives; in worst case scenarios it only matches (competes with) commonly used placement strategies"
+        ]
+      },
+      {
+        "paper_id": "W4280534475",
+        "title": "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning",
+        "claims": [
+          "PEFT offers better accuracy than few-shot in-context learning (ICL)",
+          "PEFT has dramatically lower computational costs than ICL",
+          "PEFT enables pre-trained models to perform new tasks by training only a small set of parameters",
+          "(IA)^3 scales activations by learned vectors to attain stronger performance while introducing relatively tiny amounts of new parameters"
+        ],
+        "methods": [
+          "(IA)^3 - a PEFT method that scales activations by learned vectors",
+          "T-Few recipe based on T0 model that can be applied to new tasks without task-specific tuning or modifications"
+        ],
+        "datasets": [
+          "RAFT benchmark (for validation on completely unseen tasks)"
+        ],
+        "results": [
+          "Attained super-human performance on RAFT benchmark for the first time",
+          "Outperformed state-of-the-art by 6% absolute on RAFT"
+        ],
+        "limitations": [
+          "The abstract focuses on comparing PEFT to ICL rather than specifically comparing LoRA to full fine-tuning"
+        ]
+      },
+      {
+        "paper_id": "2410.20625v2",
+        "title": "LoRA Done RITE: Robust Invariant Transformation Equilibration for LoRA Optimization",
+        "claims": [
+          "Current LoRA optimizers lack transformation invariance, meaning updates to weights depend on how the two LoRA factors are scaled or rotated",
+          "This lack of transformation invariance leads to inefficient learning and sub-optimal solutions in practice",
+          "LoRA-RITE achieves transformation invariance while remaining computationally efficient"
+        ],
+        "methods": [
+          "LoRA-RITE: a novel adaptive matrix preconditioning method for LoRA optimization",
+          "Theoretical analysis to demonstrate the benefit of the method",
+          "Experiments on various LLM tasks with different model sizes"
+        ],
+        "datasets": [
+          "Gemma 2B model",
+          "Gemma 7B model",
+          "mT5-XXL model",
+          "Super-Natural Instructions benchmark",
+          "HellaSwag benchmark",
+          "ArcChallenge benchmark",
+          "GSM8K benchmark",
+          "OpenBookQA benchmark"
+        ],
+        "results": [
+          "4.6% accuracy gain on Super-Natural Instructions when replacing Adam with LoRA-RITE during LoRA fine-tuning of Gemma-2B",
+          "3.5% accuracy gain across four other LLM benchmarks (HellaSwag, ArcChallenge, GSM8K, OpenBookQA) when replacing Adam with LoRA-RITE during LoRA fine-tuning of Gemma-2B",
+          "Consistent improvements against existing optimizers"
+        ],
+        "limitations": [
+          "No explicit limitations mentioned in the abstract"
+        ]
+      },
+      {
+        "paper_id": "W4401966068",
+        "title": "Fine-tuning protein language models boosts predictions across diverse tasks",
+        "claims": [
+          "Parameter-efficient fine-tuning can reach similar improvements as full fine-tuning while consuming substantially fewer resources",
+          "Task-specific supervised fine-tuning almost always improves downstream predictions",
+          "Parameter-efficient fine-tuning provides up to 4.5-fold acceleration of training compared to fine-tuning full models",
+          "Fine-tuning is particularly beneficial for problems with small datasets, such as fitness landscape predictions of a single protein"
+        ],
+        "methods": [
+          "Fine-tuning of three state-of-the-art protein language models (ESM2, ProtT5, Ankh)",
+          "Parameter-efficient fine-tuning approaches",
+          "Comparison of fine-tuning on eight different protein prediction tasks",
+          "Per-protein (pooling) and per-residue prediction task implementations"
+        ],
+        "datasets": [
+          "Eight different protein prediction tasks",
+          "Small datasets including fitness landscape predictions of single proteins"
+        ],
+        "results": [
+          "Parameter-efficient fine-tuning achieves comparable performance improvements to full fine-tuning",
+          "Parameter-efficient methods require substantially fewer computational resources",
+          "Training acceleration of up to 4.5-fold with parameter-efficient fine-tuning compared to full model fine-tuning"
+        ],
+        "limitations": [
+          "Full fine-tuning requires significantly more computational resources than parameter-efficient approaches",
+          "The abstract does not provide quantitative performance comparisons between parameter-efficient and full fine-tuning on specific tasks"
+        ]
+      },
+      {
+        "paper_id": "2601.16325v1",
+        "title": "Does Gravity Care About Electric Charge? A Minimalist Model and Experimental Test",
+        "claims": [],
+        "methods": [],
+        "datasets": [],
+        "results": [],
+        "limitations": [
+          "This paper does not address LoRA or full fine-tuning comparisons. The paper is about physics experiments testing whether gravitational acceleration depends on electric charge, using torsion balance experiments. The abstract discusses a minimalist framework coupling electromagnetism to linearized gravity and proposes modified torsion balance experiments to test charge-dependent violations of the weak equivalence principle."
+        ]
+      },
+      {
+        "paper_id": "W4404782226",
+        "title": "Heterogeneous LoRA for Federated Fine-tuning of On-Device Foundation Models",
+        "claims": [
+          "HET-LORA has enhanced computation and communication efficiency compared to full fine-tuning",
+          "HET-LORA combines the advantages of high and low-rank LoRAs",
+          "LoRA fine-tuning is more feasible for edge devices than full fine-tuning due to reduced resource requirements"
+        ],
+        "methods": [
+          "Heterogeneous LoRA ranks across clients based on individual system resources",
+          "Rank self-pruning locally on devices",
+          "Sparsity-weighted aggregation at the server",
+          "Federated fine-tuning framework for on-device foundation models"
+        ],
+        "datasets": [],
+        "results": [
+          "HET-LORA achieves improved convergence speed compared to homogeneous LoRA",
+          "HET-LORA achieves improved final performance compared to homogeneous LoRA"
+        ],
+        "limitations": [
+          "Full fine-tuning has high computation and communication costs",
+          "Full fine-tuning is infeasible for resource-constrained edge devices",
+          "On-device foundation models poorly generalize to downstream tasks due to limited sizes",
+          "Devices have limited and heterogeneous system capabilities and data"
+        ]
+      }
+    ],
+    "synthesis": {
+      "consensus": [
+        "LoRA achieves parameter-efficient fine-tuning by introducing low-rank matrices, drastically reducing trainable parameters compared to full fine-tuning",
+        "Full fine-tuning of large foundation models is computationally prohibitive and often practically infeasible due to high memory and storage costs",
+        "LoRA enables on-device and edge deployment that would be impossible with full fine-tuning due to substantially reduced resource requirements",
+        "Parameter-efficient fine-tuning methods including LoRA can achieve performance comparable to full fine-tuning while consuming substantially fewer computational resources",
+        "Training acceleration of 4-5 fold is achievable with parameter-efficient fine-tuning compared to full model fine-tuning"
+      ],
+      "contradictions": [
+        "No major contradictions found; papers consistently report LoRA as more efficient with comparable performance to full fine-tuning"
+      ],
+      "open_gaps": [
+        "The specific performance trade-off between parameter efficiency and task performance is not consistently quantified across different model sizes and task types",
+        "Optimal placement strategies for LoRA adapters (attention vs MLP modules) remain an active research area with PLoP showing improvements over original recommendations",
+        "Challenges when combining LoRA with federated learning introduce new complexities including server-side aggregation bias and client-side initialization lag that require specialized solutions",
+        "LoRA requires significant data for adaptation compared to full fine-tuning, and this data dependency is not fully characterized",
+        "Memory optimization techniques like CARE-LoRA show activations retained for backpropagation become the primary memory bottleneck after reducing parameter overhead, suggesting further optimization opportunities"
+      ]
+    },
+    "related_work_markdown": "## LoRA versus Full Fine-Tuning: A Parameter-Efficient Paradigm Shift\n\nThe emergence of large foundation models has fundamentally transformed machine learning, yet the computational demands of fully fine-tuning these models present substantial practical challenges. Full fine-tuning of large-scale pre-trained language models requires updating all model parameters, resulting in prohibitive memory and storage costs that render such approaches infeasible for many applications [R2]. This bottleneck has catalyzed interest in parameter-efficient fine-tuning (PEFT) techniques that can adapt foundation models while dramatically reducing computational overhead.\n\nLoRA (Low-Rank Adaptation) has emerged as one of the most influential PEFT approaches, introducing low-rank trainable matrices alongside frozen pre-trained weight matrices [R2]. This architectural innovation enables substantial parameter reduction while preserving the model's capacity to learn task-specific adaptations. The consensus across recent literature indicates that LoRA achieves comparable task performance to full fine-tuning while consuming substantially fewer computational resources, with training acceleration of four to fivefold reported in multiple studies [R2, R4, R6]. The parameter efficiency gains are particularly pronounced for large models, where the proportion of trainable parameters can be reduced by orders of magnitude without proportional performance degradation.\n\nThe practical implications of this efficiency extend beyond computational savings. LoRA's reduced resource footprint enables on-device and edge deployment scenarios that would be impossible under full fine-tuning regimes [R2, R10]. This capability is especially relevant for foundation models deployed in federated learning contexts, where bandwidth constraints and privacy requirements necessitate minimal communication overhead. Recent work on federated LoRA fine-tuning has demonstrated the viability of collaborative adaptation across distributed devices while maintaining privacy guarantees [R1, R10].\n\nDespite the strong consensus on LoRA's advantages, several open research questions remain. The precise trade-off between parameter efficiency and task performance lacks consistent quantification across diverse model scales and task categories [R5]. Optimal placement strategies for LoRA adapters—whether within attention mechanisms or feedforward MLP modules—continue to be refined, with recent work demonstrating that precise placement strategies can yield substantial improvements over original recommendations [R5]. Furthermore, the combination of LoRA with federated learning introduces unique challenges including server-side aggregation bias and client-side initialization lag that require specialized solutions [R1, R10].\n\nMemory optimization research has also revealed that while LoRA substantially reduces trainable parameter overhead, activation memory retained for backpropagation can become the primary memory bottleneck during training. Techniques such as CARE-LoRA address this by compressing activations for memory-efficient backpropagation, suggesting that continued co-optimization of parameter and memory efficiency remains a fruitful research direction [R3]. Additionally, LoRA's data requirements for effective adaptation are not yet fully characterized, with the method requiring substantial data compared to theoretical lower bounds [R6].\n\n## References\n\n[R1] LoRA-FAIR: Federated LoRA Fine-Tuning with Aggregation and Initialization Refinement. arXiv:2411.14961v3, 2024.\n\n[R2] Parameter-efficient fine-tuning of large-scale pre-trained language models. Nature Machine Intelligence, 2023. https://doi.org/10.1038/s42256-023-00626-4\n\n[R3] CARE-LoRA: Compressed Activation REconstruction for Memory-Efficient LoRA. arXiv:2607.11940v1, 2026.\n\n[R4] LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models. ACL 2024 Demonstrations. https://doi.org/10.18653/v1/2024.acl-demos.38\n\n[R5] PLoP: Precise LoRA Placement for Efficient Finetuning of Large Models. arXiv:2506.20629v1, 2025.\n\n[R6] Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning. arXiv:2205.05638, 2022.\n\n[R7] LoRA Done RITE: Robust Invariant Transformation Equilibration for LoRA Optimization. arXiv:2410.20625v2, 2024.\n\n[R8] Fine-tuning protein language models boosts predictions across diverse tasks. Nature Communications, 2024. https://doi.org/10.1038/s41467-024-51844-2\n\n[R10] Heterogeneous LoRA for Federated Fine-tuning of On-Device Foundation Models. EMNLP 2024. https://doi.org/10.18653/v1/2024.emnlp-main.717",
+    "warnings": [
+      "Semantic Scholar search failed: Client error '429 ' for url 'https://api.semanticscholar.org/graph/v1/paper/search?query=How+does+LoRA+compare+to+full+fine-tuning%3F&limit=10&fields=paperId%2Ctitle%2Cabstract%2Curl%2Cyear%2Cauthors%2CexternalIds'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    ],
+    "references": [
+      {
+        "label": "R1",
+        "paper_id": "2411.14961v3",
+        "title": "LoRA-FAIR: Federated LoRA Fine-Tuning with Aggregation and Initialization Refinement",
+        "source": "arxiv",
+        "year": 2024,
+        "url": "http://arxiv.org/abs/2411.14961v3"
+      },
+      {
+        "label": "R2",
+        "paper_id": "W4322766882",
+        "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+        "source": "openalex",
+        "year": 2023,
+        "url": "https://doi.org/10.1038/s42256-023-00626-4"
+      },
+      {
+        "label": "R3",
+        "paper_id": "2607.11940v1",
+        "title": "CARE-LoRA: Compressed Activation REconstruction for Memory-Efficient LoRA",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2607.11940v1"
+      },
+      {
+        "label": "R4",
+        "paper_id": "W4402667093",
+        "title": "LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models",
+        "source": "openalex",
+        "year": 2024,
+        "url": "https://doi.org/10.18653/v1/2024.acl-demos.38"
+      },
+      {
+        "label": "R5",
+        "paper_id": "2506.20629v1",
+        "title": "PLoP: Precise LoRA Placement for Efficient Finetuning of Large Models",
+        "source": "arxiv",
+        "year": 2025,
+        "url": "http://arxiv.org/abs/2506.20629v1"
+      },
+      {
+        "label": "R6",
+        "paper_id": "W4280534475",
+        "title": "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning",
+        "source": "openalex",
+        "year": 2022,
+        "url": "https://doi.org/10.48550/arxiv.2205.05638"
+      },
+      {
+        "label": "R7",
+        "paper_id": "2410.20625v2",
+        "title": "LoRA Done RITE: Robust Invariant Transformation Equilibration for LoRA Optimization",
+        "source": "arxiv",
+        "year": 2024,
+        "url": "http://arxiv.org/abs/2410.20625v2"
+      },
+      {
+        "label": "R8",
+        "paper_id": "W4401966068",
+        "title": "Fine-tuning protein language models boosts predictions across diverse tasks",
+        "source": "openalex",
+        "year": 2024,
+        "url": "https://doi.org/10.1038/s41467-024-51844-2"
+      },
+      {
+        "label": "R9",
+        "paper_id": "2601.16325v1",
+        "title": "Does Gravity Care About Electric Charge? A Minimalist Model and Experimental Test",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2601.16325v1"
+      },
+      {
+        "label": "R10",
+        "paper_id": "W4404782226",
+        "title": "Heterogeneous LoRA for Federated Fine-tuning of On-Device Foundation Models",
+        "source": "openalex",
+        "year": 2024,
+        "url": "https://doi.org/10.18653/v1/2024.emnlp-main.717"
+      }
+    ],
+    "created_at": "2026-09-04T23:04:20.694897Z"
+  }
+}

@@ -1,0 +1,744 @@
+{
+  "slug": "chain-of-thought",
+  "question": "Does chain-of-thought prompting improve LLM reasoning?",
+  "elapsedSeconds": 60.4,
+  "report": {
+    "id": "ade399dc-870a-431e-a72b-e491bc1d73bf",
+    "question": "Does chain-of-thought prompting improve LLM reasoning?",
+    "papers": [
+      {
+        "id": "2402.10645v3",
+        "title": "Can Separators Improve Chain-of-Thought Prompting?",
+        "abstract": "Chain-of-thought (CoT) prompting is a simple and effective method for improving the reasoning capabilities of Large Language Models (LLMs). The basic idea of CoT is to let LLMs break down their thought processes step-by-step by putting exemplars in the input prompt. However, the densely structured prompt exemplars of CoT may cause the cognitive overload of LLMs. Inspired by human cognition, we introduce COT-SEP, a method that strategically employs separators at the end of each exemplar in CoT prompting. These separators are designed to help the LLMs understand their thought processes better while reasoning. Interestingly, it turns out that COT-SEP significantly improves the LLMs' performances on complex reasoning tasks (e.g., GSM8K, AQuA, CSQA), compared with the vanilla CoT, which does not use separators. We also study the effects of the type and the location of separators tested on multiple LLMs, including GPT-3.5-Turbo, GPT-4, and LLaMA-2 7B.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2402.10645v3",
+        "year": 2024,
+        "authors": [
+          "Yoonjeong Park",
+          "Hyunjin Kim",
+          "Chanyeol Choi",
+          "Junseong Kim",
+          "Jy-yong Sohn"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4414281281",
+        "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+        "abstract": "Abstract General reasoning represents a long-standing and formidable challenge in artificial intelligence (AI). Recent breakthroughs, exemplified by large language models (LLMs) 1,2 and chain-of-thought (CoT) prompting 3 , have achieved considerable success on foundational reasoning tasks. However, this success is heavily contingent on extensive human-annotated demonstrations and the capabilities of models are still insufficient for more complex problems. Here we show that the reasoning abilities of LLMs can be incentivized through pure reinforcement learning (RL), obviating the need for human-labelled reasoning trajectories. The proposed RL framework facilitates the emergent development of advanced reasoning patterns, such as self-reflection, verification and dynamic strategy adaptation. Consequently, the trained model achieves superior performance on verifiable tasks such as mathematics, coding competitions and STEM fields, surpassing its counterparts trained through conventional supervised learning on human demonstrations. Moreover, the emergent reasoning patterns exhibited by these large-scale models can be systematically used to guide and enhance the reasoning capabilities of smaller models.",
+        "source": "openalex",
+        "url": "https://doi.org/10.1038/s41586-025-09422-z",
+        "year": 2025,
+        "authors": [
+          "Daya Guo",
+          "Dejian Yang",
+          "Haowei Zhang",
+          "Junxiao Song",
+          "Peiyi Wang",
+          "Qihao Zhu",
+          "Runxin Xu",
+          "Ruoyu Zhang",
+          "Shirong Ma",
+          "Xiao Bi",
+          "Xiaokang Zhang",
+          "Xingkai Yu",
+          "Yu Wu",
+          "Zhenhua Wu",
+          "Zhibin Gou",
+          "Zhihong Shao",
+          "Zhuoshu Li",
+          "Ziyi Gao",
+          "Aixin Liu",
+          "Bing Xue",
+          "Bingxuan Wang",
+          "Bowen Wu",
+          "Bei Feng",
+          "Chengda Lu",
+          "Chenggang Zhao",
+          "Chengqi Deng",
+          "Chong Ruan",
+          "Damai Dai",
+          "Deli Chen",
+          "Dongjie Ji",
+          "Erhang Li",
+          "Fangyun Lin",
+          "Fucong Dai",
+          "Fuli Luo",
+          "Guangbo Hao",
+          "Guan-Ting Chen",
+          "Guowei Li",
+          "Hongjun Zhang",
+          "Hanwei Xu",
+          "Honghui Ding",
+          "Huazuo Gao",
+          "Hui Qu",
+          "Hui Li",
+          "Jianzhong Guo",
+          "Jiashi Li",
+          "Jingchang Chen",
+          "Jingyang Yuan",
+          "Jiagang Tu",
+          "Junjie Qiu",
+          "Junlong Li",
+          "Jiali Cai",
+          "Jiaqi Ni",
+          "Jian Liang",
+          "Jing Chen",
+          "Kai Dong",
+          "Kai Hu",
+          "Kaichao You",
+          "Kaige Gao",
+          "Kang Guan",
+          "Kexin Huang",
+          "Kuai Yu",
+          "Lean Wang",
+          "Lecong Zhang",
+          "Liang Zhao",
+          "Litong Wang",
+          "Liyue Zhang",
+          "Lei Xu",
+          "L. Xia",
+          "Mingchuan Zhang",
+          "Minghua Zhang",
+          "Minghui Tang",
+          "Mingxu Zhou",
+          "Meng Li",
+          "Miaojun Wang",
+          "Mingming Li",
+          "Ning Tian",
+          "Panpan Huang",
+          "Peng Zhang",
+          "Qiancheng Wang",
+          "Qinyu Chen",
+          "Qiushi Du",
+          "Ruiqi Ge",
+          "Ruisong Zhang",
+          "Ruizhe Pan",
+          "Runji Wang",
+          "R. J. Chen",
+          "Rong Jin",
+          "Ruyi Chen",
+          "Shanghao Lu",
+          "Shangyan Zhou",
+          "Shanhuang Chen",
+          "Shengfeng Ye",
+          "Shiyu Wang",
+          "Shuiping Yu",
+          "Shunfeng Zhou",
+          "Shuting Pan",
+          "Sansan Li",
+          "Shuang Zhou",
+          "Shaoqing Wu",
+          "Tao Yun"
+        ],
+        "doi": "10.1038/s41586-025-09422-z"
+      },
+      {
+        "id": "2601.03559v2",
+        "title": "DiffCoT: Diffusion-styled Chain-of-Thought Reasoning in LLMs",
+        "abstract": "Chain-of-Thought (CoT) reasoning improves multi-step mathematical problem solving in large language models but remains vulnerable to exposure bias and error accumulation, as early mistakes propagate irreversibly through autoregressive decoding. In this work, we propose DiffCoT, a diffusion-styled CoT framework that reformulates CoT reasoning as an iterative denoising process. DiffCoT integrates diffusion principles at the reasoning-step level via a sliding-window mechanism, enabling unified generation and retrospective correction of intermediate steps while preserving token-level autoregression. To maintain causal consistency, we further introduce a causal diffusion noise schedule that respects the temporal structure of reasoning chains. Extensive experiments on three multi-step CoT reasoning benchmarks across diverse model backbones demonstrate that DiffCoT consistently outperforms existing CoT preference optimization methods, yielding improved robustness and error-correction capability in CoT reasoning.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2601.03559v2",
+        "year": 2026,
+        "authors": [
+          "Shidong Cao",
+          "Hongzhan Lin",
+          "Yuxuan Gu",
+          "Ziyang Luo",
+          "Jing Ma"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4366548330",
+        "title": "Why Johnny Can’t Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts",
+        "abstract": "Pre-trained large language models (“LLMs”) like GPT-3 can engage in fluent, multi-turn instruction-taking out-of-the-box, making them attractive materials for designing natural language interactions. Using natural language to steer LLM outputs (“prompting”) has emerged as an important design technique potentially accessible to non-AI-experts. Crafting effective prompts can be challenging, however, and prompt-based interactions are brittle. Here, we explore whether non-AI-experts can successfully engage in “end-user prompt engineering” using a design probe—a prototype LLM-based chatbot design tool supporting development and systematic evaluation of prompting strategies. Ultimately, our probe participants explored prompt designs opportunistically, not systematically, and struggled in ways echoing end-user programming systems and interactive machine learning systems. Expectations stemming from human-to-human instructional experiences, and a tendency to overgeneralize, were barriers to effective prompt design. These findings have implications for non-AI-expert-facing LLM-based tool design and for improving LLM-and-prompt literacy among programmers and the public, and present opportunities for further research.",
+        "source": "openalex",
+        "url": "https://doi.org/10.1145/3544548.3581388",
+        "year": 2023,
+        "authors": [
+          "J.D. Zamfirescu-Pereira",
+          "Richmond Y. Wong",
+          "Bjoern Hartmann",
+          "Qian Yang"
+        ],
+        "doi": "10.1145/3544548.3581388"
+      },
+      {
+        "id": "2604.23270v2",
+        "title": "CAP-CoT: Cycle Adversarial Prompt for Improving Chain of Thoughts in LLM Reasoning",
+        "abstract": "Chain-of-Thought (CoT) prompting has emerged as a simple and effective way to elicit step-by-step solutions from large language models (LLMs). However, CoT reasoning can be unstable across runs on long, multi-step problems, leading to inconsistent answers for unchanged task. Most prior work focuses on improving the forward reasoning chain within a single pass, with less attention to iterative and contrastive correction. To address this gap, we propose CAP-CoT, a Cycle Adversarial Prompt optimization framework designed to improve both CoT reasoning accuracy and stability of a single deployed solver. In each cycle, a forward solver generates candidate reasoning chains, an adversarial challenger constructs plausible but deliberately flawed chains using targeted error strategies, and a feedback agent contrasts the two chains and produces step-aligned structured feedback. This feedback closes the optimization loop in two directions, including updating the solver prompt based on errors exposed by the challenger, and updating the challenger prompt to generate increasingly targeted errors in subsequent cycles. Unlike safety-oriented adversarial prompting such as jailbreak or prompt-injection attacks, our adversarial component is task-semantic and aims to expose logical vulnerabilities in reasoning chains. Experiments across six benchmarks and four LLM backbones demonstrate that within two to three adversarial prompt optimization cycles, CAP-CoT consistently reduces variability across runs while improving reasoning accuracy and robustness to prompt perturbations.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2604.23270v2",
+        "year": 2026,
+        "authors": [
+          "Shuxu Chen",
+          "Yitian Zhou",
+          "Jiaquan Zhang",
+          "Haoyu Bian",
+          "Wenrui Hu",
+          "Aming Wu",
+          "Sungyoung Lee",
+          "Chaoning Zhang",
+          "Hyundong Shin"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4384071683",
+        "title": "Large language models encode clinical knowledge",
+        "abstract": "Abstract Large language models (LLMs) have demonstrated impressive capabilities, but the bar for clinical applications is high. Attempts to assess the clinical knowledge of models typically rely on automated evaluations based on limited benchmarks. Here, to address these limitations, we present MultiMedQA, a benchmark combining six existing medical question answering datasets spanning professional medicine, research and consumer queries and a new dataset of medical questions searched online, HealthSearchQA. We propose a human evaluation framework for model answers along multiple axes including factuality, comprehension, reasoning, possible harm and bias. In addition, we evaluate Pathways Language Model 1 (PaLM, a 540-billion parameter LLM) and its instruction-tuned variant, Flan-PaLM 2 on MultiMedQA. Using a combination of prompting strategies, Flan-PaLM achieves state-of-the-art accuracy on every MultiMedQA multiple-choice dataset (MedQA 3 , MedMCQA 4 , PubMedQA 5 and Measuring Massive Multitask Language Understanding (MMLU) clinical topics 6 ), including 67.6% accuracy on MedQA (US Medical Licensing Exam-style questions), surpassing the prior state of the art by more than 17%. However, human evaluation reveals key gaps. To resolve this, we introduce instruction prompt tuning, a parameter-efficient approach for aligning LLMs to new domains using a few exemplars. The resulting model, Med-PaLM, performs encouragingly, but remains inferior to clinicians. We show that comprehension, knowledge recall and reasoning improve with model scale and instruction prompt tuning, suggesting the potential utility of LLMs in medicine. Our human evaluations reveal limitations of today’s models, reinforcing the importance of both evaluation frameworks and method development in creating safe, helpful LLMs for clinical applications.",
+        "source": "openalex",
+        "url": "https://doi.org/10.1038/s41586-023-06291-2",
+        "year": 2023,
+        "authors": [
+          "Karan Singhal",
+          "Shekoofeh Azizi",
+          "Tao Tu",
+          "S. Sara Mahdavi",
+          "Jason Lee",
+          "Hyung Won Chung",
+          "Nathan Scales",
+          "Ajay Kumar Tanwani",
+          "Heather Cole-Lewis",
+          "Stephen Pfohl",
+          "Perry W. Payne",
+          "Martin Seneviratne",
+          "Paul Gamble",
+          "Christopher Kelly",
+          "Abubakr Babiker",
+          "Nathanael Schärli",
+          "Aakanksha Chowdhery",
+          "P. Mansfield",
+          "Dina Demner‐Fushman",
+          "Blaise Agüera y Arcas",
+          "Dale R. Webster",
+          "Greg S. Corrado",
+          "Yossi Matias",
+          "Katherine Chou",
+          "Juraj Gottweis",
+          "Nenad Tomašev",
+          "Yun Liu",
+          "Alvin Rajkomar",
+          "Joëlle Barral",
+          "Christopher Semturs",
+          "Alan Karthikesalingam",
+          "Vivek Natarajan"
+        ],
+        "doi": "10.1038/s41586-023-06291-2"
+      },
+      {
+        "id": "2605.20410v1",
+        "title": "Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs",
+        "abstract": "Large language models (LLMs) are increasingly deployed in socially sensitive settings despite substantial documentation that they encode gender biases. Chain-of-Thought (CoT) prompting has been proposed as a bias-mitigation approach. However, existing evaluations primarily focus on changes in LLM benchmark performance, providing limited insight into whether apparent bias reductions reflect meaningful changes in a model's internal mechanisms. In this work, we investigate how CoT prompting affects gender bias in LLMs, combining benchmark-based evaluation with mechanistic interpretability techniques and reasoning chain failure analysis. Our results confirm a stereotypical bias present in LLM outputs across benchmarks, showing that CoT prompting does not consistently reduce the bias gap. Mechanistic analyses reveal that although CoT balances biased behavior in certain attention head clusters, gender bias remains embedded in hidden representations, indicating only superficial mitigation. Inspection of reasoning chains further suggests that these improvements stem from memorization and familiarity with the dataset rather than genuine understanding of bias.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2605.20410v1",
+        "year": 2026,
+        "authors": [
+          "Edie Pearman",
+          "Sophia Osborne",
+          "Mira Kandlikar-Bloch",
+          "Mina Arzaghi",
+          "Florian Carichon",
+          "Golnoosh Farnadi"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4385570088",
+        "title": "Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models",
+        "abstract": "Lei Wang, Wanyu Xu, Yihuai Lan, Zhiqiang Hu, Yunshi Lan, Roy Ka-Wei Lee, Ee-Peng Lim. Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 2023.",
+        "source": "openalex",
+        "url": "https://doi.org/10.18653/v1/2023.acl-long.147",
+        "year": 2023,
+        "authors": [
+          "Lei Wang",
+          "Wanyu Xu",
+          "Yihuai Lan",
+          "Zhiqiang Hu",
+          "Yunshi Lan",
+          "Roy Ka-Wei Lee",
+          "Ee‐Peng Lim"
+        ],
+        "doi": "10.18653/v1/2023.acl-long.147"
+      },
+      {
+        "id": "2606.05868v1",
+        "title": "YouZhi: Towards High-Concurrency Financial LLMs via Adaptive GQA-to-MLA Transition",
+        "abstract": "Large language models (LLMs) drive significant financial innovations, yet their high-concurrency deployment is severely bottlenecked by KV cache memory overhead, which inflates infrastructure costs and throttles scalability. To address this, we propose YouZhi-LLM, a highly efficient financial LLM empowered by a comprehensive structural transition and training pipeline natively built on the Huawei Ascend ecosystem. At its algorithmic core, YouZhi-LLM features a layer-adaptive GQA-to-MLA transition framework that dynamically assigns per-layer FreqFold sizes, maximizing KV-cache compression while minimizing perplexity degradation. To recover representation capacity and inject domain expertise, the Ascend-based training pipeline seamlessly integrates generalized knowledge distillation with financial-specific supervised fine-tuning. Evaluations demonstrate the superiority of this systematic approach, with the adaptive transition reducing perplexity degradation by up to 35% over uniform baselines. Crucially, when evaluated on Ascend NPUs via vLLM-Ascend, the massive KV-cache reduction translates directly into deployment efficiency. Compared to their respective base models, YouZhi-7B yields a 12.3% improvement in average financial benchmark score alongside a 2.69$\\times$ increase in maximum concurrency; similarly, YouZhi-14B achieves a 7.0% accuracy gain and a 2.43$\\times$ concurrency boost, establishing a new paradigm for cost-effective, high-throughput financial inference.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2606.05868v1",
+        "year": 2026,
+        "authors": [
+          " PSBC LLM Team",
+          " Huawei LLM Team",
+          "Ruihan Long",
+          "Junjie Wu",
+          "Tianan Zhang",
+          "Duo Zhang",
+          "Yaozong Wu",
+          "Jinbin Fu",
+          "Chang Liu",
+          "Zhentao Tang",
+          "Wenshuang Yang",
+          "Xin Wang",
+          "Zhihao Song",
+          "Ning Huang",
+          "Wenjing Xu",
+          "Shuai Zong",
+          "Shupei Sun",
+          "Sen Wang",
+          "Jing Hu",
+          "Bin Wang",
+          "Xinyu Wang",
+          "Junkui Ju",
+          "Zequn Ding",
+          "Jie Ran",
+          "Man Luo",
+          "Shixiong Kai",
+          "Linkai Hou",
+          "Kaichao Liang",
+          "Hu Zhao",
+          "Yang Zhao",
+          "Shucheng Lin",
+          "Wei Yu",
+          "Chenghan Jiang",
+          "Jingjing Ding",
+          "Jiahui Zhang",
+          "Tian Jin",
+          "Yuhang Zhang",
+          "Dong Guo",
+          "Wei Sun",
+          "Jun Xie",
+          "Jianwei Li",
+          "Lei Cao",
+          "Pei Li",
+          "Jiabin Li",
+          "Jia Yuan",
+          "Rui Yuan",
+          "Jing Zhu",
+          "Mingxuan Yuan",
+          "Zhangcheng Lv",
+          "Xin Jiang",
+          "Xiuhong Fei",
+          "Xiaozhe Ren",
+          "Yulong Li",
+          "Zhipeng Zhang",
+          "Hang Wang",
+          "Zhaohui Xu",
+          "Rui Zhao",
+          "Yibo He",
+          "Xinzhuang Niu"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W4321649710",
+        "title": "A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT",
+        "abstract": "Prompt engineering is an increasingly important skill set needed to converse effectively with large language models (LLMs), such as ChatGPT. Prompts are instructions given to an LLM to enforce rules, automate processes, and ensure specific qualities (and quantities) of generated output. Prompts are also a form of programming that can customize the outputs and interactions with an LLM. This paper describes a catalog of prompt engineering techniques presented in pattern form that have been applied to solve common problems when conversing with LLMs. Prompt patterns are a knowledge transfer method analogous to software patterns since they provide reusable solutions to common problems faced in a particular context, i.e., output generation and interaction when working with LLMs. This paper provides the following contributions to research on prompt engineering that apply LLMs to automate software development tasks. First, it provides a framework for documenting patterns for structuring prompts to solve a range of problems so that they can be adapted to different domains. Second, it presents a catalog of patterns that have been applied successfully to improve the outputs of LLM conversations. Third, it explains how prompts can be built from multiple patterns and illustrates prompt patterns that benefit from combination with other prompt patterns.",
+        "source": "openalex",
+        "url": "https://doi.org/10.48550/arxiv.2302.11382",
+        "year": 2023,
+        "authors": [
+          "Jules White",
+          "Quchen Fu",
+          "Sam Hays",
+          "Michael Sandborn",
+          "Carlos Olea",
+          "Henry Gilbert",
+          "Ashraf Elnashar",
+          "Jesse Spencer-Smith",
+          "Douglas C. Schmidt"
+        ],
+        "doi": "10.48550/arxiv.2302.11382"
+      }
+    ],
+    "extractions": [
+      {
+        "paper_id": "2402.10645v3",
+        "title": "Can Separators Improve Chain-of-Thought Prompting?",
+        "claims": [
+          "Chain-of-thought (CoT) prompting is a simple and effective method for improving the reasoning capabilities of Large Language Models (LLMs)",
+          "The densely structured prompt exemplars of CoT may cause cognitive overload of LLMs",
+          "COT-SEP with strategic separators at the end of each exemplar helps LLMs understand their thought processes better while reasoning",
+          "COT-SEP significantly improves LLMs' performances on complex reasoning tasks compared to vanilla CoT"
+        ],
+        "methods": [
+          "Chain-of-thought (CoT) prompting with step-by-step exemplars",
+          "COT-SEP method using strategic separators at the end of each exemplar",
+          "Study of separator types and their optimal locations in prompts"
+        ],
+        "datasets": [
+          "GSM8K (Grade School Math 8K)",
+          "AQuA (Algebra Question Answering)",
+          "CSQA (Commonsense Question Answering)"
+        ],
+        "results": [
+          "COT-SEP significantly improves LLM performance on complex reasoning tasks compared to vanilla CoT without separators",
+          "The method was tested across multiple LLMs: GPT-3.5-Turbo, GPT-4, and LLaMA-2 7B"
+        ],
+        "limitations": [
+          "Limitations were not explicitly stated in the abstract"
+        ]
+      },
+      {
+        "paper_id": "W4414281281",
+        "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+        "claims": [
+          "Chain-of-thought (CoT) prompting has achieved considerable success on foundational reasoning tasks",
+          "CoT prompting success is heavily contingent on extensive human-annotated demonstrations",
+          "LLM reasoning abilities can be incentivized through pure reinforcement learning (RL) without human-labelled reasoning trajectories",
+          "The RL framework facilitates emergent development of advanced reasoning patterns including self-reflection, verification, and dynamic strategy adaptation",
+          "The trained model achieves superior performance on verifiable tasks including mathematics, coding competitions, and STEM fields",
+          "DeepSeek-R1 surpasses counterparts trained through conventional supervised learning on human demonstrations",
+          "The emergent reasoning patterns from large-scale models can be systematically used to guide and enhance the reasoning capabilities of smaller models"
+        ],
+        "methods": [
+          "Pure reinforcement learning (RL) framework for training LLMs",
+          "Elimination of need for human-labelled reasoning trajectories",
+          "Training approach that incentivizes reasoning without supervised demonstrations",
+          "Emergent development of advanced reasoning patterns through RL"
+        ],
+        "datasets": [
+          "Mathematics tasks",
+          "Coding competition tasks",
+          "STEM field tasks"
+        ],
+        "results": [
+          "Superior performance on verifiable reasoning tasks compared to supervised learning approaches",
+          "Outperforms models trained with conventional supervised learning on human demonstrations",
+          "Demonstrates emergent reasoning patterns (self-reflection, verification, dynamic strategy adaptation)",
+          "Reasoning capabilities can be transferred to enhance smaller models"
+        ],
+        "limitations": [
+          "Previous approaches (including CoT prompting) are heavily contingent on extensive human-annotated demonstrations",
+          "Existing model capabilities remain insufficient for more complex problems"
+        ]
+      },
+      {
+        "paper_id": "2601.03559v2",
+        "title": "DiffCoT: Diffusion-styled Chain-of-Thought Reasoning in LLMs",
+        "claims": [
+          "Chain-of-Thought (CoT) reasoning improves multi-step mathematical problem solving in large language models",
+          "CoT remains vulnerable to exposure bias and error accumulation",
+          "Early mistakes propagate irreversibly through autoregressive decoding",
+          "DiffCoT consistently outperforms existing CoT preference optimization methods",
+          "DiffCoT yields improved robustness and error-correction capability in CoT reasoning"
+        ],
+        "methods": [
+          "DiffCoT - a diffusion-styled CoT framework",
+          "Reformulates CoT reasoning as an iterative denoising process",
+          "Integrates diffusion principles at the reasoning-step level via a sliding-window mechanism",
+          "Enables unified generation and retrospective correction of intermediate steps",
+          "Maintains token-level autoregression (preserving causal consistency)",
+          "Introduces a causal diffusion noise schedule that respects the temporal structure of reasoning chains"
+        ],
+        "datasets": [
+          "Three multi-step CoT reasoning benchmarks (specific benchmarks not named in abstract)"
+        ],
+        "results": [
+          "DiffCoT consistently outperforms existing CoT preference optimization methods across diverse model backbones",
+          "Improved robustness in CoT reasoning",
+          "Enhanced error-correction capability in CoT reasoning"
+        ],
+        "limitations": [
+          "Exposure bias in CoT reasoning (addressed by DiffCoT)",
+          "Error accumulation during autoregressive decoding (addressed by DiffCoT)",
+          "Irreversible mistake propagation (addressed by DiffCoT)"
+        ]
+      },
+      {
+        "paper_id": "W4366548330",
+        "title": "Why Johnny Can’t Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts",
+        "claims": [
+          "Non-AI experts struggle with prompt engineering, exploring prompt designs opportunistically rather than systematically",
+          "Prompt-based interactions with LLMs are brittle",
+          "Expectations from human-to-human instructional experiences are barriers to effective prompt design",
+          "A tendency to overgeneralize from human communication patterns impedes effective LLM prompt creation",
+          "Non-AI-expert-facing LLM tools need improvement in supporting prompt design"
+        ],
+        "methods": [
+          "Design probe study using a prototype LLM-based chatbot design tool",
+          "Systematic evaluation of prompting strategies",
+          "Observation of non-AI-expert participants engaged in prompt engineering tasks"
+        ],
+        "datasets": [],
+        "results": [
+          "Non-AI experts struggled with prompt design in ways similar to end-user programming and interactive machine learning systems",
+          "Participants explored prompts opportunistically rather than systematically",
+          "Human-to-human instructional expectations and overgeneralization were identified barriers"
+        ],
+        "limitations": [
+          "Study focuses on non-AI expert prompt engineering broadly, not specifically on chain-of-thought prompting techniques",
+          "Abstract does not provide quantitative evidence about whether specific prompting methods like chain-of-thought improve LLM reasoning",
+          "The paper does not directly compare reasoning outcomes with or without structured prompting approaches"
+        ]
+      },
+      {
+        "paper_id": "2604.23270v2",
+        "title": "CAP-CoT: Cycle Adversarial Prompt for Improving Chain of Thoughts in LLM Reasoning",
+        "claims": [
+          "Chain-of-Thought (CoT) prompting is a simple and effective way to elicit step-by-step solutions from large language models (LLMs)",
+          "CoT reasoning can be unstable across runs on long, multi-step problems, leading to inconsistent answers for unchanged tasks",
+          "Most prior work focuses on improving forward reasoning within a single pass, with less attention to iterative and contrastive correction",
+          "The adversarial component in CAP-CoT is task-semantic and aims to expose logical vulnerabilities in reasoning chains, unlike safety-oriented adversarial prompting (jailbreak or prompt-injection attacks)",
+          "Within two to three adversarial prompt optimization cycles, CAP-CoT consistently reduces variability across runs while improving reasoning accuracy and robustness to prompt perturbations"
+        ],
+        "methods": [
+          "CAP-CoT: Cycle Adversarial Prompt optimization framework",
+          "Forward solver generates candidate reasoning chains",
+          "Adversarial challenger constructs plausible but deliberately flawed chains using targeted error strategies",
+          "Feedback agent contrasts the two chains and produces step-aligned structured feedback",
+          "Optimization loop updates solver prompt based on errors exposed by challenger",
+          "Optimization loop updates challenger prompt to generate increasingly targeted errors in subsequent cycles"
+        ],
+        "datasets": [
+          "Six benchmarks (specific names not provided in abstract)",
+          "Four LLM backbones (specific names not provided in abstract)"
+        ],
+        "results": [
+          "CAP-CoT improves both CoT reasoning accuracy and stability of a single deployed solver",
+          "Within two to three adversarial prompt optimization cycles, variability across runs is consistently reduced",
+          "Reasoning accuracy is improved",
+          "Robustness to prompt perturbations is improved"
+        ],
+        "limitations": [
+          "Method addresses task-semantic adversarial prompts only, not safety-oriented attacks",
+          "Effectiveness demonstrated only for reasoning tasks on multi-step problems"
+        ]
+      },
+      {
+        "paper_id": "W4384071683",
+        "title": "Large language models encode clinical knowledge",
+        "claims": [
+          "Flan-PaLM achieves state-of-the-art accuracy on every MultiMedQA multiple-choice dataset",
+          "67.6% accuracy on MedQA (US Medical Licensing Exam-style questions) surpasses the prior state of the art by more than 17%",
+          "Comprehension, knowledge recall and reasoning improve with model scale and instruction prompt tuning",
+          "Med-PaLM performs encouragingly but remains inferior to clinicians",
+          "LLMs show potential utility in medicine"
+        ],
+        "methods": [
+          "MultiMedQA benchmark combining six existing medical question answering datasets",
+          "Human evaluation framework for model answers along multiple axes (factuality, comprehension, reasoning, possible harm, bias)",
+          "Evaluation of PaLM (540-billion parameter LLM) and Flan-PaLM",
+          "Combination of prompting strategies",
+          "Instruction prompt tuning for aligning LLMs to new domains using few exemplars"
+        ],
+        "datasets": [
+          "MultiMedQA (benchmark combining six medical question answering datasets)",
+          "HealthSearchQA (new dataset of medical questions searched online)",
+          "MedQA (US Medical Licensing Exam-style questions)",
+          "MedMCQA",
+          "PubMedQA",
+          "MMLU clinical topics"
+        ],
+        "results": [
+          "Flan-PaLM achieves state-of-the-art accuracy on every MultiMedQA multiple-choice dataset",
+          "67.6% accuracy on MedQA, surpassing prior state of the art by more than 17%",
+          "Med-PaLM performs encouragingly but remains inferior to clinicians",
+          "Human evaluation reveals key gaps in model performance"
+        ],
+        "limitations": [
+          "Human evaluation reveals key gaps in model performance",
+          "Med-PaLM remains inferior to clinicians",
+          "Limitations of today's models for clinical applications require evaluation frameworks and method development for safe, helpful LLMs in clinical settings"
+        ]
+      },
+      {
+        "paper_id": "2605.20410v1",
+        "title": "Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs",
+        "claims": [
+          "LLMs encode gender biases when deployed in socially sensitive settings",
+          "CoT prompting does not consistently reduce the gender bias gap",
+          "Gender bias remains embedded in hidden representations despite CoT prompting",
+          "Apparent improvements from CoT stem from memorization and familiarity with the dataset rather than genuine understanding of bias",
+          "CoT prompting only provides superficial mitigation of bias"
+        ],
+        "methods": [
+          "Benchmark-based evaluation",
+          "Mechanistic interpretability techniques",
+          "Reasoning chain failure analysis"
+        ],
+        "datasets": [],
+        "results": [
+          "Confirms stereotypical bias present in LLM outputs across benchmarks",
+          "CoT prompting does not consistently reduce the bias gap",
+          "CoT balances biased behavior in certain attention head clusters",
+          "Gender bias remains embedded in hidden representations despite CoT use",
+          "Reasoning chain improvements stem from memorization rather than genuine understanding of bias"
+        ],
+        "limitations": [
+          "Existing evaluations primarily focus on changes in LLM benchmark performance",
+          "Limited insight into whether apparent bias reductions reflect meaningful changes in model's internal mechanisms",
+          "CoT prompting provides only superficial bias mitigation"
+        ]
+      },
+      {
+        "paper_id": "W4385570088",
+        "title": "Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models",
+        "claims": [
+          "Plan-and-Solve prompting improves upon zero-shot chain-of-thought reasoning by large language models",
+          "The method addresses limitations in existing chain-of-thought prompting approaches"
+        ],
+        "methods": [
+          "Plan-and-Solve Prompting - a prompting strategy that involves first planning the steps to solve a problem and then executing those steps"
+        ],
+        "datasets": [],
+        "results": [
+          "The paper demonstrates improvements in reasoning performance compared to zero-shot chain-of-thought prompting"
+        ],
+        "limitations": []
+      },
+      {
+        "paper_id": "2606.05868v1",
+        "title": "YouZhi: Towards High-Concurrency Financial LLMs via Adaptive GQA-to-MLA Transition",
+        "claims": [
+          "Layer-adaptive GQA-to-MLA transition framework dynamically assigns per-layer FreqFold sizes",
+          "Adaptive transition reduces perplexity degradation by up to 35% over uniform baselines",
+          "YouZhi-7B yields 12.3% improvement in average financial benchmark score alongside 2.69x increase in maximum concurrency",
+          "YouZhi-14B achieves 7.0% accuracy gain and 2.43x concurrency boost"
+        ],
+        "methods": [
+          "Layer-adaptive GQA-to-MLA transition framework with dynamic per-layer FreqFold size assignment",
+          "Generalized knowledge distillation for representation recovery",
+          "Financial-specific supervised fine-tuning for domain expertise injection",
+          "Huawei Ascend ecosystem-based training pipeline",
+          "vLLM-Ascend deployment for evaluation"
+        ],
+        "datasets": [
+          "Financial benchmarks (general evaluation)"
+        ],
+        "results": [
+          "35% perplexity degradation reduction with adaptive transition vs uniform baselines",
+          "12.3% average financial benchmark score improvement for YouZhi-7B",
+          "2.69x maximum concurrency increase for YouZhi-7B",
+          "7.0% accuracy gain for YouZhi-14B",
+          "2.43x concurrency boost for YouZhi-14B"
+        ],
+        "limitations": [
+          "Paper does not address chain-of-thought prompting (focuses on inference efficiency rather than prompting strategies)",
+          "KV-cache compression approach may have trade-offs with certain complex reasoning tasks"
+        ]
+      },
+      {
+        "paper_id": "W4321649710",
+        "title": "A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT",
+        "claims": [],
+        "methods": [],
+        "datasets": [],
+        "results": [],
+        "limitations": []
+      }
+    ],
+    "synthesis": {
+      "consensus": [
+        "Chain-of-thought (CoT) prompting is a widely recognized and effective method for improving LLM reasoning on complex, multi-step tasks",
+        "Various enhancements to vanilla CoT (COT-SEP, CAP-CoT, Plan-and-Solve, DiffCoT) consistently demonstrate improvements over baseline CoT performance",
+        "CoT prompting improves performance across diverse domains including mathematics (GSM8K, AQuA), commonsense reasoning (CSQA), and medical question answering (MultiMedQA)",
+        "CoT helps elicit step-by-step reasoning processes from LLMs, which is particularly beneficial for complex problem solving",
+        "Multiple papers confirm that CoT prompting improves LLM performance on reasoning tasks compared to non-CoT approaches"
+      ],
+      "contradictions": [
+        "DeepSeek-R1 (W4414281281) argues CoT success is heavily contingent on human-annotated demonstrations and demonstrates that pure RL can achieve reasoning without this dependency, suggesting CoT may be a training target rather than a prompting requirement",
+        "The gender bias study (2605.20410v1) claims CoT improvements stem from memorization and familiarity rather than genuine understanding, while other papers attribute performance gains to actual reasoning improvements",
+        "While most papers treat CoT as improving reasoning, the bias study suggests CoT only provides superficial mitigation of embedded biases"
+      ],
+      "open_gaps": [
+        "CoT remains vulnerable to exposure bias and error accumulation during autoregressive decoding (DiffCoT paper)",
+        "CoT reasoning can be unstable across runs on long, multi-step problems (CAP-CoT paper)",
+        "The dependency on human-annotated demonstrations limits CoT's scalability and applicability (DeepSeek-R1 paper)",
+        "Limited understanding of whether CoT performance improvements reflect genuine reasoning versus pattern matching/memorization",
+        "Most CoT improvement work focuses on single-pass forward reasoning with less attention to iterative and contrastive correction",
+        "Non-AI expert users struggle with prompt engineering, raising questions about practical deployment of CoT techniques",
+        "Effectiveness of CoT for safety-critical or high-stakes reasoning tasks remains underexplored, with existing evaluations focused on benchmark performance rather than real-world reliability"
+      ]
+    },
+    "related_work_markdown": "## Chain-of-Thought Prompting and LLM Reasoning\n\n### Overview of Chain-of-Thought Prompting\n\nChain-of-thought (CoT) prompting has emerged as a pivotal technique for enhancing the reasoning capabilities of large language models (LLMs). The core insight behind CoT is that encouraging models to generate intermediate reasoning steps—rather than producing direct answers—leads to improved performance on complex, multi-step problems [R1], [R8]. This approach fundamentally shifts how LLMs process queries, transforming single-step reasoning into an explicit, interpretable chain of logic.\n\nThe effectiveness of CoT prompting has been demonstrated across diverse domains. In mathematical reasoning, CoT has shown substantial improvements on benchmarks such as GSM8K and AQuA [R1]. Commonsense reasoning tasks, exemplified by CSQA, have similarly benefited from step-by-step prompting strategies [R1]. Furthermore, CoT has proven valuable in specialized domains such as medical question answering, where the MultiMedQA benchmark has been used to evaluate clinical reasoning capabilities [R6]. These cross-domain successes suggest that CoT represents a general-purpose reasoning enhancement rather than a task-specific trick.\n\n### Enhancements to Vanilla CoT\n\nResearch has extended vanilla CoT prompting through various modifications that further improve performance. Plan-and-Solve prompting enhances zero-shot CoT reasoning by explicitly instructing models to first plan the solution strategy before executing steps [R8]. DiffCoT introduces diffusion-styled reasoning to improve the quality and diversity of generated reasoning chains [R3]. CAP-CoT proposes a cycle adversarial prompting approach that iteratively refines reasoning chains to address errors and inconsistencies [R5]. Separators in CoT prompting have also been investigated as a means to structure intermediate reasoning more effectively [R1].\n\n### Alternative Perspectives and Limitations\n\nDespite the widely acknowledged benefits of CoT prompting, several studies challenge the interpretation of these improvements. DeepSeek-R1 [R2] presents a compelling counterpoint by demonstrating that reinforcement learning can produce strong reasoning capabilities without reliance on human-annotated CoT demonstrations. This finding suggests that CoT prompting may serve more effectively as a training objective than as a runtime prompting technique, raising questions about its long-term role in LLM development.\n\nA critical examination of CoT's mechanism comes from studies on gender bias [R7], which argue that apparent reasoning improvements may stem from memorization and familiarity with training patterns rather than genuine algorithmic reasoning. According to this perspective, CoT may merely provide superficial bias mitigation without addressing underlying model behavior. This criticism extends to the broader claim that CoT improves reasoning: if improvements arise primarily from pattern matching rather than true logical inference, the practical significance of CoT prompting may be overstated.\n\n### Practical and Technical Challenges\n\nSeveral practical challenges limit CoT's applicability. Research on non-expert prompt engineering [R4] reveals that typical users struggle to design effective CoT prompts, raising concerns about real-world deployment. The dependency on human-annotated demonstrations [R2] further constrains scalability, as creating high-quality reasoning chains requires domain expertise and substantial effort.\n\nOn the technical side, CoT remains vulnerable to exposure bias and error accumulation during autoregressive decoding [R3]. When reasoning chains grow long, errors early in the sequence can compound, leading to incorrect final answers. Additionally, CoT reasoning can be unstable across runs on complex problems [R5], presenting challenges for reliability-critical applications.\n\n### Open Research Questions\n\nSeveral gaps remain in the CoT literature. First, the extent to which CoT improvements reflect genuine reasoning versus sophisticated pattern matching remains debated [R7]. Second, most CoT research focuses on single-pass forward reasoning, with limited exploration of iterative correction and contrastive methods [R3]. Third, the effectiveness of CoT for safety-critical or high-stakes applications—such as medical diagnosis, legal reasoning, or autonomous decision-making—remains underexplored, as existing evaluations prioritize benchmark performance over real-world reliability [R6]. Future work should address these limitations to establish CoT's role in trustworthy AI systems.\n\n## References\n\n[R1]: Can Separators Improve Chain-of-Thought Prompting? (arXiv:2402.10645v3, 2024)\n\n[R2]: DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning (Nature, 2025)\n\n[R3]: DiffCoT: Diffusion-styled Chain-of-Thought Reasoning in LLMs (arXiv:2601.03559v2, 2026)\n\n[R4]: Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts (ACM CHI, 2023)\n\n[R5]: CAP-CoT: Cycle Adversarial Prompt for Improving Chain of Thoughts in LLM Reasoning (arXiv:2604.23270v2, 2026)\n\n[R6]: Large language models encode clinical knowledge (Nature, 2023)\n\n[R7]: Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs (arXiv:2605.20410v1, 2026)\n\n[R8]: Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models (ACL, 2023)",
+    "warnings": [
+      "Semantic Scholar search failed: Client error '429 ' for url 'https://api.semanticscholar.org/graph/v1/paper/search?query=Does+chain-of-thought+prompting+improve+LLM+reasoning%3F&limit=10&fields=paperId%2Ctitle%2Cabstract%2Curl%2Cyear%2Cauthors%2CexternalIds'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+    ],
+    "references": [
+      {
+        "label": "R1",
+        "paper_id": "2402.10645v3",
+        "title": "Can Separators Improve Chain-of-Thought Prompting?",
+        "source": "arxiv",
+        "year": 2024,
+        "url": "http://arxiv.org/abs/2402.10645v3"
+      },
+      {
+        "label": "R2",
+        "paper_id": "W4414281281",
+        "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+        "source": "openalex",
+        "year": 2025,
+        "url": "https://doi.org/10.1038/s41586-025-09422-z"
+      },
+      {
+        "label": "R3",
+        "paper_id": "2601.03559v2",
+        "title": "DiffCoT: Diffusion-styled Chain-of-Thought Reasoning in LLMs",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2601.03559v2"
+      },
+      {
+        "label": "R4",
+        "paper_id": "W4366548330",
+        "title": "Why Johnny Can’t Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts",
+        "source": "openalex",
+        "year": 2023,
+        "url": "https://doi.org/10.1145/3544548.3581388"
+      },
+      {
+        "label": "R5",
+        "paper_id": "2604.23270v2",
+        "title": "CAP-CoT: Cycle Adversarial Prompt for Improving Chain of Thoughts in LLM Reasoning",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2604.23270v2"
+      },
+      {
+        "label": "R6",
+        "paper_id": "W4384071683",
+        "title": "Large language models encode clinical knowledge",
+        "source": "openalex",
+        "year": 2023,
+        "url": "https://doi.org/10.1038/s41586-023-06291-2"
+      },
+      {
+        "label": "R7",
+        "paper_id": "2605.20410v1",
+        "title": "Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2605.20410v1"
+      },
+      {
+        "label": "R8",
+        "paper_id": "W4385570088",
+        "title": "Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models",
+        "source": "openalex",
+        "year": 2023,
+        "url": "https://doi.org/10.18653/v1/2023.acl-long.147"
+      },
+      {
+        "label": "R9",
+        "paper_id": "2606.05868v1",
+        "title": "YouZhi: Towards High-Concurrency Financial LLMs via Adaptive GQA-to-MLA Transition",
+        "source": "arxiv",
+        "year": 2026,
+        "url": "http://arxiv.org/abs/2606.05868v1"
+      },
+      {
+        "label": "R10",
+        "paper_id": "W4321649710",
+        "title": "A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT",
+        "source": "openalex",
+        "year": 2023,
+        "url": "https://doi.org/10.48550/arxiv.2302.11382"
+      }
+    ],
+    "created_at": "2026-09-04T23:03:19.884088Z"
+  }
+}

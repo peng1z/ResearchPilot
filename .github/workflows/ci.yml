@@ -76,3 +76,8 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # What Cloudflare Pages runs. The two outputs are mutually exclusive,
+      # so a break in the static path would otherwise go unnoticed.
+      - name: Build (static export)
+        run: npm run build:static

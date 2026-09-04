@@ -3,77 +3,44 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-type StatusEvent = {
-  event: string;
-  message: string;
-  report_id?: string | null;
-  agent?: string | null;
-  data?: Record<string, unknown>;
-};
-
-type RuntimeSettings = {
-  llm_provider?: string;
-  llm_model?: string;
-  llm_api_key?: string;
-  llm_base_url?: string;
-  llm_temperature?: number;
-  embedding_backend?: string;
-  embedding_model?: string;
-  local_embedding_model?: string;
-  semantic_scholar_api_key?: string;
-};
-
-type PublicRuntimeConfig = {
-  llm_provider: string;
-  llm_model: string;
-  llm_base_url?: string | null;
-  llm_temperature: number;
-  embedding_backend: string;
-  embedding_model?: string | null;
-  local_embedding_model: string;
-  semantic_scholar_api_key_configured: boolean;
-};
-
-type ResearchReport = {
-  id: string;
-  question: string;
-  related_work_markdown: string;
-  warnings: string[];
-  synthesis: {
-    consensus: string[];
-    contradictions: string[];
-    open_gaps: string[];
-  };
-  references: Array<{
-    label: string;
-    paper_id: string;
-    title: string;
-    source: string;
-    year?: number | null;
-    url?: string | null;
-  }>;
-  papers: Array<{
-    id: string;
-    title: string;
-    source: string;
-    year?: number | null;
-  }>;
-};
-
-type ReportSummary = {
-  id: string;
-  question: string;
-  created_at: string;
-  paper_count: number;
-  warning_count: number;
-};
-
-type ReportSearchHit = {
-  report: ReportSummary;
-  score: number;
-};
+import type {
+  PublicRuntimeConfig,
+  ReportSearchHit,
+  ReportSummary,
+  ResearchReport,
+  RuntimeSettings,
+  StatusEvent,
+} from "./types";
+import { demoRuns } from "../demo";
+import type { DemoRun } from "../demo/types";
 
 const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
+
+const SOURCE_LABELS: Record<string, string> = {
+  arxiv: "arXiv",
+  openalex: "OpenAlex",
+  semantic_scholar: "Semantic Scholar",
+};
+
+const ALL_SOURCES = ["semantic_scholar", "arxiv", "openalex"];
+
+/** Papers per source, plus the sources that returned nothing and why. */
+function describeSources(report: ResearchReport) {
+  const counts = new Map<string, number>();
+  for (const paper of report.papers) {
+    counts.set(paper.source, (counts.get(paper.source) ?? 0) + 1);
+  }
+  const contributed = ALL_SOURCES.filter((source) => counts.has(source)).map((source) => ({
+    source,
+    label: SOURCE_LABELS[source] ?? source,
+    count: counts.get(source) ?? 0,
+  }));
+  const failed = report.warnings
+    .map((warning) => /^(.+?) search failed: (.+)$/s.exec(warning))
+    .filter((match): match is RegExpExecArray => match !== null)
+    .map((match) => ({ label: match[1], reason: match[2] }));
+  return { contributed, failed };
+}
 
 function splitSseChunks(buffer: string): { events: string[]; remainder: string } {
   const chunks = buffer.split("\n\n");
@@ -95,10 +62,56 @@ function parseSseEvent(raw: string): StatusEvent | null {
   return JSON.parse(dataLine) as StatusEvent;
 }
 
+function SourcePanel({ report }: { report: ResearchReport }) {
+  const { contributed, failed } = describeSources(report);
+  const other = report.warnings.filter((warning) => !/ search failed: /.test(warning));
+
+  return (
+    <div className="rounded-2xl border border-[var(--border)] bg-[var(--panel)] px-4 py-4">
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Retrieval</p>
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        {contributed.map((entry) => (
+          <span
+            key={entry.source}
+            className="rounded-full border border-[var(--border)] bg-white px-3 py-1"
+          >
+            {entry.label} <span className="font-semibold">{entry.count}</span>
+          </span>
+        ))}
+        {failed.map((entry) => (
+          <span
+            key={entry.label}
+            className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-amber-900"
+            title={entry.reason}
+          >
+            {entry.label} unavailable
+          </span>
+        ))}
+      </div>
+      {failed.length > 0 ? (
+        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+          The sources are queried in parallel and each one is allowed to fail on its own. {" "}
+          {failed.map((entry) => entry.label).join(" and ")} returned an error on this run, so the
+          report was built from the {contributed.length} that answered, and the failure is recorded
+          on the report rather than discarded.
+        </p>
+      ) : null}
+      {other.length > 0 ? (
+        <ul className="mt-3 space-y-2 text-sm text-amber-900">
+          {other.map((warning) => (
+            <li key={warning}>{warning}</li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
 export default function Home() {
-  const [question, setQuestion] = useState("What are the recent trends in retrieval-augmented generation for question answering?");
+  const [question, setQuestion] = useState(demoRuns[0].question);
   const [events, setEvents] = useState<StatusEvent[]>([]);
-  const [report, setReport] = useState<ResearchReport | null>(null);
+  const [report, setReport] = useState<ResearchReport | null>(demoRuns[0].report);
+  const [demo, setDemo] = useState<DemoRun | null>(demoRuns[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<ReportSummary[]>([]);
@@ -156,10 +169,19 @@ export default function Home() {
       }
       const payload = (await response.json()) as ResearchReport;
       setReport(payload);
+      setDemo(null);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unexpected error");
     }
+  }
+
+  function showDemo(run: DemoRun) {
+    setDemo(run);
+    setReport(run.report);
+    setQuestion(run.question);
+    setEvents([]);
+    setError(null);
   }
 
   async function runResearch(event: FormEvent<HTMLFormElement>) {
@@ -167,6 +189,7 @@ export default function Home() {
     setLoading(true);
     setEvents([]);
     setReport(null);
+    setDemo(null);
     setError(null);
 
     try {
@@ -249,6 +272,33 @@ export default function Home() {
             <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
               Search papers, extract structured claims, synthesize the field, and draft a related work section from one research question.
             </p>
+            <div className="mt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                Recorded runs
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {demoRuns.map((run) => (
+                  <button
+                    key={run.slug}
+                    type="button"
+                    onClick={() => showDemo(run)}
+                    aria-pressed={demo?.slug === run.slug}
+                    className={`rounded-full border px-4 py-2 text-left text-sm transition ${
+                      demo?.slug === run.slug
+                        ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                        : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)]"
+                    }`}
+                  >
+                    {run.question}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-3 max-w-2xl text-sm text-[var(--muted)]">
+                These are real pipeline outputs, captured end to end and shipped with the page, so
+                the demo costs nothing to run and needs no server. To run your own question live,
+                add an API key under <span className="font-semibold">Run Settings</span>.
+              </p>
+            </div>
           </div>
           <form onSubmit={runResearch} className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-5">
             <label htmlFor="question" className="mb-2 block text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
@@ -453,16 +503,7 @@ export default function Home() {
                 <ReactMarkdown>{report.related_work_markdown}</ReactMarkdown>
               </div>
 
-              {report.warnings.length > 0 ? (
-                <div className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-800">Warnings</p>
-                  <ul className="mt-3 space-y-2 text-sm text-amber-900">
-                    {report.warnings.map((warning) => (
-                      <li key={warning}>{warning}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+              <SourcePanel report={report} />
 
               <div className="grid gap-4 md:grid-cols-3">
                 <div className="rounded-2xl border border-[var(--border)] px-4 py-3">

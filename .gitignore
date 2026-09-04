@@ -46,3 +46,6 @@ htmlcov/
 Thumbs.db
 Desktop.ini
 
+
+# Raw pipeline captures; the trimmed fixtures live in frontend/demo/
+demo-recordings/
