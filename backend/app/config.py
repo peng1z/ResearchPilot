@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     # OpenAlex needs no key. Supplying a contact address moves requests into
     # its faster, more reliable "polite pool"; anonymous traffic is throttled.
     openalex_mailto: Optional[str] = Field(default=None, alias="OPENALEX_MAILTO")
+    # Papers are extracted concurrently; this bounds the in-flight calls so
+    # a ten-paper run cannot burst past a provider's per-minute limit.
+    extraction_concurrency: int = Field(default=5, ge=1, alias="EXTRACTION_CONCURRENCY")
     qdrant_url: str = Field(default="http://localhost:6333", alias="QDRANT_URL")
     report_db_path: str = Field(default="data/researchpilot.db", alias="REPORT_DB_PATH")
 
