@@ -9,6 +9,14 @@ import httpx
 from app.models import Paper, SearchResults
 
 
+def _parse_year(published: str) -> Optional[int]:
+    """Read the year out of an Atom <published> timestamp, tolerating junk."""
+    try:
+        return int(published[:4])
+    except ValueError:
+        return None
+
+
 class SearchAgent:
     SEMANTIC_SCHOLAR_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
     ARXIV_URL = "https://export.arxiv.org/api/query"
@@ -66,11 +74,15 @@ class SearchAgent:
         results: list[Paper] = []
         for item in payload.get("data", []):
             abstract = (item.get("abstract") or "").strip()
-            if not abstract:
+            paper_id = item.get("paperId")
+            # A single malformed record must not discard every other result
+            # from this source: run() turns any exception here into a warning
+            # and drops the entire batch.
+            if not abstract or not paper_id:
                 continue
             results.append(
                 Paper(
-                    id=item["paperId"],
+                    id=paper_id,
                     title=item.get("title", "Untitled"),
                     abstract=abstract,
                     source="semantic_scholar",
@@ -110,7 +122,7 @@ class SearchAgent:
             if not abstract:
                 continue
             authors = [author.findtext("atom:name", default="", namespaces=ns) for author in entry.findall("atom:author", ns)]
-            year_text = entry.findtext("atom:published", default="", namespaces=ns)
+            year = _parse_year(entry.findtext("atom:published", default="", namespaces=ns))
             results.append(
                 Paper(
                     id=paper_id.rsplit("/", maxsplit=1)[-1] or title.lower().replace(" ", "-"),
@@ -118,7 +130,7 @@ class SearchAgent:
                     abstract=abstract,
                     source="arxiv",
                     url=paper_id,
-                    year=int(year_text[:4]) if len(year_text) >= 4 else None,
+                    year=year,
                     authors=[author for author in authors if author],
                 )
             )
@@ -126,13 +138,21 @@ class SearchAgent:
 
     @staticmethod
     def _dedupe_and_limit(papers: list[Paper], limit: int) -> list[Paper]:
-        seen: set[str] = set()
+        # The same paper routinely comes back from both sources with a DOI on
+        # one record and none on the other, so a single "doi or title" key
+        # misses the duplicate. Track both identifiers independently.
+        seen_dois: set[str] = set()
+        seen_titles: set[str] = set()
         deduped: list[Paper] = []
         for paper in papers:
-            key = (paper.doi or paper.title).strip().lower()
-            if key in seen:
+            doi = (paper.doi or "").strip().lower()
+            title = " ".join(paper.title.split()).lower()
+            if (doi and doi in seen_dois) or (title and title in seen_titles):
                 continue
-            seen.add(key)
+            if doi:
+                seen_dois.add(doi)
+            if title:
+                seen_titles.add(title)
             deduped.append(paper)
             if len(deduped) >= limit:
                 break

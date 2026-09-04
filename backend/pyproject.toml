@@ -26,6 +26,7 @@ dependencies = [
 dev = [
   "pytest>=8.3.0",
   "pytest-cov>=5.0.0",
+  "respx>=0.21.1",
 ]
 # Only needed for EMBEDDING_BACKEND=local. sentence-transformers pulls in torch,
 # so it stays out of the default install; app/embeddings.py imports it lazily
