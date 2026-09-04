@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     embedding_model: Optional[str] = Field(default=None, alias="EMBEDDING_MODEL")
     local_embedding_model: str = Field(default="BAAI/bge-small-en-v1.5", alias="LOCAL_EMBEDDING_MODEL")
     semantic_scholar_api_key: Optional[str] = Field(default=None, alias="SEMANTIC_SCHOLAR_API_KEY")
+    # OpenAlex needs no key. Supplying a contact address moves requests into
+    # its faster, more reliable "polite pool"; anonymous traffic is throttled.
+    openalex_mailto: Optional[str] = Field(default=None, alias="OPENALEX_MAILTO")
     qdrant_url: str = Field(default="http://localhost:6333", alias="QDRANT_URL")
     report_db_path: str = Field(default="data/researchpilot.db", alias="REPORT_DB_PATH")
 

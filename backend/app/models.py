@@ -12,7 +12,7 @@ class Paper(BaseModel):
     id: str
     title: str
     abstract: str
-    source: Literal["semantic_scholar", "arxiv"]
+    source: Literal["semantic_scholar", "arxiv", "openalex"]
     url: Optional[str] = None
     year: Optional[int] = None
     authors: list[str] = Field(default_factory=list)
@@ -43,7 +43,7 @@ class ReportReference(BaseModel):
     label: str
     paper_id: str
     title: str
-    source: Literal["semantic_scholar", "arxiv"]
+    source: Literal["semantic_scholar", "arxiv", "openalex"]
     year: Optional[int] = None
     url: Optional[str] = None
 
@@ -63,6 +63,7 @@ class RuntimeSettings(BaseModel):
     embedding_model: Optional[str] = None
     local_embedding_model: Optional[str] = None
     semantic_scholar_api_key: Optional[str] = None
+    openalex_mailto: Optional[str] = None
 
 
 class ResearchReport(BaseModel):

@@ -9,6 +9,53 @@ import httpx
 from app.models import Paper, SearchResults
 
 
+def _normalize_doi(raw: Optional[str]) -> Optional[str]:
+    """Reduce a DOI to its bare form.
+
+    Sources disagree on presentation: Semantic Scholar reports `10.1000/xyz`
+    while OpenAlex reports `https://doi.org/10.1000/xyz`. Dedupe keys on the
+    DOI, so the two spellings have to collapse to one.
+    """
+    if not raw:
+        return None
+    doi = raw.strip()
+    for prefix in ("https://doi.org/", "http://doi.org/", "doi:"):
+        if doi.lower().startswith(prefix):
+            doi = doi[len(prefix) :]
+            break
+    return doi or None
+
+
+def _decode_inverted_abstract(index: Optional[dict[str, list[int]]]) -> str:
+    """Rebuild plain text from OpenAlex's token -> positions mapping.
+
+    OpenAlex ships abstracts as an inverted index rather than a string. A
+    token may occur at several positions, and the positions of the tokens
+    that are present need not be contiguous, so the text is assembled by
+    sorting on position rather than by filling a fixed-size list.
+    """
+    if not index:
+        return ""
+    placed: list[tuple[int, str]] = [
+        (position, token)
+        for token, positions in index.items()
+        for position in positions
+    ]
+    placed.sort()
+    return " ".join(token for _, token in placed)
+
+
+def _strip_openalex_wildcards(question: str) -> str:
+    """Remove the characters OpenAlex reads as wildcards.
+
+    OpenAlex rejects `?` and `*` in a stemmed `search=` with a 400: they are
+    wildcard syntax there, and wildcards are only legal in an exact search.
+    Research questions end in a question mark far more often than not, so the
+    punctuation is dropped rather than the query being switched to exact.
+    """
+    return " ".join(question.replace("?", " ").replace("*", " ").split())
+
+
 def _parse_year(published: str) -> Optional[int]:
     """Read the year out of an Atom <published> timestamp, tolerating junk."""
     try:
@@ -20,9 +67,15 @@ def _parse_year(published: str) -> Optional[int]:
 class SearchAgent:
     SEMANTIC_SCHOLAR_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
     ARXIV_URL = "https://export.arxiv.org/api/query"
+    OPENALEX_URL = "https://api.openalex.org/works"
 
-    def __init__(self, semantic_scholar_api_key: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        semantic_scholar_api_key: Optional[str] = None,
+        openalex_mailto: Optional[str] = None,
+    ) -> None:
         self.semantic_scholar_api_key = semantic_scholar_api_key
+        self.openalex_mailto = openalex_mailto
 
     async def run(self, question: str, limit: int = 10) -> SearchResults:
         async with httpx.AsyncClient(
@@ -33,11 +86,12 @@ class SearchAgent:
             results = await asyncio.gather(
                 self._search_semantic_scholar(client, question, limit),
                 self._search_arxiv(client, question, limit),
+                self._search_openalex(client, question, limit),
                 return_exceptions=True,
             )
         warnings: list[str] = []
         paper_batches: list[list[Paper]] = []
-        source_names = ["Semantic Scholar", "arXiv"]
+        source_names = ["Semantic Scholar", "arXiv", "OpenAlex"]
 
         for source_name, result in zip(source_names, results):
             if isinstance(result, Exception):
@@ -45,7 +99,7 @@ class SearchAgent:
             else:
                 paper_batches.append(result)
 
-        papers = self._dedupe_and_limit([paper for batch in paper_batches for paper in batch], limit)
+        papers = self._dedupe_and_limit(self._interleave(paper_batches), limit)
         if not papers:
             warning_text = "; ".join(warnings) if warnings else "No papers with abstracts were found."
             raise RuntimeError(f"SearchAgent could not retrieve papers. {warning_text}")
@@ -89,7 +143,7 @@ class SearchAgent:
                     url=item.get("url"),
                     year=item.get("year"),
                     authors=[author.get("name", "") for author in item.get("authors", []) if author.get("name")],
-                    doi=(item.get("externalIds") or {}).get("DOI"),
+                    doi=_normalize_doi((item.get("externalIds") or {}).get("DOI")),
                 )
             )
         return results
@@ -135,6 +189,64 @@ class SearchAgent:
                 )
             )
         return results
+
+    async def _search_openalex(
+        self,
+        client: httpx.AsyncClient,
+        question: str,
+        limit: int,
+    ) -> list[Paper]:
+        params: dict[str, str | int] = {
+            "search": _strip_openalex_wildcards(question),
+            "per-page": limit,
+        }
+        if self.openalex_mailto:
+            params["mailto"] = self.openalex_mailto
+        response = await client.get(self.OPENALEX_URL, params=params)
+        response.raise_for_status()
+        payload = response.json()
+
+        results: list[Paper] = []
+        for item in payload.get("results", []):
+            abstract = _decode_inverted_abstract(item.get("abstract_inverted_index")).strip()
+            work_id = (item.get("id") or "").rsplit("/", maxsplit=1)[-1]
+            if not abstract or not work_id:
+                continue
+            doi = _normalize_doi(item.get("doi"))
+            authors = [
+                (authorship.get("author") or {}).get("display_name", "")
+                for authorship in item.get("authorships", [])
+            ]
+            results.append(
+                Paper(
+                    id=work_id,
+                    title=item.get("display_name") or item.get("title") or "Untitled",
+                    abstract=abstract,
+                    source="openalex",
+                    url=item.get("doi") or item.get("id"),
+                    year=item.get("publication_year"),
+                    authors=[author for author in authors if author],
+                    doi=doi,
+                )
+            )
+        return results
+
+    @staticmethod
+    def _interleave(batches: list[list[Paper]]) -> list[Paper]:
+        """Take one paper from each source in turn.
+
+        Concatenating the batches in source order and then cutting at `limit`
+        gives every slot to the earliest sources: a source that returns a full
+        page leaves nothing for the ones behind it, so the later sources never
+        appear in a result set at all. Round-robin keeps the merge honest and
+        still preserves each source's own relevance ordering.
+        """
+        merged: list[Paper] = []
+        for index in range(max((len(batch) for batch in batches), default=0)):
+            for batch in batches:
+                if index < len(batch):
+                    merged.append(batch[index])
+        return merged
 
     @staticmethod
     def _dedupe_and_limit(papers: list[Paper], limit: int) -> list[Paper]:

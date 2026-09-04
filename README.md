@@ -32,7 +32,8 @@ It is designed as a portfolio-grade full-stack AI project:
 
 ResearchPilot runs this pipeline:
 
-1. `SearchAgent` queries Semantic Scholar and arXiv, deduplicates papers, and keeps the top 10 with abstracts.
+1. `SearchAgent` queries Semantic Scholar, arXiv and OpenAlex in parallel, deduplicates papers
+   across the sources by DOI and title, and keeps the top 10 with abstracts.
 2. `ExtractionAgent` turns each abstract into structured JSON:
    `claims`, `methods`, `datasets`, `results`, `limitations`
 3. `SynthesisAgent` merges those extractions into:
@@ -62,7 +63,7 @@ The app also stores completed reports, supports report history, and performs sem
 - Citation-aware related-work generation
 - Live streaming status feed during execution
 - Per-run provider/model/embedding overrides from the frontend settings panel
-- Semantic Scholar + arXiv retrieval with partial-failure tolerance
+- Semantic Scholar + arXiv + OpenAlex retrieval with partial-failure tolerance
 - Structured extraction and synthesis pipeline
 - Saved report history and semantic report search
 - Local embedding fallback using `BAAI/bge-small-en-v1.5`
@@ -88,7 +89,7 @@ The app also stores completed reports, supports report history, and performs sem
           v                                        v
    +---------------+    +-------------------+   +-------------------+   +-------------------+
    | SearchAgent   | -> | ExtractionAgent   | ->| SynthesisAgent    | ->| WriterAgent       |
-   | S2 + arXiv    |    | abstract -> JSON  |   | cross-paper view  |   | related work md   |
+   | S2/arXiv/OA   |    | abstract -> JSON  |   | cross-paper view  |   | related work md   |
    +---------------+    +-------------------+   +-------------------+   +-------------------+
                                                                                   |
                                                                                   v
@@ -186,8 +187,11 @@ Embedding modes:
 Notes:
 
 - One LLM API key is required for the agent pipeline to run.
-- `SEMANTIC_SCHOLAR_API_KEY` is optional but recommended.
-- arXiv does not require an API key.
+- `SEMANTIC_SCHOLAR_API_KEY` is optional but recommended: Semantic Scholar throttles
+  anonymous traffic hard, so without a key that source usually fails and the search
+  falls back to arXiv and OpenAlex.
+- arXiv and OpenAlex do not require an API key. Setting `OPENALEX_MAILTO` to a contact
+  address moves OpenAlex requests into its faster polite pool.
 - Reports persist in SQLite at `REPORT_DB_PATH`.
 - OpenAI and OpenRouter get sensible embedding defaults in `auto`.
 
@@ -197,7 +201,7 @@ For a normal local run, users need:
 
 - Docker and Docker Compose
 - one LLM provider API key
-- optional Semantic Scholar API key
+- optional Semantic Scholar API key (arXiv and OpenAlex need none)
 
 Users do not need:
 
@@ -239,7 +243,9 @@ The project does not require any OpenAI/OpenRouter/Anthropic/Groq key from you. 
 - First run is slow:
   Local embedding mode may download the Sentence Transformers model the first time.
 - No Semantic Scholar key:
-  The app still works, but Semantic Scholar may be less reliable under rate limits.
+  The app still works. Anonymous Semantic Scholar traffic shares one global rate limit
+  and is frequently rejected with HTTP 429, so expect that source to be skipped and the
+  run to proceed on arXiv and OpenAlex, with a warning recorded on the report.
 - SSE appears stuck behind a proxy:
   Reverse proxies must allow streaming responses and avoid buffering.
 - Provider/model mismatch:

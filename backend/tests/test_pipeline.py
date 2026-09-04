@@ -31,6 +31,9 @@ async def test_search_agent_returns_partial_results_when_one_source_fails() -> N
 
     agent._search_semantic_scholar = AsyncMock(return_value=semantic_papers)
     agent._search_arxiv = AsyncMock(side_effect=RuntimeError("rate limited"))
+    # Every source has to be stubbed: an unstubbed one issues a real request,
+    # which is how adding OpenAlex first showed up here.
+    agent._search_openalex = AsyncMock(return_value=[])
 
     results = await agent.run("test question", limit=10)
 
