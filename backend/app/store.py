@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
 from threading import Lock
-from typing import Optional, Protocol
+from typing import Iterator, Optional, Protocol
 
 from app.models import ReportSummary, ResearchReport
 
@@ -57,8 +58,20 @@ class SQLiteReportStore:
         self._lock = Lock()
         self._initialize()
 
-    def _connect(self) -> sqlite3.Connection:
-        return sqlite3.connect(self.db_path)
+    @contextmanager
+    def _connect(self) -> Iterator[sqlite3.Connection]:
+        """Open a connection, commit or roll back, then close it.
+
+        `with sqlite3.connect(...)` manages the transaction but leaves the
+        connection open, so every call here leaked one. Under a long-running
+        server that accumulates until the process runs out of file handles.
+        """
+        connection = sqlite3.connect(self.db_path)
+        try:
+            with connection:
+                yield connection
+        finally:
+            connection.close()
 
     def _initialize(self) -> None:
         with self._connect() as connection:
