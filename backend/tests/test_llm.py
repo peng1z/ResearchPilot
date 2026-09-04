@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import os
+from unittest import mock
 
 import pytest
+from dspy.adapters.chat_adapter import ChatAdapter
+from dspy.adapters.json_adapter import JSONAdapter
+from litellm import ContextWindowExceededError
 from pydantic import BaseModel
 
 from app.config import Settings
 from app.llm import (
     PROVIDER_BASE_URLS,
+    AsyncFallbackChatAdapter,
     _build_lm,
     _normalized_provider,
     parse_json_payload,
@@ -134,3 +139,67 @@ def test_json_that_does_not_match_the_schema_is_rejected() -> None:
 def test_the_raw_text_is_kept_in_the_error_for_debugging() -> None:
     with pytest.raises(ValueError, match="totally unparseable"):
         parse_json_payload("totally unparseable", _Shape)
+
+
+class _Claims(BaseModel):
+    claims: list[str]
+
+
+def test_parse_json_payload_accepts_a_python_dict_literal() -> None:
+    # Models frequently answer with single quotes, which is a valid Python
+    # literal but not JSON.
+    parsed = parse_json_payload(
+        "{'claims': ['a'], 'methods': [], 'datasets': [], 'results': [], 'limitations': []}",
+        _Claims,
+    )
+
+    assert parsed.claims == ["a"]
+
+
+def test_parse_json_payload_reports_unparseable_output_as_a_value_error() -> None:
+    # json.loads used to run outside the try, so a malformed payload escaped as
+    # a bare JSONDecodeError naming neither the model nor its output.
+    with pytest.raises(ValueError, match="not parseable JSON"):
+        parse_json_payload("{not: valid, 'either'}", _Claims)
+
+
+def test_parse_json_payload_rejects_a_non_object_payload() -> None:
+    # literal_eval reads this as a set, not a mapping.
+    with pytest.raises(ValueError, match="not a JSON object"):
+        parse_json_payload("{'a', 'b'}", _Claims)
+
+
+@pytest.mark.anyio
+async def test_async_fallback_adapter_retries_through_json_adapter() -> None:
+    # dspy's ChatAdapter retries via JSONAdapter in __call__ but not in acall,
+    # so an awaited call raised where the same call succeeded synchronously.
+    adapter = AsyncFallbackChatAdapter()
+    calls: list[str] = []
+
+    async def failing_super(*args, **kwargs):
+        calls.append("chat")
+        raise ValueError("could not parse")
+
+    async def json_acall(self, *args, **kwargs):
+        calls.append("json")
+        return [{"extraction_json": "{}"}]
+
+    with mock.patch.object(ChatAdapter, "acall", failing_super), mock.patch.object(
+        JSONAdapter, "acall", json_acall
+    ):
+        result = await adapter.acall(None, {}, None, [], {})
+
+    assert calls == ["chat", "json"]
+    assert result == [{"extraction_json": "{}"}]
+
+
+@pytest.mark.anyio
+async def test_async_fallback_adapter_does_not_retry_a_context_window_error() -> None:
+    adapter = AsyncFallbackChatAdapter()
+
+    async def failing_super(*args, **kwargs):
+        raise ContextWindowExceededError("too long", "openrouter", "m")
+
+    with mock.patch.object(ChatAdapter, "acall", failing_super):
+        with pytest.raises(ContextWindowExceededError):
+            await adapter.acall(None, {}, None, [], {})

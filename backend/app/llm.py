@@ -5,7 +5,12 @@ import os
 from contextlib import AbstractContextManager
 from typing import Any
 
+import ast
+
 import dspy
+from dspy.adapters.chat_adapter import ChatAdapter
+from dspy.adapters.json_adapter import JSONAdapter
+from litellm import ContextWindowExceededError
 from pydantic import BaseModel, ValidationError
 
 from app.config import Settings
@@ -25,6 +30,26 @@ PROVIDER_BASE_URLS = {
 }
 
 
+class AsyncFallbackChatAdapter(ChatAdapter):
+    """ChatAdapter with its JSONAdapter fallback extended to the async path.
+
+    dspy 2.6 overrides ChatAdapter.__call__ to retry through JSONAdapter when
+    the response cannot be parsed, but leaves acall inheriting the base
+    implementation, which has no such retry. Models that answer with plain
+    JSON instead of dspy's `[[ ## field ## ]]` markers therefore succeed when
+    called synchronously and raise AdapterParseError when awaited. This ports
+    the existing sync behaviour over rather than changing it.
+    """
+
+    async def acall(self, lm, lm_kwargs, signature, demos, inputs):
+        try:
+            return await super().acall(lm, lm_kwargs, signature, demos, inputs)
+        except Exception as exc:
+            if isinstance(exc, ContextWindowExceededError) or isinstance(self, JSONAdapter):
+                raise
+            return await JSONAdapter().acall(lm, lm_kwargs, signature, demos, inputs)
+
+
 def _normalized_provider(provider: str) -> str:
     provider = provider.strip().lower()
     return "anthropic" if provider == "claude" else provider
@@ -39,7 +64,7 @@ def resolve_model_string(settings: Settings) -> str:
 
 
 def configure_dspy(settings: Settings) -> None:
-    dspy.settings.configure(lm=_build_lm(settings))
+    dspy.settings.configure(lm=_build_lm(settings), adapter=AsyncFallbackChatAdapter())
 
 
 def _build_lm(settings: Settings) -> dspy.LM:
@@ -70,7 +95,7 @@ def _build_lm(settings: Settings) -> dspy.LM:
 
 
 def dspy_context(settings: Settings) -> AbstractContextManager:
-    return dspy.context(lm=_build_lm(settings))
+    return dspy.context(lm=_build_lm(settings), adapter=AsyncFallbackChatAdapter())
 
 
 def parse_json_payload(raw_text: str, schema: type[BaseModel]) -> BaseModel:
@@ -79,7 +104,19 @@ def parse_json_payload(raw_text: str, schema: type[BaseModel]) -> BaseModel:
     end = text.rfind("}")
     if start == -1 or end == -1 or end < start:
         raise ValueError(f"Model output did not contain JSON: {raw_text}")
-    payload = json.loads(text[start : end + 1])
+    candidate = text[start : end + 1]
+    try:
+        payload = json.loads(candidate)
+    except json.JSONDecodeError:
+        # Models routinely answer with a Python dict literal -- single quotes,
+        # sometimes True/None -- which is not JSON. literal_eval reads that
+        # spelling without executing anything.
+        try:
+            payload = ast.literal_eval(candidate)
+        except (ValueError, SyntaxError) as exc:
+            raise ValueError(f"Model output was not parseable JSON: {raw_text}") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"Model output was not a JSON object: {raw_text}")
     try:
         return schema.model_validate(payload)
     except ValidationError as exc:

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 from types import SimpleNamespace
 
 import pytest
@@ -49,6 +51,13 @@ class FakeStore:
         self.stored_reports.append(report)
 
 
+class FakeExtraction:
+    """Stands in for ExtractionAgent, which the pipeline drives via aextract."""
+
+    async def aextract(self, question, paper) -> PaperExtraction:
+        return PaperExtraction(paper_id=paper.id, title=paper.title, claims=["c"])
+
+
 def _pipeline(papers, *, warnings=None, store=None, monkeypatch=None) -> ResearchPipeline:
     import app.services.pipeline as module
     import contextlib
@@ -59,8 +68,7 @@ def _pipeline(papers, *, warnings=None, store=None, monkeypatch=None) -> Researc
     return ResearchPipeline(
         _settings(),
         search_agent=FakeSearch(papers, warnings),
-        extraction_agent=lambda q, paper: PaperExtraction(paper_id=paper.id, title=paper.title,
-                                                          claims=["c"]),
+        extraction_agent=FakeExtraction(),
         synthesis_agent=lambda q, extractions: SynthesisOutput(
             consensus=["agreed"], contradictions=[], open_gaps=["gap"]
         ),
@@ -156,3 +164,45 @@ async def test_extraction_progress_is_reported_per_paper(monkeypatch) -> None:
     progress = [e for e in events if e.event == "agent_progress" and e.agent == "ExtractionAgent"]
     assert len(progress) == 2
     assert progress[0].data["total"] == 2
+
+
+class SlowExtraction:
+    """Records how many extractions are in flight at once."""
+
+    def __init__(self, delay: float = 0.05) -> None:
+        self.delay = delay
+        self.in_flight = 0
+        self.peak_in_flight = 0
+
+    async def aextract(self, question, paper) -> PaperExtraction:
+        self.in_flight += 1
+        self.peak_in_flight = max(self.peak_in_flight, self.in_flight)
+        try:
+            await asyncio.sleep(self.delay)
+        finally:
+            self.in_flight -= 1
+        return PaperExtraction(paper_id=paper.id, title=paper.title, claims=["c"])
+
+
+@pytest.mark.anyio
+async def test_extractions_run_concurrently(monkeypatch) -> None:
+    extraction = SlowExtraction()
+    pipeline = _pipeline([_paper(f"p{index}") for index in range(6)], monkeypatch=monkeypatch)
+    pipeline.extraction_agent = extraction
+
+    report, _ = await _run(pipeline)
+
+    assert extraction.peak_in_flight > 1
+    assert [item.paper_id for item in report.extractions] == [f"p{index}" for index in range(6)]
+
+
+@pytest.mark.anyio
+async def test_extraction_concurrency_is_bounded_by_the_setting(monkeypatch) -> None:
+    extraction = SlowExtraction()
+    pipeline = _pipeline([_paper(f"p{index}") for index in range(8)], monkeypatch=monkeypatch)
+    pipeline.extraction_agent = extraction
+    pipeline.settings = pipeline.settings.model_copy(update={"extraction_concurrency": 3})
+
+    await _run(pipeline)
+
+    assert extraction.peak_in_flight == 3

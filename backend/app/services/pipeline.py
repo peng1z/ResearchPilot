@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import tempfile
@@ -69,8 +70,18 @@ class ExtractionAgent(dspy.Module):
         super().__init__()
         self.predictor = dspy.Predict(ExtractionSignature)
 
+    async def aextract(self, question: str, paper: Paper) -> PaperExtraction:
+        prediction = await self.predictor.acall(
+            question=question, title=paper.title, abstract=paper.abstract
+        )
+        return self._to_extraction(prediction, paper)
+
     def forward(self, question: str, paper: Paper) -> PaperExtraction:
         prediction = self.predictor(question=question, title=paper.title, abstract=paper.abstract)
+        return self._to_extraction(prediction, paper)
+
+    @staticmethod
+    def _to_extraction(prediction, paper: Paper) -> PaperExtraction:
         parsed = parse_json_payload(
             prediction.extraction_json,
             ExtractionSchema,
@@ -185,18 +196,40 @@ class ResearchPipeline:
                     report_id=report_id,
                 )
             )
-            extractions: list[PaperExtraction] = []
-            for index, paper in enumerate(papers, start=1):
+            # One LLM call per paper, and they do not depend on each other.
+            # Run them together, bounded so a large result set cannot burst
+            # past the provider's rate limit. Progress is reported on
+            # completion, so the order of the events is not the order of the
+            # papers; `index` says which paper each event is about.
+            gate = asyncio.Semaphore(self.settings.extraction_concurrency)
+            completed = 0
+
+            async def extract(index: int, paper: Paper) -> PaperExtraction:
+                nonlocal completed
+                async with gate:
+                    extraction = await self.extraction_agent.aextract(question, paper)
+                completed += 1
                 await status(
                     StatusEvent(
                         event="agent_progress",
                         agent="ExtractionAgent",
-                        message=f"Processing abstract {index}/{len(papers)}.",
+                        message=f"Processed {completed}/{len(papers)} abstracts.",
                         report_id=report_id,
-                        data={"paper_title": paper.title, "index": index, "total": len(papers)},
+                        data={
+                            "paper_title": paper.title,
+                            "index": index,
+                            "total": len(papers),
+                            "completed": completed,
+                        },
                     )
                 )
-                extractions.append(self.extraction_agent(question, paper))
+                return extraction
+
+            extractions: list[PaperExtraction] = list(
+                await asyncio.gather(
+                    *(extract(index, paper) for index, paper in enumerate(papers, start=1))
+                )
+            )
             await status(
                 StatusEvent(
                     event="agent_completed",
