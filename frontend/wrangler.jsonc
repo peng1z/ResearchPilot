@@ -1,0 +1,18 @@
+{
+  // Deployment config for the hosted demo, kept in the repo rather than in
+  // the Cloudflare dashboard so the build that ships is described by the
+  // commit that ships it.
+  //
+  // Assets-only: there is no `main`, because every page here is a client
+  // component and `npm run build:static` emits plain files. Cloudflare
+  // serves them directly, with no Worker code in the request path.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "researchpilot",
+  "compatibility_date": "2026-09-05",
+  "assets": {
+    "directory": "./out",
+    // next build --output export emits a real 404.html; serve it instead of
+    // rewriting unknown paths to index.html, which would mask broken links.
+    "not_found_handling": "404-page"
+  }
+}

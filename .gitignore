@@ -49,3 +49,6 @@ Desktop.ini
 
 # Raw pipeline captures; the trimmed fixtures live in frontend/demo/
 demo-recordings/
+
+# wrangler local state
+.wrangler/
