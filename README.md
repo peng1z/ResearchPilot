@@ -2,6 +2,14 @@
 
 ResearchPilot is a multi-agent research co-pilot for literature review workflows. Give it a research question and it will search papers, extract structured findings from abstracts, synthesize the field, and draft a citation-aware Related Work section.
 
+**[Try it live](https://researchpilot.peng1z.workers.dev/)** — no signup, no API key, nothing to install.
+
+The hosted demo ships three real pipeline runs captured end to end, so it opens
+on a finished report instead of an empty form. Everything in it -- the claims,
+the contradictions, the references -- came out of actual runs against the live
+Semantic Scholar, arXiv and OpenAlex APIs. To run your own question, put an API
+key you control into **Run Settings**.
+
 Paper: [ResearchPilot on arXiv](https://arxiv.org/abs/2603.14629)
 
 It is designed as a portfolio-grade full-stack AI project:
@@ -16,15 +24,26 @@ It is designed as a portfolio-grade full-stack AI project:
 
 ### Home
 
+The three recorded runs are selectable straight away; the report below is
+already rendered.
+
 ![ResearchPilot home](./assets/home.png)
+
+### Retrieval, including what failed
+
+Sources are queried in parallel and each is allowed to fail on its own. Here
+Semantic Scholar rejected an unauthenticated request, so the report was built
+from the two that answered -- and says so, rather than hiding it.
+
+![ResearchPilot retrieval panel and synthesis](./assets/retrieval.png)
+
+### Related work draft
+
+![ResearchPilot related work draft](./assets/report1.png)
 
 ### Running
 
 ![ResearchPilot running](./assets/running.png)
-
-### Report
-
-![ResearchPilot report overview](./assets/report1.png)
 
 ![ResearchPilot report detail](./assets/report2.png)
 
@@ -234,6 +253,23 @@ If a user self-hosts it publicly, they should add:
 
 The project does not require any OpenAI/OpenRouter/Anthropic/Groq key from you. Each user should supply their own.
 
+### The hosted demo
+
+https://researchpilot.peng1z.workers.dev/ is the frontend alone, deployed to
+Cloudflare Workers as static assets. There is no backend behind it and no
+Worker code in the request path: `npm run build:static` emits plain files and
+Cloudflare serves them.
+
+That is deliberate rather than a limitation. A public backend would mean a key
+someone else pays for, a queue someone else can fill, and a `git clone` of any
+repository a visitor names. Shipping recorded runs instead costs nothing, has
+nothing to abuse, and still shows the real output. Live runs are available to
+anyone who points **Run Settings -> ResearchPilot API Base** at a backend they
+run themselves.
+
+`frontend/wrangler.jsonc` holds the deployment config, and
+`docs/demo-recordings.md` explains how the fixtures are captured and refreshed.
+
 ## Troubleshooting
 
 - `POST /research` fails immediately:
@@ -301,9 +337,13 @@ ResearchPilot/
     app/
       services/
     tests/
+  docs/
+    demo-recordings.md
   frontend/
     app/
+    demo/            # recorded runs shipped with the hosted demo
     tests/
+    wrangler.jsonc   # Cloudflare Workers deployment config
   docker-compose.yml
   README.md
   LICENSE
@@ -311,11 +351,16 @@ ResearchPilot/
 
 ## README Visuals
 
-For stronger GitHub presentation, add screenshots or a short GIF under `assets/`, for example:
+`assets/home.png`, `assets/retrieval.png` and `assets/report1.png` are captured
+from the deployed demo. Recapture them whenever the interface changes: a
+screenshot showing a state the app no longer has is worse than no screenshot,
+because it advertises behaviour that is gone.
 
-- `assets/home.png`
-- `assets/running.png`
-- `assets/report.png`
-- `assets/demo.gif`
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --hide-scrollbars \
+  --window-size=1440,5100 --virtual-time-budget=8000 \
+  --screenshot=full.png https://researchpilot.peng1z.workers.dev/
+```
 
-Then reference them near the top of this README.
+Then crop the regions you want out of `full.png`.
