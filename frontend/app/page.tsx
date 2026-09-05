@@ -14,7 +14,35 @@ import type {
 import { demoRuns } from "../demo";
 import type { DemoRun } from "../demo/types";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
+// Resolved at build time, and deliberately left empty when unset rather than
+// defaulting to localhost. The hosted demo is served over https, where a
+// request to http://localhost:8000 is blocked as mixed content -- silently,
+// because the passive loads swallow their errors. An empty base means the
+// page makes no backend requests at all and runs purely on the recorded
+// runs; docker-compose and `npm run dev` supply the value through
+// NEXT_PUBLIC_API_BASE.
+const buildTimeApiBase = process.env.NEXT_PUBLIC_API_BASE ?? "";
+
+/** Reject a base the browser will refuse to call from the current page. */
+function mixedContentWarning(base: string): string | null {
+  if (typeof window === "undefined" || !base.startsWith("http://")) {
+    return null;
+  }
+  if (window.location.protocol !== "https:") {
+    return null;
+  }
+  const host = (() => {
+    try {
+      return new URL(base).hostname;
+    } catch {
+      return "";
+    }
+  })();
+  if (host === "localhost" || host === "127.0.0.1") {
+    return null;
+  }
+  return "This page is served over https, so the browser will block a plain http backend. Use an https address.";
+}
 
 const SOURCE_LABELS: Record<string, string> = {
   arxiv: "arXiv",
@@ -120,11 +148,19 @@ export default function Home() {
   const [config, setConfig] = useState<PublicRuntimeConfig | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [runtime, setRuntime] = useState<RuntimeSettings>({});
+  const [apiBase, setApiBase] = useState(buildTimeApiBase);
 
   useEffect(() => {
+    // The same guard the live run uses: a base the browser will refuse to
+    // call must not be probed passively either, or typing one into the
+    // field fires two requests that are blocked before they leave.
+    if (!apiBase || mixedContentWarning(apiBase)) {
+      return;
+    }
     void loadHistory();
     void loadConfig();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiBase]);
 
   async function loadHistory() {
     try {
@@ -186,6 +222,17 @@ export default function Home() {
 
   async function runResearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!apiBase) {
+      setError(
+        "No backend configured. This is the hosted demo, which ships recorded runs and calls nothing. To run a live question, open Run Settings and point API Base at a ResearchPilot backend you control.",
+      );
+      return;
+    }
+    const mixedContent = mixedContentWarning(apiBase);
+    if (mixedContent) {
+      setError(mixedContent);
+      return;
+    }
     setLoading(true);
     setEvents([]);
     setReport(null);
@@ -243,7 +290,7 @@ export default function Home() {
 
   async function searchHistory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!searchQuery.trim()) {
+    if (!apiBase || !searchQuery.trim()) {
       setSearchResults([]);
       return;
     }
@@ -341,6 +388,23 @@ export default function Home() {
                       onChange={(event) => updateRuntime("llm_model", event.target.value)}
                       className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
                     />
+                  </label>
+                  <label className="text-sm md:col-span-2">
+                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                      ResearchPilot API Base
+                    </span>
+                    <input
+                      value={apiBase}
+                      onChange={(event) => setApiBase(event.target.value.trim())}
+                      placeholder="https://your-researchpilot-backend.example.com"
+                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                    />
+                    <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">
+                      {apiBase
+                        ? (mixedContentWarning(apiBase) ??
+                          "Live runs, saved history and report search will use this backend.")
+                        : "Empty: the page runs entirely on the recorded runs above and makes no requests. Point this at a backend you control to run a live question."}
+                    </span>
                   </label>
                   <label className="text-sm">
                     <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">API Key</span>

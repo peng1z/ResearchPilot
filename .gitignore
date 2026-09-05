@@ -4,6 +4,9 @@
 .env.*
 !.env.example
 !**/.env.example
+# Not a secret: the local backend address, needed for `npm run dev` to reach
+# a docker-compose backend. Real credentials live in .env, which stays ignored.
+!frontend/.env.development
 .pytest_cache/
 .venv/
 __pycache__/
