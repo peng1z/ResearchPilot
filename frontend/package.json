@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "15.2.8",
+    "next": "^15.5.25",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "9.0.3"
@@ -28,5 +28,8 @@
     "typescript": "5.8.2",
     "vitest": "3.0.8",
     "wrangler": "^4.129.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.23"
   }
 }
