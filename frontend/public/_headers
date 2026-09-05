@@ -1,0 +1,25 @@
+# Response headers for the hosted demo. Cloudflare applies these to static
+# assets; `next build` copies public/ into the export, so the file lands at
+# the root of out/ where Workers looks for it.
+
+/*
+  # No sniffing, no framing, and no referrer leakage to other origins.
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  # The page needs no camera, microphone, location or payment access.
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  # script-src allows 'unsafe-inline' because a Next static export streams its
+  # RSC payload through seven inline <script> blocks; under 'self' alone the
+  # page does not hydrate at all -- verified, not assumed. A nonce needs a
+  # server to generate it, and hashes change on every build, which would
+  # couple each deploy to a regenerated header file.
+  #
+  # That cost is acceptable here only because there is no injection point: no
+  # user-supplied HTML is ever rendered, react-markdown escapes its input, and
+  # rehype-raw is not installed. Everything else stays strict -- no script from
+  # another origin, no plugins, no framing, no base tag, no form posts.
+  #
+  # connect-src is open on purpose: the API Base field exists so a visitor can
+  # point the page at a backend they run.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src *; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'
