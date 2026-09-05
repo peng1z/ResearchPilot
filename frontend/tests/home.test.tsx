@@ -59,3 +59,52 @@ describe("Home", () => {
     );
   });
 });
+
+describe("backend configuration", () => {
+  it("makes no backend request when no API base is configured", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    render(<Home />);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("explains why Start Research does nothing without a backend", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    render(<Home />);
+
+    fireEvent.click(screen.getByRole("button", { name: /start research/i }));
+
+    expect(await screen.findByText(/No backend configured/i)).toBeInTheDocument();
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("refuses a plain http backend from an https page", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    render(<Home />);
+
+    fireEvent.click(screen.getByRole("button", { name: /run settings/i }));
+    fireEvent.change(screen.getByRole("textbox", { name: /researchpilot api base/i }), {
+      target: { value: "http://example.com:8000" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /start research/i }));
+
+    // Shown twice on purpose: inline under the field as guidance, and as the
+    // error banner once Start Research is pressed.
+    expect(await screen.findAllByText(/browser will block a plain http backend/i)).toHaveLength(2);
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("allows a plain http localhost backend from an https page", () => {
+    render(<Home />);
+
+    fireEvent.click(screen.getByRole("button", { name: /run settings/i }));
+    fireEvent.change(screen.getByRole("textbox", { name: /researchpilot api base/i }), {
+      target: { value: "http://localhost:8000" },
+    });
+
+    expect(screen.queryByText(/browser will block a plain http backend/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/Live runs, saved history and report search/i)).toBeInTheDocument();
+  });
+});
