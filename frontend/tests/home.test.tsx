@@ -108,3 +108,92 @@ describe("backend configuration", () => {
     expect(screen.getByText(/Live runs, saved history and report search/i)).toBeInTheDocument();
   });
 });
+
+describe("citation", () => {
+  it("links the paper the artifact accompanies", () => {
+    render(<Home />);
+
+    // The site had no link to the paper at all, which was the largest gap for
+    // a reader who wanted to cite the work.
+    expect(screen.getByRole("link", { name: /^Abstract$/ })).toHaveAttribute(
+      "href",
+      "https://arxiv.org/abs/2603.14629",
+    );
+    expect(screen.getByRole("link", { name: /^PDF$/ })).toHaveAttribute(
+      "href",
+      "https://arxiv.org/pdf/2603.14629",
+    );
+  });
+
+  it("offers a BibTeX entry that is on screen, not only on the clipboard", () => {
+    render(<Home />);
+
+    // Clipboard access can be refused, so the entry has to be selectable too.
+    expect(screen.getByText(/@misc\{zhang2026researchpilot/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /copy bibtex/i })).toBeInTheDocument();
+  });
+
+  it("keeps the paper below the recorded runs rather than above them", () => {
+    render(<Home />);
+
+    const runs = document.querySelector("#recorded-runs") as HTMLElement;
+    const paper = screen.getByRole("heading", { name: /^Cite this work$/ });
+    // A demo page whose first screen is a paper header has become a product
+    // page for its own demo.
+    expect(runs.compareDocumentPosition(paper) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+});
+
+describe("browsing versus running", () => {
+  it("says plainly that the runs are recorded, before any of them is read", () => {
+    render(<Home />);
+
+    const notice = screen.getByText(/You are reading recorded runs, not live ones/i);
+    expect(notice).toBeInTheDocument();
+    expect(
+      screen.getByText(/Browsing them needs no API key and no backend/i),
+    ).toBeInTheDocument();
+  });
+
+  it("offers Paper, Code, Examples and Cite from the top", () => {
+    render(<Home />);
+
+    const nav = screen.getByRole("navigation", { name: /primary/i });
+    expect(within(nav).getByRole("link", { name: "Paper" })).toHaveAttribute(
+      "href",
+      "https://arxiv.org/abs/2603.14629",
+    );
+    expect(within(nav).getByRole("link", { name: "Code" })).toHaveAttribute(
+      "href",
+      "https://github.com/peng1z/ResearchPilot",
+    );
+    expect(within(nav).getByRole("link", { name: "Examples" })).toHaveAttribute("href", "#recorded-runs");
+    expect(within(nav).getByRole("link", { name: "Cite" })).toHaveAttribute("href", "#cite");
+  });
+
+  it("states the version boundary between the paper and this build", () => {
+    render(<Home />);
+
+    // The paper describes Semantic Scholar and arXiv; these recordings also
+    // carry OpenAlex results, which the paper does not report.
+    expect(
+      screen.getByText(/not part of what the paper reports/i),
+    ).toBeInTheDocument();
+  });
+
+  it("says the method paper is not a source for the topics it drafts", () => {
+    render(<Home />);
+
+    expect(
+      screen.getByText(/does not belong in the reference list of a review drafted/i),
+    ).toBeInTheDocument();
+  });
+
+  it("cites the canonical BibTeX, not a hand-written copy", () => {
+    render(<Home />);
+
+    // The canonical entry says cs.IR; a hand-written copy said cs.CL.
+    expect(screen.getByText(/primaryClass = \{cs\.IR\}/)).toBeInTheDocument();
+    expect(screen.getByText(/doi = \{10\.48550\/arXiv\.2603\.14629\}/)).toBeInTheDocument();
+  });
+});

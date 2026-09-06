@@ -90,6 +90,114 @@ function parseSseEvent(raw: string): StatusEvent | null {
   return JSON.parse(dataLine) as StatusEvent;
 }
 
+// Verbatim from https://peng1z.github.io/publications/researchpilot/citation.bib,
+// which is the authority. A hand-written second copy drifts: mine had cs.CL
+// where the canonical entry says cs.IR, and no DOI, until it was compared.
+const BIBTEX = `@misc{zhang2026researchpilot,
+  title = {{ResearchPilot: A Local-First Multi-Agent System for Literature Synthesis and Related Work Drafting}},
+  author = {Peng Zhang},
+  year = {2026},
+  eprint = {2603.14629},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.IR},
+  doi = {10.48550/arXiv.2603.14629},
+  url = {https://arxiv.org/abs/2603.14629},
+  note = {Version 1, preprint}
+}`;
+
+/**
+ * The paper this artifact accompanies, and how to cite it.
+ *
+ * A footer strip rather than a header: the recorded report above is what a
+ * visitor came for. But the site carried no link to the paper at all, so a
+ * reader who wanted to cite the work had nowhere to go.
+ */
+function Citation() {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(BIBTEX);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard access can be refused; the entry is on screen to select.
+      setCopied(false);
+    }
+  }
+
+  return (
+    <footer id="cite" className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-8">
+      <h2 className="text-xl font-semibold">Cite this work</h2>
+      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
+        This page is the artifact for{" "}
+        <a className="underline" href="https://arxiv.org/abs/2603.14629">
+          ResearchPilot: A Local-First Multi-Agent System for Literature Synthesis and Related
+          Work Drafting
+        </a>
+        , Peng Zhang. arXiv:2603.14629, version 1 preprint, 15 March 2026. DOI{" "}
+        <a className="underline" href="https://doi.org/10.48550/arXiv.2603.14629">
+          10.48550/arXiv.2603.14629
+        </a>
+        .
+      </p>
+      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
+        Version 1 of the paper describes retrieval from Semantic Scholar and arXiv. The recordings
+        below were produced by a later build that also queries OpenAlex, and the OpenAlex results
+        in them are not part of what the paper reports. Where the two differ, the code and the
+        recorded runs describe this build; the paper describes version 1.
+      </p>
+      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
+        The method paper belongs in a description of how a synthesis was produced. It is not a
+        source for any topic below and does not belong in the reference list of a review drafted
+        with it.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <a
+          href="https://arxiv.org/abs/2603.14629"
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          Abstract
+        </a>
+        <a
+          href="https://arxiv.org/pdf/2603.14629"
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          PDF
+        </a>
+        <a
+          href="https://peng1z.github.io/publications/researchpilot/"
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          Paper page
+        </a>
+        <a
+          href="https://peng1z.github.io/publications/researchpilot/citation.bib"
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          BibTeX file
+        </a>
+        <a
+          href="https://peng1z.github.io/publications/researchpilot/citation.ris"
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          RIS
+        </a>
+        <button
+          type="button"
+          onClick={copy}
+          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+        >
+          {copied ? "BibTeX copied" : "Copy BibTeX"}
+        </button>
+      </div>
+      <pre className="mt-4 overflow-x-auto rounded-2xl bg-[var(--panel)] p-4 text-xs leading-5">
+        {BIBTEX}
+      </pre>
+    </footer>
+  );
+}
+
 function SourcePanel({ report }: { report: ResearchReport }) {
   const { contributed, failed } = describeSources(report);
   const other = report.warnings.filter((warning) => !/ search failed: /.test(warning));
@@ -310,16 +418,46 @@ export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-6 py-10 md:px-10">
       <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-8 shadow-[0_24px_80px_rgba(24,38,31,0.08)] backdrop-blur">
-        <p className="mb-3 text-sm uppercase tracking-[0.3em] text-[var(--accent)]">ResearchPilot</p>
+        <nav
+          aria-label="Primary"
+          className="mb-3 flex flex-wrap items-baseline justify-between gap-4"
+        >
+          <p className="text-sm uppercase tracking-[0.3em] text-[var(--accent)]">ResearchPilot</p>
+          <span className="flex flex-wrap gap-5 text-sm">
+            <a className="underline" href="https://arxiv.org/abs/2603.14629">
+              Paper
+            </a>
+            <a className="underline" href="https://github.com/peng1z/ResearchPilot">
+              Code
+            </a>
+            <a className="underline" href="#recorded-runs">
+              Examples
+            </a>
+            <a className="underline" href="#cite">
+              Cite
+            </a>
+          </span>
+        </nav>
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
             <h1 className="max-w-3xl text-4xl font-semibold leading-tight md:text-6xl">
               A multi-agent research co-pilot for fast literature synthesis.
             </h1>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-              Search papers, extract structured claims, synthesize the field, and draft a related work section from one research question.
+              Give it one research question. It searches Semantic Scholar, arXiv and OpenAlex in
+              parallel, extracts structured findings from each abstract, synthesises consensus,
+              contradictions and open gaps across them, and drafts a citation-aware related work
+              section.
             </p>
-            <div className="mt-6">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
+              <strong className="text-[var(--text)]">
+                You are reading recorded runs, not live ones.
+              </strong>{" "}
+              {apiBase
+                ? "A backend is configured, so Start Research will run a real one."
+                : "Browsing them needs no API key and no backend, and the page requests nothing. To run your own question, open Run Settings and point it at a backend you host."}
+            </p>
+            <div id="recorded-runs" className="mt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                 Recorded runs
               </p>
@@ -636,6 +774,8 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      <Citation />
     </main>
   );
 }
