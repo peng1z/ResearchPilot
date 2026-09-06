@@ -102,13 +102,13 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
       </nav>
 
       <header>
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--accent)]">Recorded run</p>
-        <h1 className="mt-3 text-3xl font-semibold leading-tight md:text-4xl">{run.question}</h1>
-        <p className="mt-4 leading-7 text-[var(--muted)]">
+        {/* No eyebrow: the heading is the question, which says what this is. */}
+        <h1>{run.question}</h1>
+        <p className="mt-4 leading-7 text-[var(--ink-2)]">
           Nothing in the output was edited. This is one run of a non-deterministic system: it shows
           what the pipeline produced on that occasion, not what it produces in general.
         </p>
-        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
+        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm text-[var(--ink-2)]">
           {(
             [
               ["Recorded", report.created_at ? report.created_at.slice(0, 10) : null],
@@ -127,7 +127,7 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
               <dt>{label}</dt>
               {/* An absent field says so. Filling it in from a guess would make
                   the record less trustworthy than leaving the gap visible. */}
-              <dd className={value ? "font-medium text-[var(--text)]" : "italic"}>
+              <dd className={value ? "font-medium text-[var(--ink)]" : "italic"}>
                 {value ?? "not recorded"}
               </dd>
             </Fragment>
@@ -137,7 +137,7 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
 
       <section>
         <h2 className="text-xl font-semibold">Retrieval</h2>
-        <ul className="mt-3 leading-7 text-[var(--muted)]">
+        <ul className="mt-3 leading-7 text-[var(--ink-2)]">
           {Object.entries(bySource).map(([source, count]) => (
             <li key={source}>
               {source}: {count} papers
@@ -147,15 +147,19 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
             <li key={name}>{name}: returned an error, so this run has none of its results</li>
           ))}
         </ul>
-        <p className="mt-3 leading-7 text-[var(--muted)]">
+        <p className="mt-3 leading-7 text-[var(--ink-2)]">
           Sources are queried in parallel and each is allowed to fail on its own. Version 1 of the
           paper describes Semantic Scholar and arXiv; OpenAlex results here come from a later build
           and are not part of what the paper reports.
         </p>
       </section>
 
-      <section>
-        <h2 className="text-xl font-semibold">Papers</h2>
+      <details className="drawer">
+        <summary>
+          Papers
+          <span className="drawer-count">{report.papers.length} papers</span>
+        </summary>
+        <div className="drawer-body">
         <ol className="mt-3 space-y-2 leading-7">
           {report.papers.map((paper) => (
             <li key={paper.id}>
@@ -166,14 +170,15 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
               ) : (
                 paper.title
               )}{" "}
-              <span className="text-[var(--muted)]">
+              <span className="text-[var(--ink-2)]">
                 ({paper.source}
                 {paper.year ? `, ${paper.year}` : ""})
               </span>
             </li>
           ))}
         </ol>
-      </section>
+        </div>
+      </details>
 
       <section>
         <h2 className="text-xl font-semibold">Synthesis</h2>
@@ -185,13 +190,11 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
           ] as const
         ).map(([label, items]) => (
           <div key={label} className="mt-4">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
-              {label}
-            </h3>
+            <h3>{label}</h3>
             {items.length === 0 ? (
-              <p className="mt-2 text-[var(--muted)]">None reported for this question.</p>
+              <p className="mt-2 text-[var(--ink-2)]">None reported for this question.</p>
             ) : (
-              <ul className="mt-2 space-y-2 leading-7 text-[var(--muted)]">
+              <ul className="mt-2 space-y-2 leading-7 text-[var(--ink-2)]">
                 {items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -201,16 +204,16 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
         ))}
       </section>
 
-      <section>
-        <h2 className="text-xl font-semibold">Related work draft</h2>
-        <div className="markdown prose prose-neutral mt-3 max-w-none">
+      <details className="drawer">
+        <summary>Related work draft</summary>
+        <div className="drawer-body markdown prose prose-neutral max-w-none">
           <ReactMarkdown>{report.related_work_markdown}</ReactMarkdown>
         </div>
-      </section>
+      </details>
 
       <section>
         <h2 className="text-xl font-semibold">Limits of this run</h2>
-        <ul className="mt-3 space-y-2 leading-7 text-[var(--muted)]">
+        <ul className="mt-3 space-y-2 leading-7 text-[var(--ink-2)]">
           <li>
             The synthesis is generated. It has not been checked against the papers it cites, and
             nothing here should be read as a verified account of the literature.
@@ -231,7 +234,7 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
 
       <footer>
         <h2 className="text-xl font-semibold">Cite the method</h2>
-        <p className="mt-3 leading-7 text-[var(--muted)]">
+        <p className="mt-3 leading-7 text-[var(--ink-2)]">
           Produced with ResearchPilot:{" "}
           <a className="underline" href="https://arxiv.org/abs/2603.14629">
             ResearchPilot: A Local-First Multi-Agent System for Literature Synthesis and Related

@@ -7,9 +7,10 @@ import { demoRuns } from "../demo";
 describe("Home", () => {
   it("renders the research workflow shell", () => {
     render(<Home />);
-    expect(screen.getByText("ResearchPilot")).toBeInTheDocument();
+    // The heading carries the name; the eyebrow that repeated it above the
+    // heading is gone, so this asserts the heading rather than the label.
+    expect(screen.getByRole("heading", { level: 1, name: /multi-agent research co-pilot/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /start research/i })).toBeInTheDocument();
-    expect(screen.getByText(/multi-agent research co-pilot/i)).toBeInTheDocument();
   });
 
   it("shows a recorded run on first paint, with no request to the backend", () => {

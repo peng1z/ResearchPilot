@@ -84,10 +84,19 @@ const STRUCTURED_DATA = {
   },
 };
 
+const DIRECTION_CONTRACT = "<!-- THESIS: A reading page for one recorded synthesis, refusing the product-landing arrangement this category ships -- the artifact leads and the paper rides in the footer. OWN-WORLD: White ground, Charter-class serif body on a 34rem measure, system sans for headings because headings here are navigation not voice, one citation-blue accent, rules instead of cards. STORY: A researcher checks whether the system did what the paper claims, reads one run end to end, and leaves able to cite it. FIRST VIEWPORT: Nav rule, heading, what it does in four lines, the recorded-not-live notice, then the three runs as the first thing clickable; running is a disclosure below, never the opening act. FORM: Category standard executed straight; candidate 4 of 7 on the grounded list, taken as the standing exit. Seed da9de08a. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance. -->";
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
+                {/* The direction this page commits to, in the emitted markup so it can
+            be audited against what shipped. A JSX comment never reaches the
+            output; this does. */}
+        <div
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: DIRECTION_CONTRACT }}
+        />
         <script
           type="application/ld+json"
           // The payload is a literal in this file, not user or model input.
