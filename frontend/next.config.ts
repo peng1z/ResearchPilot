@@ -11,6 +11,10 @@ import type { NextConfig } from "next";
 // exclusive, so the static build opts in through `npm run build:static`
 // rather than the mode being switched globally.
 const nextConfig: NextConfig = {
+  // Directory-style output, so a case URL survives a refresh on any static
+  // host. Without it the export writes runs/<slug>.html and a plain server
+  // answers 404 for /runs/<slug> -- verified, not assumed.
+  trailingSlash: true,
   output: process.env.NEXT_OUTPUT === "export" ? "export" : "standalone",
 };
 

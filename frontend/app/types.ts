@@ -53,9 +53,25 @@ export type ResearchReport = {
   papers: Array<{
     id: string;
     title: string;
+    abstract: string;
     source: string;
+    url?: string | null;
     year?: number | null;
+    authors: string[];
+    doi?: string | null;
   }>;
+  created_at: string;
+  /** What produced the report. Absent on reports written before it existed. */
+  tool?: {
+    name: string;
+    version: string;
+    commit?: string | null;
+    provider?: string | null;
+    model?: string | null;
+    repository: string;
+    method_paper: string;
+    method_paper_note: string;
+  } | null;
 };
 
 export type ReportSummary = {

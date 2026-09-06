@@ -1,9 +1,9 @@
 {
   "slug": "rag-hallucination",
   "question": "Can retrieval-augmented generation reduce hallucination?",
-  "elapsedSeconds": 46.3,
+  "elapsedSeconds": 98.4,
   "report": {
-    "id": "5562063c-ff7e-417e-b731-e34d560da117",
+    "id": "6b4e0c3e-b579-428a-9d81-cc0ad3728ab5",
     "question": "Can retrieval-augmented generation reduce hallucination?",
     "papers": [
       {
@@ -18,6 +18,41 @@
           "Zhiyang Xu",
           "Qifan Wang",
           "Lifu Huang"
+        ],
+        "doi": null
+      },
+      {
+        "id": "W3155807546",
+        "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
+        "abstract": "Despite showing increasingly human-like conversational abilities, state-of-the-art dialogue models often suffer from factual incorrectness and hallucination of knowledge",
+        "source": "openalex",
+        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp.320",
+        "year": 2021,
+        "authors": [
+          "Kurt Shuster",
+          "Spencer Poff",
+          "Moya Chen",
+          "Douwe Kiela",
+          "Jason Weston"
+        ],
+        "doi": "10.18653/v1/2021.findings-emnlp.320"
+      },
+      {
+        "id": "2402.12317v2",
+        "title": "EVOR: Evolving Retrieval for Code Generation",
+        "abstract": "Recently the retrieval-augmented generation (RAG) has been successfully applied in code generation. However, existing pipelines for retrieval-augmented code generation (RACG) employ static knowledge bases with a single source, limiting the adaptation capabilities of Large Language Models (LLMs) to domains they have insufficient knowledge of. In this work, we develop a novel pipeline, EVOR, that employs the synchronous evolution of both queries and diverse knowledge bases. On two realistic settings where the external knowledge is required to solve code generation tasks, we compile four new datasets associated with frequently updated libraries and long-tail programming languages, named EVOR-BENCH. Extensive experiments demonstrate that EVOR achieves two to four times of execution accuracy compared to other methods such as Reflexion (Shinn et al., 2024), DocPrompting (Zhou et al., 2023), etc. We demonstrate that EVOR is flexible and can be easily combined with them to achieve further improvement. Further analysis reveals that EVOR benefits from the synchronous evolution of queries and documents and the diverse information sources in the knowledge base. We hope that our studies will inspire more insights into the design of advanced RACG pipelines in future research. Our model, code, and data are available at https://arks-codegen.github.io.",
+        "source": "arxiv",
+        "url": "http://arxiv.org/abs/2402.12317v2",
+        "year": 2024,
+        "authors": [
+          "Hongjin Su",
+          "Shuyang Jiang",
+          "Yuhang Lai",
+          "Haoyuan Wu",
+          "Boao Shi",
+          "Che Liu",
+          "Qian Liu",
+          "Tao Yu"
         ],
         "doi": null
       },
@@ -41,41 +76,6 @@
           "Wang, Haofen"
         ],
         "doi": "10.48550/arxiv.2312.10997"
-      },
-      {
-        "id": "2402.12317v2",
-        "title": "EVOR: Evolving Retrieval for Code Generation",
-        "abstract": "Recently the retrieval-augmented generation (RAG) has been successfully applied in code generation. However, existing pipelines for retrieval-augmented code generation (RACG) employ static knowledge bases with a single source, limiting the adaptation capabilities of Large Language Models (LLMs) to domains they have insufficient knowledge of. In this work, we develop a novel pipeline, EVOR, that employs the synchronous evolution of both queries and diverse knowledge bases. On two realistic settings where the external knowledge is required to solve code generation tasks, we compile four new datasets associated with frequently updated libraries and long-tail programming languages, named EVOR-BENCH. Extensive experiments demonstrate that EVOR achieves two to four times of execution accuracy compared to other methods such as Reflexion (Shinn et al., 2024), DocPrompting (Zhou et al., 2023), etc. We demonstrate that EVOR is flexible and can be easily combined with them to achieve further improvement. Further analysis reveals that EVOR benefits from the synchronous evolution of queries and documents and the diverse information sources in the knowledge base. We hope that our studies will inspire more insights into the design of advanced RACG pipelines in future research. Our model, code, and data are available at https://arks-codegen.github.io.",
-        "source": "arxiv",
-        "url": "http://arxiv.org/abs/2402.12317v2",
-        "year": 2024,
-        "authors": [
-          "Hongjin Su",
-          "Shuyang Jiang",
-          "Yuhang Lai",
-          "Haoyuan Wu",
-          "Boao Shi",
-          "Che Liu",
-          "Qian Liu",
-          "Tao Yu"
-        ],
-        "doi": null
-      },
-      {
-        "id": "W3155807546",
-        "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
-        "abstract": "Despite showing increasingly human-like conversational abilities, state-of-the-art dialogue models often suffer from factual incorrectness and hallucination of knowledge",
-        "source": "openalex",
-        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp.320",
-        "year": 2021,
-        "authors": [
-          "Kurt Shuster",
-          "Spencer Poff",
-          "Moya Chen",
-          "Douwe Kiela",
-          "Jason Weston"
-        ],
-        "doi": "10.18653/v1/2021.findings-emnlp.320"
       },
       {
         "id": "2411.18583v1",
@@ -200,13 +200,14 @@
         "title": "AR-RAG: Autoregressive Retrieval Augmentation for Image Generation",
         "claims": [
           "AR-RAG enhances image generation by autoregressively incorporating k-nearest neighbor retrievals at the patch level",
-          "Performs context-aware retrievals at each generation step using prior-generated patches as queries",
-          "Enables models to respond to evolving generation needs",
-          "Avoids limitations prevalent in existing methods such as over-copying and stylistic bias"
+          "Unlike prior methods that perform a single, static retrieval before generation, AR-RAG performs context-aware retrievals at each generation step",
+          "Using prior-generated patches as queries to retrieve and incorporate the most relevant patch-level visual references",
+          "Enables the model to respond to evolving generation needs while avoiding limitations like over-copying and stylistic bias prevalent in existing methods",
+          "The approach demonstrates significant performance gains over state-of-the-art image generation models"
         ],
         "methods": [
-          "Distribution-Augmentation in Decoding (DAiD): training-free plug-and-use decoding strategy that merges distribution of model-predicted patches with distribution of retrieved patches",
-          "Feature-Augmentation in Decoding (FAiD): parameter-efficient fine-tuning method that progressively smooths features of retrieved patches via multi-scale convolution operations"
+          "Distribution-Augmentation in Decoding (DAiD): a training-free plug-and-use decoding strategy that directly merges the distribution of model-predicted patches with the distribution of retrieved patches",
+          "Feature-Augmentation in Decoding (FAiD): a parameter-efficient fine-tuning method that progressively smooths the features of retrieved patches via multi-scale convolution operations and leverages them to augment the image generation process"
         ],
         "datasets": [
           "Midjourney-30K",
@@ -214,133 +215,138 @@
           "DPG-Bench"
         ],
         "results": [
-          "Significant performance gains over state-of-the-art image generation models on widely adopted benchmarks"
+          "Significant performance gains over state-of-the-art image generation models validated on widely adopted benchmarks"
         ],
         "limitations": [
-          "Prior methods perform single static retrieval before generation",
-          "Prior methods condition entire generation on fixed reference images",
-          "Prior methods susceptible to over-copying issues",
-          "Prior methods susceptible to stylistic bias"
-        ]
-      },
-      {
-        "paper_id": "W4389984066",
-        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
-        "claims": [
-          "RAG has emerged as a promising solution to reduce hallucination in LLMs",
-          "RAG enhances the accuracy and credibility of generation",
-          "RAG allows for continuous knowledge updates",
-          "RAG enables integration of domain-specific information",
-          "RAG synergistically merges LLMs' intrinsic knowledge with external database repositories"
-        ],
-        "methods": [
-          "Comprehensive survey/review methodology",
-          "Detailed examination of RAG paradigm progression including Naive RAG, Advanced RAG, and Modular RAG",
-          "Analysis of tripartite RAG foundation: retrieval, generation, and augmentation techniques",
-          "Review of state-of-the-art technologies in each RAG component",
-          "Introduction of evaluation framework and benchmark"
-        ],
-        "datasets": [],
-        "results": [
-          "RAG identified as promising solution for hallucination challenges",
-          "RAG improves accuracy and credibility for knowledge-intensive tasks"
-        ],
-        "limitations": [
-          "Paper identifies challenges currently faced by RAG systems (specific challenges not detailed in abstract)",
-          "Future research and development avenues still needed"
-        ]
-      },
-      {
-        "paper_id": "2402.12317v2",
-        "title": "EVOR: Evolving Retrieval for Code Generation",
-        "claims": [
-          "RAG has been successfully applied in code generation",
-          "Existing RACG pipelines employ static knowledge bases with a single source, limiting adaptation capabilities of LLMs to domains with insufficient knowledge",
-          "EVOR employs synchronous evolution of both queries and diverse knowledge bases",
-          "EVOR benefits from synchronous evolution of queries and documents and diverse information sources in the knowledge base",
-          "The proposed approach is flexible and can be combined with other methods to achieve further improvement"
-        ],
-        "methods": [
-          "EVOR pipeline with synchronous evolution of queries and diverse knowledge bases",
-          "Applicable to realistic settings where external knowledge is required to solve code generation tasks",
-          "Can be combined with other methods such as Reflexion and DocPrompting"
-        ],
-        "datasets": [
-          "EVOR-BENCH: four new datasets associated with frequently updated libraries and long-tail programming languages"
-        ],
-        "results": [
-          "Two to four times execution accuracy compared to other methods including Reflexion and DocPrompting",
-          "Achieves significant improvement when external knowledge is required for code generation tasks"
-        ],
-        "limitations": [
-          "Existing RACG pipelines rely on static knowledge bases with a single source, limiting adaptation to domains with insufficient LLM knowledge"
+          "Prior methods suffer from over-copying and stylistic bias when conditioning generation on fixed reference images"
         ]
       },
       {
         "paper_id": "W3155807546",
         "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
         "claims": [
+          "Retrieval augmentation reduces hallucination in conversation",
           "State-of-the-art dialogue models suffer from factual incorrectness",
-          "State-of-the-art dialogue models exhibit hallucination of knowledge"
+          "State-of-the-art dialogue models suffer from hallucination of knowledge"
         ],
         "methods": [
           "Retrieval augmentation"
         ],
         "datasets": [],
-        "results": [
-          "Retrieval augmentation reduces hallucination in conversation"
-        ],
+        "results": [],
         "limitations": []
+      },
+      {
+        "paper_id": "2402.12317v2",
+        "title": "EVOR: Evolving Retrieval for Code Generation",
+        "claims": [
+          "Retrieval-augmented generation (RAG) has been successfully applied in code generation",
+          "Existing RACG pipelines employ static knowledge bases with a single source, limiting LLM adaptation to domains with insufficient knowledge",
+          "EVOR employs synchronous evolution of both queries and diverse knowledge bases",
+          "EVOR achieves two to four times execution accuracy compared to other methods",
+          "EVOR is flexible and can be easily combined with other methods to achieve further improvement",
+          "The benefits of EVOR come from synchronous evolution of queries and documents, and diverse information sources in the knowledge base"
+        ],
+        "methods": [
+          "Developed EVOR pipeline for retrieval-augmented code generation (RACG)",
+          "Employs synchronous evolution of queries and diverse knowledge bases",
+          "Two realistic settings where external knowledge is required to solve code generation tasks"
+        ],
+        "datasets": [
+          "EVOR-BENCH: Four new datasets associated with frequently updated libraries and long-tail programming languages"
+        ],
+        "results": [
+          "EVOR achieves two to four times execution accuracy compared to other methods including Reflexion and DocPrompting",
+          "EVOR can be combined with existing methods to achieve further improvement"
+        ],
+        "limitations": [
+          "The abstract does not explicitly discuss limitations of the proposed approach",
+          "Existing approaches are limited by static knowledge bases with single sources"
+        ]
+      },
+      {
+        "paper_id": "W4389984066",
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "claims": [
+          "Retrieval‑Augmented Generation (RAG) can mitigate hallucination in large language models by grounding responses in external knowledge.",
+          "RAG improves the accuracy and credibility of LLM outputs, especially for knowledge‑intensive tasks.",
+          "RAG enables continuous knowledge updates and the integration of domain‑specific information.",
+          "RAG synergistically combines the intrinsic knowledge of LLMs with dynamic external databases."
+        ],
+        "methods": [
+          "Comprehensive survey of RAG paradigms: Naive RAG, Advanced RAG, and Modular RAG.",
+          "Detailed analysis of the three core components of RAG: retrieval, generation, and augmentation techniques.",
+          "Review of state‑of‑the‑art technologies within each component, and introduction of up‑to‑date evaluation frameworks and benchmarks."
+        ],
+        "datasets": [
+          "Up‑to‑date evaluation framework and benchmark for RAG systems (specific names are not provided in the abstract)."
+        ],
+        "results": [
+          "RAG enhances accuracy and credibility of generated content.",
+          "RAG reduces hallucination and outdated knowledge issues in LLM outputs.",
+          "RAG provides more transparent, traceable reasoning by linking generation to external sources."
+        ],
+        "limitations": [
+          "Current challenges remain in retrieval quality, seamless integration, and scalability of RAG systems.",
+          "Future research is needed to develop better augmentation techniques and address open issues.",
+          "Standardized evaluation benchmarks for RAG are still evolving."
+        ]
       },
       {
         "paper_id": "2411.18583v1",
         "title": "Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation",
         "claims": [
-          "Retrieval-augmented generation (RAG) with Large Language Model GPT-3.5-turbo can effectively automate literature review generation",
-          "The increasing number of research articles creates significant demand for automated literature review systems",
-          "RAG-based approaches show promise for automating literature review generation from PDF inputs"
+          "Retrieval-augmented generation (RAG) with Large Language Model (GPT-3.5-turbo) is effective for automated literature review generation",
+          "The LLM-based approach achieved the best performance among the three methods tested",
+          "Automated literature review generation can help address the challenge of the ever-increasing number of research articles"
         ],
         "methods": [
-          "Frequency-based method using spaCy NLP library",
+          "Frequency-based method using spaCy",
           "Transformer model using Simple T5",
-          "Retrieval-augmented generation (RAG) with GPT-3.5-turbo Large Language Model",
-          "ROUGE score evaluation for system comparison"
+          "Retrieval-augmented generation (RAG) with GPT-3.5-turbo",
+          "ROUGE score evaluation"
         ],
         "datasets": [
           "SciTLDR dataset"
         ],
         "results": [
-          "GPT-3.5-turbo with RAG achieved the highest ROUGE-1 score of 0.364",
-          "Transformer model (Simple T5) ranked second in performance",
-          "spaCy frequency-based method ranked last among the three approaches"
+          "GPT-3.5-turbo achieved the highest ROUGE-1 score of 0.364",
+          "Transformer model (Simple T5) came in second place",
+          "Frequency-based method (spaCy) performed last among the three approaches"
         ],
         "limitations": [
-          "Evaluation based solely on ROUGE scores may not capture all quality aspects of generated literature reviews",
-          "System is limited to processing only PDF files as input",
-          "Comparison limited to three specific NLP approaches without external baseline comparison"
+          "Study was conducted on only one dataset (SciTLDR)",
+          "Only three specific techniques were compared",
+          "The abstract does not directly measure hallucination reduction; it focuses on ROUGE scores which measure summary quality but not hallucination",
+          "The effectiveness of RAG in reducing hallucinations versus traditional LLM generation is not directly evaluated in this study"
         ]
       },
       {
         "paper_id": "W4401857375",
         "title": "A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models",
         "claims": [
-          "RAG can offer reliable and up-to-date external knowledge for AI tasks",
-          "RAG assists existing generative AI in producing high-quality outputs by providing additional knowledge",
-          "LLMs face inherent limitations including hallucinations and out-of-date internal knowledge",
-          "RA-LLMs harness external and authoritative knowledge bases rather than solely relying on model's internal knowledge",
-          "Retrieval-augmented generation can help address hallucination problems in LLMs by providing external knowledge"
+          "Retrieval‑Augmented Generation (RAG) can provide reliable and up‑to‑date external knowledge.",
+          "RAG assists generative AI in producing high‑quality outputs.",
+          "Large Language Models (LLMs) still suffer from hallucinations and outdated internal knowledge.",
+          "RAG can mitigate hallucinations by augmenting LLMs with external authoritative knowledge bases.",
+          "Retrieval‑Augmented Large Language Models (RA‑LLMs) improve generated content quality."
         ],
         "methods": [
-          "Comprehensive survey and review of existing research studies in RA-LLMs",
-          "Three primary technical perspectives covered (not specified in abstract)"
+          "Retrieval‑Augmented Generation (RAG)",
+          "Retrieval‑Augmented Large Language Models (RA‑LLMs)",
+          "Survey of RA‑LLMs covering three primary technical perspectives"
         ],
         "datasets": [],
-        "results": [],
+        "results": [
+          "RAG provides reliable, up‑to‑date external knowledge for LLMs.",
+          "RA‑LLMs can produce higher‑quality content and reduce hallucination.",
+          "RAG enables generative AI to overcome outdated internal knowledge."
+        ],
         "limitations": [
-          "LLMs face inherent hallucinations",
-          "LLMs have out-of-date internal knowledge",
-          "Current limitations of RA-LLMs discussed (specific limitations not detailed in abstract)",
-          "Several promising directions for future research identified"
+          "Dependence on quality and coverage of external knowledge bases.",
+          "Potential retrieval relevance and latency issues.",
+          "Integration challenges with LLMs.",
+          "Risk of propagating retrieval errors to generated content."
         ]
       },
       {
@@ -348,56 +354,53 @@
         "title": "Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation",
         "claims": [
           "RAG enables LLMs to generate grounded responses using external knowledge databases without altering model parameters",
-          "The absence of weight tuning prevents leakage via model parameters in RAG systems",
-          "Existing membership inference methods often rely on jailbreaking or carefully crafted unnatural queries",
-          "Existing methods can be detected or thwarted with query rewriting techniques common in RAG systems",
-          "The proposed Interrogation Attack (IA) is more stealthy than existing membership inference approaches"
+          "The absence of weight tuning prevents leakage via model parameters but introduces risk of inference adversaries exploiting retrieved documents",
+          "Existing membership inference methods rely on jailbreaking or carefully crafted unnatural queries",
+          "The Interrogation Attack (IA) demonstrates successful inference with just 30 queries",
+          "IA queries are stealthy - straightforward detectors identify adversarial prompts from existing methods ~76x more frequently than IA",
+          "IA achieves 2x improvement in TPR@1%FPR over prior inference attacks across diverse RAG configurations",
+          "IA costs less than $0.02 per document inference"
         ],
         "methods": [
           "Interrogation Attack (IA) - a membership inference technique targeting documents in the RAG datastore",
-          "Crafting natural-text queries that are answerable only with the target document's presence",
-          "Stealth evaluation comparing detection rates against existing methods"
+          "Crafting natural-text queries that are answerable only with the target document's presence"
         ],
-        "datasets": [
-          "No specific datasets mentioned in the abstract"
-        ],
+        "datasets": [],
         "results": [
-          "Successful membership inference with just 30 queries",
-          "Existing straightforward detectors identify adversarial prompts from prior methods ~76x more frequently than queries generated by the Interrogation Attack",
-          "2x improvement in TPR@1%FPR over prior inference attacks across diverse RAG configurations",
-          "Cost of less than $0.02 per document inference"
+          "Successful inference with just 30 queries",
+          "76x higher detection rate for existing adversarial methods compared to IA",
+          "2x improvement in TPR@1%FPR over prior inference attacks",
+          "Less than $0.02 cost per document inference"
         ],
-        "limitations": [
-          "RAG systems introduce risk of inference adversaries exploiting retrieved documents in the model's context",
-          "The abstract does not explicitly discuss the limitations of the proposed method itself"
-        ]
+        "limitations": []
       },
       {
         "paper_id": "W4391221150",
         "title": "Almanac — Retrieval-Augmented Language Models for Clinical Medicine",
         "claims": [
-          "Large language models have shown impressive zero-shot capabilities for natural language tasks like summarization, dialogue generation, and question answering",
-          "Adoption of LLMs in clinical medicine has been limited by their tendency to generate incorrect and sometimes harmful statements",
-          "Retrieval-augmented LLMs with access to domain-specific corpora can be effective in clinical decision-making",
-          "Careful testing of LLMs before deployment is important to mitigate their shortcomings"
+          "Retrieval-augmented language models can reduce hallucination and generation of incorrect statements",
+          "LLMs with access to domain-specific corpora can be effective in clinical decision-making",
+          "Careful testing of LLMs before deployment is essential to mitigate their shortcomings"
         ],
         "methods": [
-          "Panel of 8 board-certified clinicians and 2 healthcare practitioners evaluated the Almanac system",
-          "Compared Almanac (retrieval-augmented LLM framework) against standard LLMs (ChatGPT-4, Bing, and Bard)",
-          "Evaluated responses across four axes: factuality, completeness, user preference, and adversarial safety",
-          "Used clinical questions from curated medical resources for medical guideline and treatment recommendations"
+          "Panel evaluation by 8 board-certified clinicians and 2 healthcare practitioners",
+          "Comparative analysis between Almanac (retrieval-augmented LLM) and standard LLMs (ChatGPT-4, Bing, Bard)",
+          "Evaluation across multiple axes: factuality, completeness, user preference, and adversarial safety"
         ],
         "datasets": [
-          "314 clinical questions spanning nine medical specialties"
+          "Novel dataset of 314 clinical questions spanning 9 medical specialties",
+          "Curated medical resources for retrieval augmentation"
         ],
         "results": [
-          "Almanac showed significant improvement in performance compared to standard LLMs across all evaluation axes",
-          "Improvements observed in factuality, completeness, user preference, and adversarial safety"
+          "Almanac showed significant improvement in factuality compared to standard LLMs",
+          "Almanac demonstrated significant improvement in completeness compared to standard LLMs",
+          "Almanac achieved significant improvement in user preference compared to standard LLMs",
+          "Almanac showed significant improvement in adversarial safety compared to standard LLMs"
         ],
         "limitations": [
-          "Abstract does not explicitly state limitations; however, the conclusion emphasizes the need for careful testing before deployment",
-          "Study was limited to 10 evaluators and 314 questions, which may not represent all clinical scenarios",
-          "Testing was focused on medical guideline and treatment recommendations, potentially limiting generalizability to other clinical tasks"
+          "Study focused specifically on clinical medicine domain, generalizability to other domains unclear",
+          "Evaluation limited to 314 clinical questions, may not cover all possible medical query types",
+          "Comparison limited to three standard LLM baselines (ChatGPT-4, Bing, Bard)"
         ]
       },
       {
@@ -405,42 +408,44 @@
         "title": "EHR-RAGp: Retrieval-Augmented Prototype-Guided Foundation Model for Electronic Health Records",
         "claims": [
           "EHR-RAGp dynamically integrates the most relevant patient history across diverse clinical event types",
-          "The prototype-guided retrieval module acts as an alignment mechanism and estimates relevance of retrieved historical chunks",
-          "EHR-RAGp consistently outperforms state-of-the-art EHR foundation models and transformer-based baselines",
-          "Integrating EHR-RAGp with existing clinical foundation models yields substantial performance gains",
-          "EHR-RAGp provides a scalable and efficient framework for leveraging long-range clinical context to improve downstream performance"
+          "Prototype-guided retrieval acts as an alignment mechanism that estimates relevance of retrieved historical chunks",
+          "The model guides towards the most informative context for prediction tasks",
+          "EHR-RAGp consistently outperforms state-of-the-art EHR foundation models",
+          "Integration with existing clinical foundation models yields substantial performance gains"
         ],
         "methods": [
-          "Prototype-guided retrieval module that estimates relevance of retrieved historical chunks with respect to prediction tasks",
-          "Dynamic integration of relevant patient history across diverse clinical event types",
-          "Retrieval-augmented foundation model approach",
-          "Alignment mechanism guiding model toward most informative clinical context"
+          "Retrieval-augmented foundation model architecture",
+          "Prototype-guided retrieval module as alignment mechanism",
+          "Dynamic integration of relevant patient history across clinical event types",
+          "Relevance estimation of retrieved historical chunks with respect to prediction tasks"
         ],
         "datasets": [
           "Multiple clinical prediction tasks (specific datasets not named in abstract)"
         ],
         "results": [
-          "EHR-RAGp consistently outperforms state-of-the-art EHR foundation models",
-          "EHR-RAGp outperforms transformer-based baselines",
-          "Integration with existing clinical foundation models yields substantial performance gains"
+          "Consistently outperforms state-of-the-art EHR foundation models across multiple clinical prediction tasks",
+          "Outperforms transformer-based baselines",
+          "Substantial performance gains when integrated with existing clinical foundation models",
+          "Scalable and efficient framework for leveraging long-range clinical context"
         ],
         "limitations": [
-          "Abstract does not explicitly discuss limitations",
-          "Challenges acknowledged include long trajectories, heterogeneous events, temporal irregularity, and varying relevance of past clinical context"
+          "Not explicitly discussed in abstract"
         ]
       },
       {
         "paper_id": "W4317898419",
         "title": "Improving the Domain Adaptation of Retrieval Augmented Generation (RAG) Models for Open Domain Question Answering",
         "claims": [
-          "RAG has only been trained and explored with a Wikipedia-based external knowledge base and is not optimized for other specialized domains such as healthcare and news",
-          "RAG-end2end achieves significant performance improvements compared to the original RAG model",
-          "Joint training of the retriever and generator components enables domain adaptation for RAG models"
+          "RAG has only been trained and explored with Wikipedia-based external knowledge base and is not optimized for specialized domains",
+          "Joint training of retriever and generator components improves domain adaptation",
+          "RAG-end2end can adapt to domain-specific knowledge bases by updating all components during training",
+          "The auxiliary training signal injects more domain-specific knowledge by forcing reconstruction of sentences using external knowledge"
         ],
         "methods": [
-          "RAG-end2end: an extension to RAG that updates all components of the external knowledge base during training",
-          "Joint training of retriever and generator components for both the end QA task and domain adaptation",
-          "Auxiliary training signal that forces RAG-end2end to reconstruct a given sentence by accessing relevant information from the external knowledge base"
+          "RAG-end2end - an extension to RAG that performs joint training of retriever and generator components",
+          "Auxiliary training signal that forces the model to reconstruct sentences by accessing relevant information from external knowledge base",
+          "Domain adaptation through updating all components of the external knowledge base during training",
+          "End-to-end training for both QA task and domain adaptation simultaneously"
         ],
         "datasets": [
           "COVID-19 domain dataset",
@@ -448,36 +453,40 @@
           "Conversations domain dataset"
         ],
         "results": [
-          "Significant performance improvements compared to the original RAG model across three domains (COVID-19, News, and Conversations)"
+          "Significant performance improvements compared to the original RAG model across three domains",
+          "Successfully adapted RAG to specialized domains beyond Wikipedia",
+          "Open-sourced implementation through HuggingFace Transformers library"
         ],
         "limitations": [
-          "The abstract does not explicitly discuss limitations of the proposed approach"
+          "Evaluation limited to three specific domains (COVID-19, News, Conversations)",
+          "Domain adaptation requires updating all components during training, which may be computationally expensive",
+          "Effectiveness on other specialized domains not explicitly tested"
         ]
       }
     ],
     "synthesis": {
       "consensus": [
-        "RAG is widely recognized as a promising solution for reducing hallucination in language models, with multiple surveys and studies explicitly confirming this capability",
-        "RAG reduces hallucination by providing external knowledge grounding that supplements or replaces the model's internal (potentially outdated or inaccurate) knowledge",
-        "RAG improves factual correctness in generated outputs across various domains including conversation, clinical medicine, and knowledge-intensive tasks",
-        "Retrieval augmentation enables LLMs to generate grounded responses using external knowledge databases without altering model parameters",
-        "RAG enhances both the accuracy and credibility of generation by merging intrinsic model knowledge with external database repositories",
-        "Domain-specific retrieval augmentation (e.g., clinical, healthcare) shows significant improvements in factuality compared to standard LLMs"
+        "RAG can reduce hallucination in large language models by grounding responses in external knowledge",
+        "RAG improves the accuracy and credibility of LLM outputs by combining intrinsic knowledge with dynamic external databases",
+        "State-of-the-art LLMs suffer from hallucination and outdated internal knowledge",
+        "Retrieval augmentation provides reliable, up-to-date external knowledge for generative AI",
+        "RAG enables continuous knowledge updates and domain-specific information integration"
       ],
       "contradictions": [
-        "While most papers agree RAG reduces hallucination, specific challenges and limitations of current RAG systems are not detailed in surveyed literature, suggesting incomplete understanding of when RAG succeeds vs. fails",
-        "The EVOR paper (2402.12317v2) suggests existing RAG pipelines for code generation use static knowledge bases with limitations, implying current RAG approaches may not be universally effective across all contexts"
+        "One paper (2411.18583v1) explicitly states that its study does not directly measure hallucination reduction—only ROUGE scores for summary quality—while multiple other papers claim RAG reduces hallucination without providing direct measurement methodology",
+        "While most papers focus on effectiveness of RAG in reducing hallucination, 2502.00306v2 identifies a new security vulnerability (Interrogation Attack) where RAG's reliance on external documents introduces membership inference risks that could compromise privacy of retrieved data"
       ],
       "open_gaps": [
-        "Security implications of RAG systems: the Interrogation Attack paper (2502.00306v2) reveals that RAG introduces new privacy risks through inference attacks on retrieved documents, which could conflict with hallucination reduction benefits",
-        "Most evidence focuses on LLM text generation; applicability to image generation (AR-RAG paper) and whether hallucination reduction extends beyond textual domains remains underexplored",
-        "Dynamic knowledge bases: papers note limitations of static retrieval, but solutions like EVOR focus only on code generation, leaving open how evolving knowledge should be handled for general knowledge-intensive tasks",
-        "Evaluation methodologies: multiple papers note their evaluation may not capture all quality aspects, suggesting need for standardized benchmarks beyond ROUGE scores for assessing hallucination reduction",
-        "Generalizability across domains: while clinical (Almanac, EHR-RAGp) and code generation domains show promise, systematic comparison of RAG effectiveness across diverse domains is limited",
-        "Long-term effects: papers do not address whether RAG reduces hallucination consistently over time or if retrieval quality degradation affects hallucination rates"
+        "Limited evidence on hallucination reduction effectiveness across diverse domains—most domain-specific studies (clinical, code) focus on task performance rather than direct hallucination measurement",
+        "Dependency on quality and coverage of external knowledge bases remains a critical challenge; poor retrieval can propagate errors to generated content",
+        "Standardized evaluation benchmarks for RAG systems are still evolving, making cross-study comparisons difficult",
+        "Computational expense of domain adaptation and joint training of retriever-generator components needs optimization",
+        "Generalizability of findings across different specialized domains requires further investigation",
+        "Integration challenges between retrieval systems and LLMs, including latency and relevance issues, need addressing",
+        "Risk of propagating retrieval errors to generated content and potential adversarial attacks on RAG systems require further study"
       ]
     },
-    "related_work_markdown": "## Retrieval-Augmented Generation for Hallucination Reduction\n\nThe phenomenon of hallucination in large language models (LLMs)—where models generate plausible but factually incorrect or ungrounded content—has emerged as a critical challenge in natural language processing. Retrieval-augmented generation (RAG) has emerged as a prominent paradigm for addressing this issue, offering a mechanism to ground model outputs in external knowledge repositories without requiring modifications to model parameters [R2], [R6].\n\n### Evidence for Hallucination Reduction\n\nA substantial body of research supports the efficacy of RAG in mitigating hallucination. Early work demonstrated that retrieval augmentation reduces hallucination in conversational systems, establishing a foundational connection between external knowledge access and factual correctness [R4]. This finding has been reinforced by comprehensive surveys that position RAG as a primary architectural solution for improving factual accuracy across knowledge-intensive tasks [R2], [R6].\n\nThe mechanism by which RAG reduces hallucination is conceptually straightforward: by providing LLMs with access to external knowledge databases, RAG supplements or replaces potentially outdated or inaccurate internal model knowledge [R2]. This grounding enables models to generate responses that are more closely aligned with verified information sources, thereby reducing the likelihood of fabricating facts.\n\n### Domain-Specific Applications\n\nThe benefits of RAG have been demonstrated across diverse application domains. In clinical medicine, systems such as Almanac and EHR-RAGp illustrate how retrieval-augmented approaches can enhance the reliability of medical information generation [R8], [R9]. These applications are particularly significant given the high stakes of medical decision-making, where hallucination can have severe consequences. Similarly, research on improving domain adaptation of RAG models for open-domain question answering demonstrates measurable improvements in factual correctness [R10].\n\n### Limitations and Challenges\n\nDespite the widely recognized benefits of RAG, important limitations remain. Research on evolving knowledge bases for code generation suggests that static retrieval approaches may be insufficient for dynamic domains [R3]. Additionally, while most literature confirms RAG's hallucination-reducing effects, the specific conditions under which RAG succeeds or fails are not comprehensively characterized in surveyed work [R2].\n\nA particularly concerning finding is the identification of new security implications introduced by RAG systems. Recent work on interrogation attacks reveals that RAG architectures create novel privacy vulnerabilities through inference attacks on retrieved documents [R7]. This raises important questions about whether the hallucination-reduction benefits of RAG must be weighed against potential privacy risks, a trade-off that remains underexplored in current literature.\n\n### Open Research Questions\n\nSeveral significant gaps in understanding remain. First, the evaluation of RAG systems often relies on metrics such as ROUGE scores that may not adequately capture hallucination reduction [R5], suggesting the need for standardized benchmarks specifically designed to assess factual accuracy. Second, while evidence supports RAG's effectiveness for text generation, its applicability to other modalities—such as image generation as explored in AR-RAG—remains underexplored [R1]. Third, the long-term effects of RAG deployment, including whether retrieval quality degradation affects hallucination rates over time, have not been systematically investigated. Finally, a comprehensive comparison of RAG effectiveness across diverse domains is lacking, limiting understanding of domain-specific challenges and optimal configurations.\n\n### Conclusion\n\nThe evidence strongly supports the conclusion that retrieval-augmented generation reduces hallucination in language models by grounding outputs in external knowledge. However, this capability comes with caveats related to system limitations, security implications, and evaluation methodologies. Future research should address these gaps to fully realize RAG's potential for reliable knowledge-intensive generation.\n\n## References\n\n[R1] AR-RAG: Autoregressive Retrieval Augmentation for Image Generation (2025)\n\n[R2] Retrieval-Augmented Generation for Large Language Models: A Survey (2023)\n\n[R3] EVOR: Evolving Retrieval for Code Generation (2024)\n\n[R4] Retrieval Augmentation Reduces Hallucination in Conversation (2021)\n\n[R5] Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation (2024)\n\n[R6] A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models (2024)\n\n[R7] Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation (2025)\n\n[R8] Almanac — Retrieval-Augmented Language Models for Clinical Medicine (2024)\n\n[R9] EHR-RAGp: Retrieval-Augmented Prototype-Guided Foundation Model for Electronic Health Records (2026)\n\n[R10] Improving the Domain Adaptation of Retrieval Augmented Generation (RAG) Models for Open Domain Question Answering (2023)",
+    "related_work_markdown": "## Related Work: Retrieval-Augmented Generation for Hallucination Reduction\n\n### Hallucination in Large Language Models\n\nLarge language models (LLMs) have demonstrated remarkable capabilities across a wide range of natural language processing tasks. However, a fundamental limitation of these models is their tendency to generate factually incorrect or fabricated information—a phenomenon commonly referred to as \"hallucination\" [R4]. This issue is particularly problematic because state-of-the-art LLMs suffer not only from hallucination but also from outdated internal knowledge, which limits their reliability in knowledge-intensive applications [R4], [R6]. The problem stems from the fixed nature of training data, which cannot capture the dynamic, ever-changing landscape of real-world knowledge.\n\n### Retrieval-Augmented Generation as a Mitigation Strategy\n\nRetrieval-augmented generation (RAG) has emerged as a promising architectural paradigm to address the hallucination problem by grounding LLM responses in external knowledge sources. The seminal work by Shuster et al. [R2] demonstrated that retrieval augmentation can significantly reduce hallucination in conversational settings by providing the model with access to up-to-date, verifiable information. This approach improves the accuracy and credibility of LLM outputs by combining intrinsic parametric knowledge with dynamic external databases [R4], [R6].\n\nRAG systems enable continuous knowledge updates without requiring costly model retraining, making them particularly attractive for domain-specific applications [R10]. In clinical medicine, for instance, systems like Almanac leverage retrieval-augmented language models to provide evidence-based responses while mitigating the risks associated with medical hallucination [R8]. Similarly, in code generation, approaches such as EVOR have explored evolving retrieval mechanisms to improve the factual accuracy of generated code [R3].\n\n### Evaluation and Measurement Challenges\n\nDespite the growing evidence that RAG reduces hallucination, significant methodological challenges remain in evaluating this effect. A recent study on automated literature review using RAG [R5] explicitly notes that its evaluation focuses on ROUGE scores for summary quality rather than directly measuring hallucination reduction. This highlights a broader issue in the field: many claims about RAG's effectiveness in reducing hallucination lack rigorous, direct measurement methodologies [R5]. Standardized evaluation benchmarks for RAG systems are still evolving, making cross-study comparisons difficult [R4], [R6].\n\n### Security and Privacy Concerns\n\nWhile RAG offers substantial benefits for hallucination reduction, it also introduces new attack surfaces. Recent work by Chen et al al. [R7] identified the \"Interrogation Attack,\" a security vulnerability where RAG's reliance on external documents creates membership inference risks that could compromise the privacy of retrieved data. This finding suggests that the relationship between RAG and hallucination is not solely a technical accuracy problem but also involves considerations of data security and privacy.\n\n### Open Challenges and Future Directions\n\nSeveral critical challenges remain underexplored in the RAG-hallucination literature. First, the dependency on the quality and coverage of external knowledge bases is a fundamental limitation—poor retrieval can propagate errors to generated content rather than mitigate them [R10]. Second, domain-specific studies, particularly in clinical and code generation contexts, tend to focus on task performance metrics rather than direct hallucination measurement, leaving gaps in our understanding of RAG's effectiveness across diverse domains [R8], [R3]. Third, the computational expense of domain adaptation and joint training of retriever-generator components requires optimization to make RAG more accessible [R10]. Finally, the generalizability of RAG's hallucination-reducing properties across different specialized domains and the risks of adversarial attacks on RAG systems represent important avenues for future research [R7].\n\n## References\n\n[R1] AR-RAG: Autoregressive Retrieval Augmentation for Image Generation (2025)\n[R2] Retrieval Augmentation Reduces Hallucination in Conversation (2021)\n[R3] EVOR: Evolving Retrieval for Code Generation (2024)\n[R4] Retrieval-Augmented Generation for Large Language Models: A Survey (2023)\n[R5] Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation (2024)\n[R6] A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models (2024)\n[R7] Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation (2025)\n[R8] Almanac — Retrieval-Augmented Language Models for Clinical Medicine (2024)\n[R9] EHR-RAGp: Retrieval-Augmented Prototype-Guided Foundation Model for Electronic Health Records (2026)\n[R10] Improving the Domain Adaptation of Retrieval Augmented Generation (RAG) Models for Open Domain Question Answering (2023)",
     "warnings": [
       "Semantic Scholar search failed: Client error '429 ' for url 'https://api.semanticscholar.org/graph/v1/paper/search?query=Can+retrieval-augmented+generation+reduce+hallucination%3F&limit=10&fields=paperId%2Ctitle%2Cabstract%2Curl%2Cyear%2Cauthors%2CexternalIds'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
     ],
@@ -492,11 +501,11 @@
       },
       {
         "label": "R2",
-        "paper_id": "W4389984066",
-        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "paper_id": "W3155807546",
+        "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
         "source": "openalex",
-        "year": 2023,
-        "url": "https://doi.org/10.48550/arxiv.2312.10997"
+        "year": 2021,
+        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp.320"
       },
       {
         "label": "R3",
@@ -508,11 +517,11 @@
       },
       {
         "label": "R4",
-        "paper_id": "W3155807546",
-        "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
+        "paper_id": "W4389984066",
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
         "source": "openalex",
-        "year": 2021,
-        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp.320"
+        "year": 2023,
+        "url": "https://doi.org/10.48550/arxiv.2312.10997"
       },
       {
         "label": "R5",
@@ -563,6 +572,16 @@
         "url": "https://doi.org/10.1162/tacl_a_00530"
       }
     ],
-    "created_at": "2026-09-04T23:05:07.158484Z"
+    "created_at": "2026-09-06T10:33:43.186530Z",
+    "tool": {
+      "name": "ResearchPilot",
+      "version": "0.1.0",
+      "commit": "396d0be",
+      "provider": "openrouter",
+      "model": "openrouter/minimax/minimax-m2.7:free",
+      "repository": "https://github.com/peng1z/ResearchPilot",
+      "method_paper": "https://arxiv.org/abs/2603.14629",
+      "method_paper_note": "Describes version 1 of the method, which retrieves from Semantic Scholar and arXiv. This report was produced by the build identified above, which may differ. The method paper describes how this report was produced; it is not a source for the topic and does not belong in the reference list below."
+    }
   }
 }

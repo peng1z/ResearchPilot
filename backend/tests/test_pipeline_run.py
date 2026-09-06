@@ -206,3 +206,58 @@ async def test_extraction_concurrency_is_bounded_by_the_setting(monkeypatch) -> 
     await _run(pipeline)
 
     assert extraction.peak_in_flight == 3
+
+
+@pytest.mark.anyio
+async def test_report_records_what_produced_it(monkeypatch) -> None:
+    # A report naming neither the build nor the model leaves a reader unable to
+    # tell what ran, and the pipeline has since gained a third retrieval source
+    # and concurrent extraction, both of which change its output.
+    pipeline = _pipeline([_paper("p1")], monkeypatch=monkeypatch)
+    report, _ = await _run(pipeline)
+
+    assert report.tool is not None
+    assert report.tool.name == "ResearchPilot"
+    assert report.tool.version
+    assert report.tool.model
+    assert report.tool.method_paper == "https://arxiv.org/abs/2603.14629"
+    assert "not a source for the topic" in report.tool.method_paper_note
+
+
+@pytest.mark.anyio
+async def test_report_carries_no_credentials(monkeypatch) -> None:
+    # A report is a file a user shares. A key that reaches it is a key leaked.
+    pipeline = _pipeline([_paper("p1")], monkeypatch=monkeypatch)
+    pipeline.settings = pipeline.settings.model_copy(
+        update={"llm_api_key": "sk-test-should-never-appear"}
+    )
+    report, _ = await _run(pipeline)
+
+    serialised = report.model_dump_json()
+    assert "sk-test-should-never-appear" not in serialised
+    assert "api_key" not in serialised.lower()
+
+
+class HalfBrokenExtraction:
+    """Fails on one paper, succeeds on the rest."""
+
+    def __init__(self, failing_id: str) -> None:
+        self.failing_id = failing_id
+
+    async def aextract(self, question, paper) -> PaperExtraction:
+        if paper.id == self.failing_id:
+            raise ValueError("Model returned no text for this field: None")
+        return PaperExtraction(paper_id=paper.id, title=paper.title, claims=["c"])
+
+
+@pytest.mark.anyio
+async def test_one_unusable_extraction_costs_one_paper_not_the_run(monkeypatch) -> None:
+    papers = [_paper("p1"), _paper("p2"), _paper("p3")]
+    pipeline = _pipeline(papers, monkeypatch=monkeypatch)
+    pipeline.extraction_agent = HalfBrokenExtraction("p2")
+
+    report, events = await _run(pipeline)
+
+    assert [item.paper_id for item in report.extractions] == ["p1", "p3"]
+    assert any("Extraction failed for p2" in warning for warning in report.warnings)
+    assert any("Skipped" in event.message for event in events)

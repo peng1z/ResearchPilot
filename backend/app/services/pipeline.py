@@ -9,12 +9,14 @@ from typing import Awaitable, Callable, Optional
 os.environ.setdefault("DSPY_CACHEDIR", os.path.join(tempfile.gettempdir(), "researchpilot-dspy-cache"))
 
 import dspy
+from pydantic import ValidationError
 
 from app.config import Settings
 from app.embeddings import EmbeddingService
 from app.llm import dspy_context, parse_json_payload
 from app.models import Paper, PaperExtraction, RelatedWorkDraft, ReportReference, ResearchReport, SearchResults, StatusEvent, SynthesisOutput
 from app.services.search import SearchAgent
+from app.provenance import tool_provenance
 from app.vector_store import QdrantArtifactStore
 
 StatusCallback = Callable[[StatusEvent], Awaitable[None]]
@@ -204,10 +206,27 @@ class ResearchPipeline:
             gate = asyncio.Semaphore(self.settings.extraction_concurrency)
             completed = 0
 
-            async def extract(index: int, paper: Paper) -> PaperExtraction:
+            async def extract(index: int, paper: Paper) -> PaperExtraction | None:
                 nonlocal completed
                 async with gate:
-                    extraction = await self.extraction_agent.aextract(question, paper)
+                    try:
+                        extraction = await self.extraction_agent.aextract(question, paper)
+                    except (ValueError, ValidationError) as exc:
+                        # One unusable answer should cost one paper, not the run.
+                        # The same rule the search agent already applies per
+                        # source, and build_comments per finding.
+                        completed += 1
+                        warnings.append(f"Extraction failed for {paper.id}: {exc}")
+                        await status(
+                            StatusEvent(
+                                event="agent_progress",
+                                agent="ExtractionAgent",
+                                message=f"Skipped {paper.title[:60]}: {exc}",
+                                report_id=report_id,
+                                data={"warning": True, "paper_id": paper.id},
+                            )
+                        )
+                        return None
                 completed += 1
                 await status(
                     StatusEvent(
@@ -225,11 +244,13 @@ class ResearchPipeline:
                 )
                 return extraction
 
-            extractions: list[PaperExtraction] = list(
-                await asyncio.gather(
+            extractions = [
+                item
+                for item in await asyncio.gather(
                     *(extract(index, paper) for index, paper in enumerate(papers, start=1))
                 )
-            )
+                if item is not None
+            ]
             await status(
                 StatusEvent(
                     event="agent_completed",
@@ -278,6 +299,7 @@ class ResearchPipeline:
             report = ResearchReport(
                 id=report_id,
                 question=question,
+                tool=tool_provenance(self.settings),
                 papers=papers,
                 extractions=extractions,
                 synthesis=synthesis,

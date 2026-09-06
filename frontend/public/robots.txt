@@ -1,0 +1,65 @@
+# Search and live retrieval are allowed. Model-training crawlers are not.
+#
+# These are different things and the distinction is the whole policy: an
+# assistant fetching this page to answer someone's question is how a reader
+# finds the work, while a training crawl takes the content into a model. The
+# tokens below are the ones each operator publishes for exactly this choice.
+#
+# Verified against:
+#   https://developers.openai.com/api/docs/bots
+#   https://support.claude.com/en/articles/8896518
+
+# --- Search engines -------------------------------------------------------
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# --- Assistants retrieving on a user's behalf, and their search indexes ----
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# --- Training crawlers ----------------------------------------------------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Google's separate opt-out for Gemini training; Googlebot above is unaffected.
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# --- Everything else ------------------------------------------------------
+User-agent: *
+Allow: /
+
+Sitemap: https://researchpilot.peng1z.workers.dev/sitemap.xml
