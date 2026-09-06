@@ -55,3 +55,7 @@ demo-recordings/
 
 # wrangler local state
 .wrangler/
+
+# Static export produced by `NEXT_OUTPUT=export npm run build`; Cloudflare
+# builds it, so a copy in the repo would only ever be stale.
+frontend/out/
