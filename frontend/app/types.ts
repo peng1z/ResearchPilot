@@ -53,8 +53,12 @@ export type ResearchReport = {
   papers: Array<{
     id: string;
     title: string;
+    abstract: string;
     source: string;
+    url?: string | null;
     year?: number | null;
+    authors: string[];
+    doi?: string | null;
   }>;
 };
 

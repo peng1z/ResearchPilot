@@ -197,3 +197,16 @@ describe("browsing versus running", () => {
     expect(screen.getByText(/doi = \{10\.48550\/arXiv\.2603\.14629\}/)).toBeInTheDocument();
   });
 });
+
+describe("case pages", () => {
+  it("links every recorded run to its own page", () => {
+    render(<Home />);
+
+    for (const run of demoRuns) {
+      const link = screen.getByRole("link", { name: run.slug });
+      // Directory-style, because the export writes runs/<slug>/index.html and
+      // an extensionless path 404s on a plain static host.
+      expect(link).toHaveAttribute("href", `/runs/${run.slug}/`);
+    }
+  });
+});

@@ -483,6 +483,19 @@ export default function Home() {
                 the demo costs nothing to run and needs no server. To run your own question live,
                 add an API key under <span className="font-semibold">Run Settings</span>.
               </p>
+              <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
+                Each run also has its own page, with the retrieval, the papers, the synthesis and
+                the limits of that particular run:{" "}
+                {demoRuns.map((run, index) => (
+                  <span key={run.slug}>
+                    {index > 0 ? ", " : ""}
+                    <a className="underline" href={`/runs/${run.slug}/`}>
+                      {run.slug}
+                    </a>
+                  </span>
+                ))}
+                .
+              </p>
             </div>
           </div>
           <form onSubmit={runResearch} className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-5">
