@@ -215,12 +215,40 @@ describe("running is opt-in", () => {
   it("keeps the run form behind a disclosure, closed by default", () => {
     render(<Home />);
 
-    const summary = screen.getByText(/Run your own question/i);
-    const disclosure = summary.closest("details");
+    // Match the disclosure's own summary, not prose that mentions running.
+    const summary = [...document.querySelectorAll("summary")].find((node) =>
+      /Run your own question/i.test(node.textContent ?? ""),
+    );
+    expect(summary).toBeDefined();
+    const disclosure = summary!.closest("details");
     expect(disclosure).not.toBeNull();
     // Browsing the recordings is the default; running is a deliberate act that
     // needs a backend the visitor supplies.
     expect(disclosure).not.toHaveAttribute("open");
     expect(screen.getByText(/This deployment hosts no backend and starts nothing/i)).toBeInTheDocument();
+  });
+});
+
+describe("run metadata", () => {
+  it("carries the date, model and software version of each recording", () => {
+    for (const run of demoRuns) {
+      // These come from the run itself. The fixtures carried none of them
+      // until the pipeline started recording what produced a report.
+      expect(run.report.created_at).toMatch(/^\d{4}-\d{2}-\d{2}/);
+      expect(run.report.tool?.model).toBeTruthy();
+      expect(run.report.tool?.version).toBeTruthy();
+      expect(run.report.tool?.name).toBe("ResearchPilot");
+    }
+  });
+
+  it("names the method paper on every run without making it a source", () => {
+    for (const run of demoRuns) {
+      expect(run.report.tool?.method_paper).toBe("https://arxiv.org/abs/2603.14629");
+      expect(run.report.tool?.method_paper_note).toMatch(/not a source for the topic/i);
+      // The drafted references are the topic's sources; the method paper is
+      // not among them.
+      const cited = run.report.references.map((reference) => reference.title.toLowerCase());
+      expect(cited.some((title) => title.includes("researchpilot"))).toBe(false);
+    }
   });
 });

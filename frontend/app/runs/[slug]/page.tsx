@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -103,10 +105,34 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
         <p className="text-xs uppercase tracking-[0.2em] text-[var(--accent)]">Recorded run</p>
         <h1 className="mt-3 text-3xl font-semibold leading-tight md:text-4xl">{run.question}</h1>
         <p className="mt-4 leading-7 text-[var(--muted)]">
-          Captured end to end in {run.elapsedSeconds}s. Nothing in the output was edited. This is
-          one run of a non-deterministic system: it shows what the pipeline produced on that
-          occasion, not what it produces in general.
+          Nothing in the output was edited. This is one run of a non-deterministic system: it shows
+          what the pipeline produced on that occasion, not what it produces in general.
         </p>
+        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm text-[var(--muted)]">
+          {(
+            [
+              ["Recorded", report.created_at ? report.created_at.slice(0, 10) : null],
+              ["Duration", `${run.elapsedSeconds}s`],
+              ["Model", report.tool?.model ?? null],
+              [
+                "Software",
+                report.tool
+                  ? `${report.tool.name} ${report.tool.version}` +
+                    (report.tool.commit ? ` (${report.tool.commit})` : "")
+                  : null,
+              ],
+            ] as const
+          ).map(([label, value]) => (
+            <Fragment key={label}>
+              <dt>{label}</dt>
+              {/* An absent field says so. Filling it in from a guess would make
+                  the record less trustworthy than leaving the gap visible. */}
+              <dd className={value ? "font-medium text-[var(--text)]" : "italic"}>
+                {value ?? "not recorded"}
+              </dd>
+            </Fragment>
+          ))}
+        </dl>
       </header>
 
       <section>

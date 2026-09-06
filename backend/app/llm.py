@@ -98,7 +98,12 @@ def dspy_context(settings: Settings) -> AbstractContextManager:
     return dspy.context(lm=_build_lm(settings), adapter=AsyncFallbackChatAdapter())
 
 
-def parse_json_payload(raw_text: str, schema: type[BaseModel]) -> BaseModel:
+def parse_json_payload(raw_text: str | None, schema: type[BaseModel]) -> BaseModel:
+    # A model can return a null field. The signature said str, the caller
+    # trusted it, and the AttributeError that followed killed a ten-paper run
+    # over one abstract.
+    if not isinstance(raw_text, str):
+        raise ValueError(f"Model returned no text for this field: {raw_text!r}")
     text = raw_text.strip()
     start = text.find("{")
     end = text.rfind("}")

@@ -203,3 +203,13 @@ async def test_async_fallback_adapter_does_not_retry_a_context_window_error() ->
     with mock.patch.object(ChatAdapter, "acall", failing_super):
         with pytest.raises(ContextWindowExceededError):
             await adapter.acall(None, {}, None, [], {})
+
+
+def test_parse_json_payload_rejects_a_missing_field_without_an_attribute_error() -> None:
+    # dspy can hand back a null field. The signature said str, the caller
+    # trusted it, and the AttributeError that followed killed a ten-paper run
+    # over one abstract.
+    with pytest.raises(ValueError, match="no text for this field"):
+        parse_json_payload(None, _Claims)
+    with pytest.raises(ValueError, match="no text for this field"):
+        parse_json_payload(42, _Claims)

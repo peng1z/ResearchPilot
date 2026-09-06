@@ -236,3 +236,28 @@ async def test_report_carries_no_credentials(monkeypatch) -> None:
     serialised = report.model_dump_json()
     assert "sk-test-should-never-appear" not in serialised
     assert "api_key" not in serialised.lower()
+
+
+class HalfBrokenExtraction:
+    """Fails on one paper, succeeds on the rest."""
+
+    def __init__(self, failing_id: str) -> None:
+        self.failing_id = failing_id
+
+    async def aextract(self, question, paper) -> PaperExtraction:
+        if paper.id == self.failing_id:
+            raise ValueError("Model returned no text for this field: None")
+        return PaperExtraction(paper_id=paper.id, title=paper.title, claims=["c"])
+
+
+@pytest.mark.anyio
+async def test_one_unusable_extraction_costs_one_paper_not_the_run(monkeypatch) -> None:
+    papers = [_paper("p1"), _paper("p2"), _paper("p3")]
+    pipeline = _pipeline(papers, monkeypatch=monkeypatch)
+    pipeline.extraction_agent = HalfBrokenExtraction("p2")
+
+    report, events = await _run(pipeline)
+
+    assert [item.paper_id for item in report.extractions] == ["p1", "p3"]
+    assert any("Extraction failed for p2" in warning for warning in report.warnings)
+    assert any("Skipped" in event.message for event in events)
