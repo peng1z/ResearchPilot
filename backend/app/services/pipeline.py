@@ -15,6 +15,7 @@ from app.embeddings import EmbeddingService
 from app.llm import dspy_context, parse_json_payload
 from app.models import Paper, PaperExtraction, RelatedWorkDraft, ReportReference, ResearchReport, SearchResults, StatusEvent, SynthesisOutput
 from app.services.search import SearchAgent
+from app.provenance import tool_provenance
 from app.vector_store import QdrantArtifactStore
 
 StatusCallback = Callable[[StatusEvent], Awaitable[None]]
@@ -278,6 +279,7 @@ class ResearchPipeline:
             report = ResearchReport(
                 id=report_id,
                 question=question,
+                tool=tool_provenance(self.settings),
                 papers=papers,
                 extractions=extractions,
                 synthesis=synthesis,

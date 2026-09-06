@@ -66,6 +66,34 @@ class RuntimeSettings(BaseModel):
     openalex_mailto: Optional[str] = None
 
 
+class ToolProvenance(BaseModel):
+    """What produced this report, and what it is not.
+
+    A report naming neither the build nor the model leaves a reader unable to
+    tell what ran. The pipeline has since gained a third retrieval source and
+    concurrent extraction, both of which change its output, so "ResearchPilot
+    produced this" is not enough to place a report.
+
+    Never carries credentials. Provider and model names are configuration; the
+    key is not, and does not belong in a file a user will share.
+    """
+
+    name: str = "ResearchPilot"
+    version: str
+    commit: Optional[str] = None
+    provider: Optional[str] = None
+    model: Optional[str] = None
+    repository: str = "https://github.com/peng1z/ResearchPilot"
+    method_paper: str = "https://arxiv.org/abs/2603.14629"
+    method_paper_note: str = (
+        "Describes version 1 of the method, which retrieves from Semantic "
+        "Scholar and arXiv. This report was produced by the build identified "
+        "above, which may differ. The method paper describes how this report "
+        "was produced; it is not a source for the topic and does not belong "
+        "in the reference list below."
+    )
+
+
 class ResearchReport(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     question: str
@@ -76,6 +104,8 @@ class ResearchReport(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     references: list[ReportReference] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    # Optional so an older stored report still validates; new runs set it.
+    tool: Optional[ToolProvenance] = None
 
 
 class ReportSummary(BaseModel):

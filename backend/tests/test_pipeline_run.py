@@ -206,3 +206,33 @@ async def test_extraction_concurrency_is_bounded_by_the_setting(monkeypatch) -> 
     await _run(pipeline)
 
     assert extraction.peak_in_flight == 3
+
+
+@pytest.mark.anyio
+async def test_report_records_what_produced_it(monkeypatch) -> None:
+    # A report naming neither the build nor the model leaves a reader unable to
+    # tell what ran, and the pipeline has since gained a third retrieval source
+    # and concurrent extraction, both of which change its output.
+    pipeline = _pipeline([_paper("p1")], monkeypatch=monkeypatch)
+    report, _ = await _run(pipeline)
+
+    assert report.tool is not None
+    assert report.tool.name == "ResearchPilot"
+    assert report.tool.version
+    assert report.tool.model
+    assert report.tool.method_paper == "https://arxiv.org/abs/2603.14629"
+    assert "not a source for the topic" in report.tool.method_paper_note
+
+
+@pytest.mark.anyio
+async def test_report_carries_no_credentials(monkeypatch) -> None:
+    # A report is a file a user shares. A key that reaches it is a key leaked.
+    pipeline = _pipeline([_paper("p1")], monkeypatch=monkeypatch)
+    pipeline.settings = pipeline.settings.model_copy(
+        update={"llm_api_key": "sk-test-should-never-appear"}
+    )
+    report, _ = await _run(pipeline)
+
+    serialised = report.model_dump_json()
+    assert "sk-test-should-never-appear" not in serialised
+    assert "api_key" not in serialised.lower()

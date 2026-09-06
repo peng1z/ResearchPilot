@@ -498,7 +498,16 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <form onSubmit={runResearch} className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-5">
+          <details className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-5">
+            <summary className="cursor-pointer font-semibold">
+              Run your own question {apiBase ? "" : "(needs a backend you run)"}
+            </summary>
+            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+              {apiBase
+                ? "A backend is configured. Starting a run will search live sources and call your model."
+                : "This deployment hosts no backend and starts nothing. Point API Base at a ResearchPilot backend you run, and supply a key it can use."}
+            </p>
+          <form onSubmit={runResearch} className="mt-4">
             <label htmlFor="question" className="mb-2 block text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
               Research Question
             </label>
@@ -620,6 +629,7 @@ export default function Home() {
               Backend streams agent lifecycle events over SSE and returns the final report as structured JSON plus markdown.
             </p>
           </form>
+          </details>
         </div>
       </section>
 

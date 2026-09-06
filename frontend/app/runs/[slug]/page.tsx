@@ -57,8 +57,36 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
     .filter((match): match is RegExpExecArray => match !== null)
     .map((match) => match[1]);
 
+  // Describes what the page actually shows: one recorded run, its question,
+  // the papers it retrieved, and the article whose method produced it. Not a
+  // ScholarlyArticle -- this is a run of a tool, not a paper, and saying
+  // otherwise to a parser that cannot check is the whole failure mode.
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: `Recorded ResearchPilot run: ${run.question}`,
+    description: `A single end-to-end run retrieving ${report.papers.length} papers, extracting structured findings from their abstracts, and synthesising consensus, contradictions and open gaps.`,
+    url: `${SITE}/runs/${run.slug}/`,
+    license: "https://opensource.org/licenses/MIT",
+    creator: { "@type": "Person", name: "Peng Zhang", url: "https://github.com/peng1z" },
+    isBasedOn: "https://github.com/peng1z/ResearchPilot",
+    variableMeasured: ["consensus", "contradictions", "open gaps"],
+    citation: {
+      "@type": "ScholarlyArticle",
+      name: "ResearchPilot: A Local-First Multi-Agent System for Literature Synthesis and Related Work Drafting",
+      author: { "@type": "Person", name: "Peng Zhang" },
+      identifier: "arXiv:2603.14629",
+      url: "https://arxiv.org/abs/2603.14629",
+    },
+  };
+
   return (
     <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-8 px-6 py-10">
+      <script
+        type="application/ld+json"
+        // A literal built from the fixture in this file, not user input.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <nav aria-label="Primary" className="flex flex-wrap gap-5 text-sm">
         <a className="underline" href="/">
           All runs

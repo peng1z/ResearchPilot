@@ -210,3 +210,17 @@ describe("case pages", () => {
     }
   });
 });
+
+describe("running is opt-in", () => {
+  it("keeps the run form behind a disclosure, closed by default", () => {
+    render(<Home />);
+
+    const summary = screen.getByText(/Run your own question/i);
+    const disclosure = summary.closest("details");
+    expect(disclosure).not.toBeNull();
+    // Browsing the recordings is the default; running is a deliberate act that
+    // needs a backend the visitor supplies.
+    expect(disclosure).not.toHaveAttribute("open");
+    expect(screen.getByText(/This deployment hosts no backend and starts nothing/i)).toBeInTheDocument();
+  });
+});
