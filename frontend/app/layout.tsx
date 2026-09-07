@@ -12,6 +12,13 @@ const DESCRIPTION =
   "abstracts, consensus and contradictions synthesised, and a related-work " +
   "section drafted. Artifact for arXiv:2603.14629.";
 
+/* The share card. Relative, so metadataBase makes it absolute. */
+const OG_IMAGE = "/opengraph-image.png";
+const OG_ALT =
+  "A paper-coloured card headed A multi-agent research co-pilot for fast literature " +
+  "synthesis, summarising the recorded runs: 3 runs, 30 papers, from Semantic Scholar, " +
+  "arXiv and OpenAlex.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "ResearchPilot — recorded multi-agent literature synthesis runs",
@@ -32,11 +39,18 @@ export const metadata: Metadata = {
     siteName: "ResearchPilot",
     title: "ResearchPilot — recorded multi-agent literature synthesis runs",
     description: DESCRIPTION,
+    // The card lives in public/ rather than as app/opengraph-image.png.
+    // The file convention wins over an explicit openGraph.images and drops
+    // its alt with it, so the convention costs the alt text; declaring the
+    // whole thing here keeps both. (opengraph-image.alt.txt is accepted as
+    // a file on Next 15.5 and emits nothing at all.)
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ResearchPilot — recorded multi-agent literature synthesis runs",
     description: DESCRIPTION,
+    images: [{ url: OG_IMAGE, alt: OG_ALT }],
   },
 };
 
@@ -84,10 +98,19 @@ const STRUCTURED_DATA = {
   },
 };
 
+const DIRECTION_CONTRACT = "<!-- THESIS: A reading page for one recorded synthesis, refusing the product-landing arrangement this category ships -- the artifact leads and the paper rides in the footer. OWN-WORLD: White ground, Charter-class serif body on a 34rem measure, system sans for headings because headings here are navigation not voice, one citation-blue accent, rules instead of cards. STORY: A researcher checks whether the system did what the paper claims, reads one run end to end, and leaves able to cite it. FIRST VIEWPORT: Nav rule, heading, what it does in four lines, the recorded-not-live notice, then the three runs as the first thing clickable; running is a disclosure below, never the opening act. FORM: Category standard executed straight; candidate 4 of 7 on the grounded list, taken as the standing exit. Seed da9de08a. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance. -->";
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
+                {/* The direction this page commits to, in the emitted markup so it can
+            be audited against what shipped. A JSX comment never reaches the
+            output; this does. */}
+        <div
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: DIRECTION_CONTRACT }}
+        />
         <script
           type="application/ld+json"
           // The payload is a literal in this file, not user or model input.

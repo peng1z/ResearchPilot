@@ -1,0 +1,595 @@
+{
+  "run_slug": "rag-hallucination",
+  "question": "Can retrieval-augmented generation reduce hallucination?",
+  "checked_on": "2026-09-06",
+  "checked_by": {
+    "who": "AI agent (Claude Opus 5), driven by the repository owner",
+    "not": "This is not a human expert review. No domain expert read these papers for this record.",
+    "method": "Layer 1 resolved every reference against its primary registration record: the arXiv API for preprints, Crossref for publisher-deposited DOIs, DataCite for arXiv DOIs. OpenAlex was consulted only to corroborate; where records differed, the primary publisher record was taken as authoritative. Layer 2 read the full text where a legally public copy existed and fell back to the abstract otherwise. Each quote records which tier it came from.",
+    "limits": [
+      "Existence and relevance were judged separately: a paper can be real and still not bear on the question.",
+      "A claim the sources do not mention is recorded as unverified. That is not a finding that the claim is false.",
+      "Several consensus claims are near-verbatim from two survey papers. A survey asserting a benefit is weaker evidence than a study measuring one, and that distinction is kept on each claim."
+    ]
+  },
+  "sources": [
+    {
+      "ref": "R1",
+      "cited_as": {
+        "title": "AR-RAG: Autoregressive Retrieval Augmentation for Image Generation",
+        "year": 2025,
+        "id": "2506.06962v3",
+        "url": "http://arxiv.org/abs/2506.06962v3"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2506.06962v3",
+        "published": "2025-06-08",
+        "updated": "2025-06-14",
+        "primary_category": "cs.CV",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": false,
+      "relevance_note": "Retrieval augmentation for image generation. It does not concern hallucination in language models; retrieved on the term RAG.",
+      "authors_verified": "Jingyuan Qi, Zhiyang Xu, Qifan Wang, Lifu Huang"
+    },
+    {
+      "ref": "R2",
+      "cited_as": {
+        "title": "Retrieval Augmentation Reduces Hallucination in Conversation",
+        "year": 2021,
+        "id": "W3155807546",
+        "url": "https://doi.org/10.18653/v1/2021.findings-emnlp.320"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.18653/v1/2021.findings-emnlp.320",
+        "container": "Findings of ACL: EMNLP 2021",
+        "published": "2021",
+        "pages": "3784-3803",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": true,
+      "relevance_note": "The one retrieved paper that measures hallucination reduction directly, and the origin of the question's premise.",
+      "authors_verified": "Kurt Shuster, Spencer Poff, Moya Chen, Douwe Kiela, Jason Weston",
+      "data_quality_note": "The abstract stored for this paper in the run is truncated to 169 characters, ending mid-sentence. Only that fragment was available to the pipeline."
+    },
+    {
+      "ref": "R3",
+      "cited_as": {
+        "title": "EVOR: Evolving Retrieval for Code Generation",
+        "year": 2024,
+        "id": "2402.12317v2",
+        "url": "http://arxiv.org/abs/2402.12317v2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2402.12317v2",
+        "published": "2024-02-19",
+        "updated": "2024-12-03",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": "partly",
+      "relevance_note": "Applied RAG for code generation. It measures execution accuracy, not hallucination.",
+      "authors_verified": "Hongjin Su, Shuyang Jiang, Yuhang Lai, Haoyuan Wu, Boao Shi and 3 more"
+    },
+    {
+      "ref": "R4",
+      "cited_as": {
+        "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+        "year": 2023,
+        "id": "W4389984066",
+        "url": "https://doi.org/10.48550/arxiv.2312.10997"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "DataCite",
+        "doi": "10.48550/arxiv.2312.10997",
+        "publisher": "arXiv",
+        "year": 2023,
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": true,
+      "relevance_note": "A survey. The source of most of the consensus wording, and of three of the open gaps.",
+      "authors_verified": "Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan and 5 more",
+      "open_access_full_text": "https://arxiv.org/pdf/2312.10997"
+    },
+    {
+      "ref": "R5",
+      "cited_as": {
+        "title": "Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation",
+        "year": 2024,
+        "id": "2411.18583v1",
+        "url": "http://arxiv.org/abs/2411.18583v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2411.18583v1",
+        "published": "2024-11-27",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": "partly",
+      "relevance_note": "An applied RAG system evaluated with ROUGE. On topic as an application; it makes no hallucination claim either way.",
+      "authors_verified": "Nurshat Fateh Ali, Md. Mahdi Mohtasim, Shakil Mosharrof, T. Gopi Krishna"
+    },
+    {
+      "ref": "R6",
+      "cited_as": {
+        "title": "A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models",
+        "year": 2024,
+        "id": "W4401857375",
+        "url": "https://doi.org/10.1145/3637528.3671470"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1145/3637528.3671470",
+        "container": "ACM SIGKDD 2024",
+        "published": "2024-08-24",
+        "pages": "6491-6501",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": true,
+      "relevance_note": "A survey. Source of the 'reliable and up-to-date external knowledge' wording.",
+      "authors_verified": "Wenqi Fan, Yujuan Ding, Liangbo Ning, Shijie Wang, Hengyun Li, Dawei Yin, Tat-Seng Chua, Qing Li"
+    },
+    {
+      "ref": "R7",
+      "cited_as": {
+        "title": "Riddle Me This! Stealthy Membership Inference for Retrieval-Augmented Generation",
+        "year": 2025,
+        "id": "2502.00306v2",
+        "url": "http://arxiv.org/abs/2502.00306v2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2502.00306v2",
+        "published": "2025-02-01",
+        "updated": "2025-06-30",
+        "primary_category": "cs.CR",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": false,
+      "relevance_note": "A privacy attack on RAG datastores. Real, correctly cited, and about a different property of RAG than hallucination.",
+      "authors_verified": "Ali Naseh, Yuefeng Peng, Anshuman Suri, Harsh Chaudhari, Alina Oprea and 1 more"
+    },
+    {
+      "ref": "R8",
+      "cited_as": {
+        "title": "Almanac — Retrieval-Augmented Language Models for Clinical Medicine",
+        "year": 2024,
+        "id": "W4391221150",
+        "url": "https://doi.org/10.1056/aioa2300068"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1056/aioa2300068",
+        "container": "NEJM AI",
+        "published": "2024-01-25",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": true,
+      "relevance_note": "A clinical RAG evaluation with a clinician panel. On topic: factuality in a high-stakes domain.",
+      "authors_verified": "Cyril Zakka, Rohan Shad, Akash Chaurasia, Alex R. Dalal, Jennifer L. Kim and others"
+    },
+    {
+      "ref": "R9",
+      "cited_as": {
+        "title": "EHR-RAGp: Retrieval-Augmented Prototype-Guided Foundation Model for Electronic Health Records",
+        "year": 2026,
+        "id": "2605.12335v1",
+        "url": "http://arxiv.org/abs/2605.12335v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2605.12335v1",
+        "published": "2026-05-12",
+        "primary_category": "cs.IR",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": "partly",
+      "relevance_note": "Retrieval over patient history for clinical prediction. Applied RAG, but it measures prediction performance, not hallucination.",
+      "authors_verified": "Saeed Shurrab, Mariam Al-Omari, Dana El Samad, Farah E. Shamout"
+    },
+    {
+      "ref": "R10",
+      "cited_as": {
+        "title": "Improving the Domain Adaptation of Retrieval Augmented Generation (RAG) Models for Open Domain Question Answering",
+        "year": 2023,
+        "id": "W4317898419",
+        "url": "https://doi.org/10.1162/tacl_a_00530"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1162/tacl_a_00530",
+        "container": "Transactions of the ACL",
+        "published": "2023",
+        "pages": "1-17",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "relevant_to_question": true,
+      "relevance_note": "Joint retriever-generator training for domain adaptation. On topic for the domain-adaptation claims.",
+      "authors_verified": "Shamane Siriwardhana, Rivindu Weerasekera, Elliott Wen, Tharindu Kaluarachchi, Rajib Rana, Suranga Nanayakkara"
+    }
+  ],
+  "claims": [
+    {
+      "id": "consensus-1",
+      "kind": "consensus",
+      "claim": "RAG can reduce hallucination in large language models by grounding responses in external knowledge",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://aclanthology.org/2021.findings-emnlp.320/",
+          "where": "title and abstract",
+          "quote": "Retrieval Augmentation Reduces Hallucination in Conversation",
+          "note": "The only retrieved paper that measures this directly. Its stored abstract is truncated, so this rests on the title and the opening sentence."
+        },
+        {
+          "ref": "R4",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2312.10997",
+          "where": "abstract",
+          "quote": "Retrieval-Augmented Generation (RAG) has emerged as a promising solution by incorporating knowledge from external databases."
+        }
+      ],
+      "limits": [
+        "The direct measurement is a 2021 dialogue paper. The other support is a survey describing RAG as promising, which is a characterisation rather than a measurement."
+      ]
+    },
+    {
+      "id": "consensus-2",
+      "kind": "consensus",
+      "claim": "RAG improves the accuracy and credibility of LLM outputs by combining intrinsic knowledge with dynamic external databases",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2312.10997",
+          "where": "abstract",
+          "quote": "This enhances the accuracy and credibility of the generation, particularly for knowledge-intensive tasks"
+        },
+        {
+          "ref": "R4",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2312.10997",
+          "where": "abstract",
+          "quote": "RAG synergistically merges LLMs' intrinsic knowledge with the vast, dynamic repositories of external databases."
+        }
+      ],
+      "limits": [
+        "Near-verbatim from a single survey's abstract, including the words 'accuracy and credibility' and 'intrinsic'. The synthesis is restating the survey, not summarising a body of results."
+      ]
+    },
+    {
+      "id": "consensus-3",
+      "kind": "consensus",
+      "claim": "State-of-the-art LLMs suffer from hallucination and outdated internal knowledge",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2312.10997",
+          "where": "abstract",
+          "quote": "Large Language Models (LLMs) showcase impressive capabilities but encounter challenges like hallucination, outdated knowledge, and non-transparent, untraceable reasoning processes."
+        },
+        {
+          "ref": "R6",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1145/3637528.3671470",
+          "where": "abstract",
+          "quote": "still facing inherent limitations such as hallucinations and out-of-date internal knowledge"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "id": "consensus-4",
+      "kind": "consensus",
+      "claim": "Retrieval augmentation provides reliable, up-to-date external knowledge for generative AI",
+      "verdict": "supported-with-narrower-scope",
+      "evidence": [
+        {
+          "ref": "R6",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1145/3637528.3671470",
+          "where": "abstract",
+          "quote": "Retrieval-Augmented Generation (RAG) can offer reliable and up-to-date external knowledge, providing huge convenience for numerous tasks"
+        }
+      ],
+      "limits": [
+        "Verbatim from a survey's opening claim about its own subject. No retrieved paper measures the reliability of retrieved knowledge.",
+        "The same survey's companion source records the opposite risk: retrieval can select misaligned or irrelevant material."
+      ]
+    },
+    {
+      "id": "consensus-5",
+      "kind": "consensus",
+      "claim": "RAG enables continuous knowledge updates and domain-specific information integration",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2312.10997",
+          "where": "abstract",
+          "quote": "allows for continuous knowledge updates and integration of domain-specific information"
+        },
+        {
+          "ref": "R10",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1162/tacl_a_00530",
+          "where": "abstract",
+          "quote": "We propose RAG-end2end, an extension to RAG that can adapt to a domain-specific knowledge base by updating all components of the external knowledge base during training."
+        }
+      ],
+      "limits": [
+        "The first quote is verbatim from the survey abstract; R10 demonstrates the domain-adaptation half with an actual method."
+      ]
+    },
+    {
+      "id": "contradiction-1",
+      "kind": "contradiction",
+      "claim": "One paper (2411.18583v1) explicitly states that its study does not directly measure hallucination reduction—only ROUGE scores for summary quality—while multiple other papers claim RAG reduces hallucination without providing direct measurement methodology",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2411.18583v1",
+          "where": "abstract",
+          "quote": "The ROUGE scores are used for the evaluation of all three systems. Based on the evaluation, the Large Language Model GPT-3.5-turbo achieved the highest ROUGE-1 score, 0.364.",
+          "note": "The underlying observation is correct: this paper evaluates with ROUGE and makes no hallucination claim."
+        }
+      ],
+      "limits": [
+        "The paper does not 'explicitly state' that it does not measure hallucination reduction. It simply never raises hallucination. The synthesis attributes a disclaimer to the paper that the paper does not make.",
+        "The observation the claim rests on is true and checkable; the attribution is not. That difference is the finding."
+      ]
+    },
+    {
+      "id": "contradiction-2",
+      "kind": "contradiction",
+      "claim": "While most papers focus on effectiveness of RAG in reducing hallucination, 2502.00306v2 identifies a new security vulnerability (Interrogation Attack) where RAG's reliance on external documents introduces membership inference risks that could compromise privacy of retrieved data",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2502.00306v2",
+          "where": "abstract",
+          "quote": "it introduces the risk of inference adversaries exploiting retrieved documents in the model's context"
+        },
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2502.00306v2",
+          "where": "abstract",
+          "quote": "we present Interrogation Attack (IA), a membership inference technique targeting documents in the RAG datastore"
+        }
+      ],
+      "limits": [
+        "Correctly attributed and correctly named. It is a different property of RAG than hallucination, so it is a complement to the question rather than a contradiction within it."
+      ]
+    },
+    {
+      "id": "open-gap-1",
+      "kind": "open_gap",
+      "claim": "Limited evidence on hallucination reduction effectiveness across diverse domains—most domain-specific studies (clinical, code) focus on task performance rather than direct hallucination measurement",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R3",
+          "tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.12317v2",
+          "result": "Measures execution accuracy for code generation; does not comment on hallucination measurement being absent from the literature."
+        },
+        {
+          "ref": "R8",
+          "tier": "abstract",
+          "url": "https://doi.org/10.1056/aioa2300068",
+          "result": "Evaluates clinical answers with a clinician panel; does not state this gap."
+        },
+        {
+          "ref": "R4",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "result": "Not found as a stated gap."
+        }
+      ],
+      "limits": [
+        "The observation is a fair description of this retrieved set, but no source states it. Unverified is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-2",
+      "kind": "open_gap",
+      "claim": "Dependency on quality and coverage of external knowledge bases remains a critical challenge; poor retrieval can propagate errors to generated content",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "where": "p.3, Naive RAG drawbacks",
+          "quote": "Retrieval Challenges. The retrieval phase often struggles with precision and recall, leading to the selection of misaligned or irrelevant chunks, and the missing of crucial information. Generation Difficulties. In generating responses, the model may face the issue of hallucination, where it produces content not supported by the retrieved context."
+        }
+      ],
+      "limits": [
+        "Stated for Naive RAG specifically, which the same survey contrasts with Advanced and Modular RAG."
+      ]
+    },
+    {
+      "id": "open-gap-3",
+      "kind": "open_gap",
+      "claim": "Standardized evaluation benchmarks for RAG systems are still evolving, making cross-study comparisons difficult",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R4",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "result": "The survey presents an evaluation framework covering 26 tasks and nearly 50 datasets and lists current benchmarks and tools. No statement that standardisation is lacking or that cross-study comparison is difficult."
+        }
+      ],
+      "limits": [
+        "Unverified means no source states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-4",
+      "kind": "open_gap",
+      "claim": "Computational expense of domain adaptation and joint training of retriever-generator components needs optimization",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R10",
+          "tier": "abstract",
+          "url": "https://doi.org/10.1162/tacl_a_00530",
+          "result": "Proposes joint training for domain adaptation but does not describe its cost as needing optimisation."
+        },
+        {
+          "ref": "R4",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "result": "No statement matching computational or training cost as an open problem."
+        }
+      ],
+      "limits": [
+        "Unverified means no source states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-5",
+      "kind": "open_gap",
+      "claim": "Generalizability of findings across different specialized domains requires further investigation",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R10",
+          "tier": "abstract",
+          "url": "https://doi.org/10.1162/tacl_a_00530",
+          "result": "Notes RAG 'has only been trained and explored with a Wikipedia-based external knowledge base and is not optimized for use in other specialized domains', which is a motivation for its method rather than a call for further investigation."
+        },
+        {
+          "ref": "R4",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "result": "Not found as a stated gap."
+        }
+      ],
+      "limits": [
+        "The nearest statement is R10's motivation for its own contribution, not an open question it leaves behind."
+      ]
+    },
+    {
+      "id": "open-gap-6",
+      "kind": "open_gap",
+      "claim": "Integration challenges between retrieval systems and LLMs, including latency and relevance issues, need addressing",
+      "verdict": "supported-with-narrower-scope",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "where": "p.5, RAG versus fine-tuning",
+          "quote": "it comes with higher latency and ethical considerations regarding data retrieval"
+        }
+      ],
+      "limits": [
+        "Latency is sourced. The 'relevance issues' half is covered elsewhere in the same survey under retrieval quality, and 'integration challenges' as a category is the synthesis's own grouping."
+      ]
+    },
+    {
+      "id": "open-gap-7",
+      "kind": "open_gap",
+      "claim": "Risk of propagating retrieval errors to generated content and potential adversarial attacks on RAG systems require further study",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R4",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "where": "p.14, robustness",
+          "quote": "Improving RAG's resistance to such adversarial or counterfactual inputs is gaining research momentum and has become a key performance metric"
+        },
+        {
+          "ref": "R4",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2312.10997",
+          "where": "p.14, robustness",
+          "quote": "Misinformation can be worse than no information at all"
+        }
+      ],
+      "limits": []
+    }
+  ],
+  "public_summary": {
+    "established": [
+      "LLMs hallucinate and carry outdated internal knowledge. Both surveys state it as the motivation for RAG.",
+      "Retrieval can reduce hallucination by grounding answers in external text. One retrieved paper measures this directly, in conversation, from 2021.",
+      "RAG allows knowledge to be updated continuously and adapted to a domain. One retrieved paper implements and evaluates the domain-adaptation half.",
+      "Poor retrieval propagates errors: a retrieval phase that selects irrelevant material produces generations unsupported by their context.",
+      "Adversarial and counterfactual inputs to the retrieval store are a recognised risk, and a separate paper demonstrates a membership-inference attack on the datastore."
+    ],
+    "established_with_limits": [
+      "That retrieval provides reliable, up-to-date knowledge is verbatim from a survey's opening claim about its own subject; nothing in the set measures the reliability of what is retrieved, and the companion survey records the opposite risk.",
+      "Latency is a real stated cost of RAG. The wider 'integration challenges' framing, including relevance, is the synthesis's own grouping."
+    ],
+    "contradicted": [],
+    "not_established": [
+      "That evidence on hallucination reduction across domains is limited.",
+      "That standardised RAG evaluation benchmarks are still evolving.",
+      "That the computational expense of joint retriever-generator training needs optimisation.",
+      "That generalisability across specialised domains requires further investigation."
+    ],
+    "not_established_note": "These four appear in the generated synthesis but could not be traced to anything in the retrieved papers. That is a failure to find support, not a finding that they are wrong.",
+    "retrieval": "All ten cited papers exist and every title matches its registration record. Two do not bear on the question -- one is retrieval augmentation for image generation, one is a privacy attack -- and three more are applied RAG systems that measure task performance rather than hallucination. Only one retrieved paper measures hallucination directly."
+  },
+  "summary": {
+    "sources_checked": 10,
+    "sources_that_exist": 10,
+    "sources_relevant": 5,
+    "sources_partly_relevant": 3,
+    "sources_not_relevant": 2,
+    "claims_checked": 14,
+    "claim_verdicts": {
+      "supported": 7,
+      "supported-with-narrower-scope": 2,
+      "partly-supported": 1,
+      "unverified": 4
+    },
+    "evidence_tiers": {
+      "full_text": 4,
+      "abstract": 12
+    }
+  }
+}

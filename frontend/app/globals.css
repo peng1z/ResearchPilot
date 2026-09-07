@@ -1,42 +1,636 @@
 @import "tailwindcss";
 
+/*
+  ResearchPilot is read, not scanned. One run is a sectioned review with
+  citations running through it, and the reader's job is to follow an argument
+  from consensus to contradiction to gap. So the page is set for continuous
+  reading: a real measure, serif body, generous leading, and headings in a
+  sans because headings here are navigation rather than voice.
+
+  That inversion is deliberate. The reflex for a reading page is a serif
+  display over a cream ground, which is the look every generated page in this
+  category arrives wearing. The ground is white because the reader has a PDF
+  open beside this, and matching that page is worth more than atmosphere.
+*/
+
 :root {
-  --background: #f7f4eb;
-  --surface: rgba(255, 252, 245, 0.86);
-  --panel: #fffdf8;
-  --text: #18261f;
-  --muted: #56685e;
-  --accent: #2f6d4f;
-  --border: rgba(24, 38, 31, 0.12);
+  color-scheme: light;
+
+  --ink: #161513;
+  --ink-2: #4d4a45;
+  --ink-3: #7b7770;
+
+  /* Paper, not screen. The instrument next door keeps the white. */
+  --paper: #faf8f4;
+  --paper-2: #f3f0ea;
+  --rule: #ded9d0;
+  --rule-strong: #bdb7ab;
+
+  /* Not the tool's slate blue: the ink a citation takes in a printed
+     journal, which is closer to a bound volume than to a terminal. */
+  --accent: #6b3f2a;
+  --accent-wash: #efe6de;
+
+  /* Kinds of claim. Each is labelled in words beside it, so the colour
+     is a second reading of the label and never the only carrier. */
+  --ok: #1a6b45;
+  --warn: #8a5a00;
+  --bad: #9a2b24;
+
+  --measure: 34rem;
+
+  --serif:
+    Charter, "Bitstream Charter", "Sitka Text", Cambria, "Source Serif 4",
+    Georgia, serif;
+  --sans:
+    ui-sans-serif, -apple-system, "Segoe UI Variable Text", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:
+    ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas,
+    monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(47, 109, 79, 0.16), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(163, 126, 68, 0.18), transparent 28%),
-    var(--background);
-  color: var(--text);
-  font-family: Georgia, "Times New Roman", serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.72;
+  font-variant-numeric: tabular-nums;
+  text-rendering: optimizeLegibility;
+}
+
+/* Surfaces nobody draws still carry the design. */
+::selection {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+* {
+  scrollbar-color: var(--rule-strong) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border: 3px solid var(--paper);
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+}
+
+/*
+  Headings in the text face. The earlier note here argued sans, on the
+  grounds that a heading is navigation rather than voice -- true, but it
+  was written before the review tool ended up wearing the same white
+  ground, the same blue, and the same sans title. A document sets its
+  headings in the face it is read in; the tool keeps the sans, and the
+  two stop looking like one template.
+*/
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-wrap: balance;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 1.1rem + 2.9vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.12;
+}
+
+h2 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin-top: 44px;
+}
+
+/*
+  A sub-head inside a synthesis is a heading, not a form label. Set small and
+  grey with letterspacing it reads as a whisper every time the argument turns,
+  and small grey caps is the badge every generated page in this category wears.
+*/
+h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 30px;
+}
+
+/* More room above a heading than below, so it joins what follows. */
+h1 + p,
+h2 + p,
+h3 + p,
+h2 + ul,
+h3 + ul,
+h2 + ol,
+h3 + ol {
+  margin-top: 10px;
+}
+
+p {
+  margin: 0;
+  /* min() so the measure never exceeds the viewport. */
+  max-width: min(var(--measure), 100%);
+}
+
+p + p {
+  margin-top: 1em;
 }
 
 a {
+  color: var(--accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: from-font;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--mono);
+  font-size: 0.84em;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--sans);
+  font-size: 0.95rem;
   color: inherit;
+}
+
+summary {
+  cursor: pointer;
+  font-family: var(--serif);
+}
+
+summary::marker {
+  color: var(--ink-3);
+}
+
+/* The drafted section is the thing being read. Set it like prose. */
+.markdown {
+  max-width: min(var(--measure), 100%);
 }
 
 .markdown h1,
 .markdown h2,
 .markdown h3 {
-  line-height: 1.2;
+  font-family: var(--serif);
 }
 
-.markdown p,
+.markdown h2 {
+  font-size: 1.15rem;
+  margin-top: 34px;
+}
+
+.markdown h3 {
+  font-size: 1rem;
+  margin-top: 28px;
+}
+
+.markdown p {
+  margin-top: 1em;
+  color: var(--ink);
+}
+
 .markdown li {
-  color: var(--muted);
+  color: var(--ink);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  details[open] > *:not(summary) {
+    animation: reveal 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+/*
+  Controls in a reading page. Everything here is a rule and a piece of type;
+  nothing encloses anything, which is the same claim the prose makes.
+  These are unlayered, so they beat Tailwind's utilities on conflict --
+  do not pair them with a utility that sets the same property.
+*/
+.label {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  font-weight: 620;
+  color: var(--ink-2);
+  margin-bottom: 5px;
+}
+
+.control {
+  width: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 8px 10px;
+  outline: none;
+}
+
+.control:hover {
+  border-color: var(--rule-strong);
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 8px 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-primary,
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* A group is separated by a rule, never enclosed by a border. */
+.group {
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+  margin-top: 26px;
+}
+
+/* One record in a list of records. */
+/* An index entry in a document, so it is set in the text face. Only the
+   form controls stay in the sans: they are the one machine-facing part
+   of the page, and a serif input reads as a typo. */
+.entry {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 12px 0;
+  font-family: var(--serif);
+}
+
+button.entry {
+  cursor: pointer;
+}
+
+button.entry:hover {
+  background: var(--paper-2);
+}
+
+/* A tally reads as one line; the separator is presentation, not content. */
+.tally + .tally::before {
+  content: " · ";
+  color: var(--ink-3);
+}
+
+/*
+  `button { color: inherit }` above is unlayered, so it beats Tailwind's
+  layered text-* utilities and silently swallows them. State that matters
+  is declared here rather than lost in a className.
+*/
+.entry-selected {
+  color: var(--accent);
+  font-weight: 620;
+}
+
+.entry-muted {
+  color: var(--ink-2);
+}
+
+/* --- Progressive disclosure -------------------------------------------
+   A recorded run is a 9,000px document: a drafted section, its reference
+   list, the papers behind it, and the synthesis over them. Printed in
+   full, the page asserted all of it to a reader who would leave before
+   the second screen. The synthesis is what a visitor came to judge, so
+   that stays open; the draft and the lists it rests on are drawers.
+*/
+.drawer {
+  border-top: 1px solid var(--rule);
+  margin-top: 26px;
+}
+
+.drawer > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 16px 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--sans);
+  font-weight: 620;
+  font-size: 1.02rem;
+}
+
+.drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.drawer > summary::before {
+  content: "▸";
+  color: var(--ink-3);
+  font-size: 0.78em;
+}
+
+.drawer[open] > summary::before {
+  content: "▾";
+}
+
+.drawer-count {
+  margin-left: auto;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.86rem;
+  color: var(--ink-3);
+}
+
+.drawer-body {
+  padding-bottom: 24px;
+}
+
+/* --- Furniture of an offprint -----------------------------------------
+   A journal offprint opens with a running head and a rule, not a title
+   bar; it states a run's particulars in a metadata block, not on stat
+   cards; and it numbers its sections in the margin. None of that is
+   shared with the review tool, which is the point: the two had grown one
+   component set between them.
+*/
+.runninghead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--ink-3);
+  font-size: 0.76rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.runninghead nav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* The particulars of one run, set as a journal sets them: a ruled band of
+   small caps and figures, no fill, no cards. */
+.particulars {
+  border-top: 1px solid var(--ink-3);
+  border-bottom: 1px solid var(--ink-3);
+  padding: 11px 0;
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 26px;
+  font-size: 0.84rem;
+}
+
+.particular {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.particular dt {
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--ink-3);
+}
+
+.particular dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Numbered sections, hanging in the margin where there is room for them. */
+.numbered {
+  counter-increment: section;
+  position: relative;
+}
+
+.numbered > h2::before,
+.numbered > summary::before {
+  content: counter(section) ".";
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.6ch;
+  font-weight: 500;
+}
+
+@media (min-width: 60rem) {
+  .numbered > h2::before,
+  .numbered > summary::before {
+    position: absolute;
+    left: -2.6ch;
+    margin-right: 0;
+  }
+}
+
+main {
+  counter-reset: section;
+}
+
+/* A drawer here is a section of a document, so it is set like one. */
+.drawer > summary {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.drawer > summary::before {
+  content: none;
+}
+
+.drawer-count {
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* --- Synthesis --------------------------------------------------------
+   Three kinds of claim, and which kind it is changes how much weight it
+   carries. The colour is the distinction, not decoration; the word is
+   there beside it for anyone who cannot use the colour.
+*/
+.claim {
+  border-left: 3px solid var(--rule-strong);
+  padding-left: 14px;
+  margin-top: 18px;
+}
+
+.claim[data-kind="consensus"] {
+  border-left-color: var(--ok);
+}
+
+.claim[data-kind="contradictions"] {
+  border-left-color: var(--warn);
+}
+
+.claim[data-kind="open_gaps"] {
+  border-left-color: var(--accent);
+}
+
+.claim > .label {
+  color: var(--ink);
+}
+
+.claim[data-kind="consensus"] > .label {
+  color: var(--ok);
+}
+
+.claim[data-kind="contradictions"] > .label {
+  color: var(--warn);
+}
+
+.claim[data-kind="open_gaps"] > .label {
+  color: var(--accent);
+}
+
+/* A model name is a string, not a figure; it needs room and a smaller size. */
+.glance-item--text {
+  flex: 2 1 14rem;
+}
+
+.glance-item--text .glance-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* --- Checked claims ----------------------------------------------------
+   A verdict rides on the claim it belongs to, in the margin where a
+   printed apparatus would put it. Colour repeats what the word says.
+*/
+.verdict-tag {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 1px 7px;
+  border: 1px solid currentColor;
+  margin-right: 8px;
+  vertical-align: 0.12em;
+}
+
+.verdict-tag[data-v="supported"] {
+  color: var(--ok);
+}
+
+.verdict-tag[data-v="supported-with-narrower-scope"],
+.verdict-tag[data-v="partly-supported"] {
+  color: var(--warn);
+}
+
+.verdict-tag[data-v="unverified"] {
+  color: var(--ink-3);
+}
+
+.checked-claim {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-top: 20px;
+}
+
+.evidence {
+  border-top: 1px solid var(--rule);
+  margin-top: 10px;
+  padding-top: 9px;
+  font-size: 0.92rem;
+}
+
+.evidence blockquote {
+  margin: 5px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--rule-strong);
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+.tier {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-left: 6px;
+}
+
+/* A claim a cited paper says the opposite of. Not the same as unverified,
+   and it should not be able to hide among the amber ones. */
+.verdict-tag[data-v="contradicted-by-a-cited-paper"] {
+  color: var(--bad);
+  border-width: 2px;
+}

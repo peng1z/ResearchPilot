@@ -1,0 +1,673 @@
+{
+  "run_slug": "chain-of-thought",
+  "question": "Does chain-of-thought prompting improve LLM reasoning?",
+  "checked_on": "2026-09-06",
+  "checked_by": {
+    "who": "AI agent (Claude Opus 5), driven by the repository owner",
+    "not": "This is not a human expert review. No domain expert read these papers for this record.",
+    "method": "Layer 1 resolved every reference against its primary registration record: the arXiv API for preprints, Crossref for publisher-deposited DOIs, DataCite for arXiv DOIs. OpenAlex was consulted only to corroborate; where records differed, the primary publisher record was taken as authoritative. Layer 2 read the full text where a legally public copy existed and fell back to the abstract otherwise. Each quote records which tier it came from.",
+    "limits": [
+      "Existence and relevance were judged separately: a paper can be real and still not bear on the question.",
+      "A claim the sources do not mention is recorded as unverified. That is not a finding that the claim is false. Where a source actively says the opposite, that is recorded separately as contradicted.",
+      "Most verdicts rest on abstracts. Only quotes marked full text come from inside a paper body."
+    ]
+  },
+  "sources": [
+    {
+      "ref": "R1",
+      "cited_as": {
+        "title": "Can Separators Improve Chain-of-Thought Prompting?",
+        "year": 2024,
+        "id": "2402.10645v3",
+        "url": "http://arxiv.org/abs/2402.10645v3"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2402.10645v3",
+        "published": "2024-02-16",
+        "updated": "2024-10-09",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Yoonjeong Park, Hyunjin Kim, Chanyeol Choi, Junseong Kim, Jy-yong Sohn",
+      "relevant_to_question": true,
+      "relevance_note": "Directly about CoT prompting and its effect on reasoning benchmarks. On topic."
+    },
+    {
+      "ref": "R2",
+      "cited_as": {
+        "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+        "year": 2025,
+        "id": "W4414281281",
+        "url": "https://doi.org/10.1038/s41586-025-09422-z"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1038/s41586-025-09422-z",
+        "container": "Nature",
+        "published": "2025-09-17",
+        "pages": "633-638",
+        "checked_on": "2026-09-06"
+      },
+      "corroboration": {
+        "registry": "OpenAlex",
+        "id": "W4414281281",
+        "agrees": true
+      },
+      "title_matches": true,
+      "authors_verified": "Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang and others",
+      "relevant_to_question": true,
+      "relevance_note": "Compares RL-trained reasoning against CoT trained on human demonstrations. On topic."
+    },
+    {
+      "ref": "R3",
+      "cited_as": {
+        "title": "DiffCoT: Diffusion-styled Chain-of-Thought Reasoning in LLMs",
+        "year": 2026,
+        "id": "2601.03559v2",
+        "url": "http://arxiv.org/abs/2601.03559v2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2601.03559v2",
+        "published": "2026-01-07",
+        "updated": "2026-04-19",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Shidong Cao, Hongzhan Lin, Yuxuan Gu, Ziyang Luo, Jing Ma",
+      "relevant_to_question": true,
+      "relevance_note": "A CoT variant, and the source of the exposure-bias claim. On topic."
+    },
+    {
+      "ref": "R4",
+      "cited_as": {
+        "title": "Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts",
+        "year": 2023,
+        "id": "W4366548330",
+        "url": "https://doi.org/10.1145/3544548.3581388"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1145/3544548.3581388",
+        "container": "CHI 2023",
+        "published": "2023-04-19",
+        "pages": "1-21",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "J.D. Zamfirescu-Pereira, Richmond Y. Wong, Bjoern Hartmann, Qian Yang",
+      "relevant_to_question": false,
+      "relevance_note": "An HCI study of how non-experts write prompts. It does not evaluate chain-of-thought or reasoning performance; retrieved on the word 'prompt'."
+    },
+    {
+      "ref": "R5",
+      "cited_as": {
+        "title": "CAP-CoT: Cycle Adversarial Prompt for Improving Chain of Thoughts in LLM Reasoning",
+        "year": 2026,
+        "id": "2604.23270v2",
+        "url": "http://arxiv.org/abs/2604.23270v2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2604.23270v2",
+        "published": "2026-04-25",
+        "updated": "2026-07-06",
+        "primary_category": "cs.AI",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Shuxu Chen, Yitian Zhou, Jiaquan Zhang, Haoyu Bian, Wenrui Hu and 4 more",
+      "relevant_to_question": true,
+      "relevance_note": "A CoT variant, and the source of the instability claim. On topic."
+    },
+    {
+      "ref": "R6",
+      "cited_as": {
+        "title": "Large language models encode clinical knowledge",
+        "year": 2023,
+        "id": "W4384071683",
+        "url": "https://doi.org/10.1038/s41586-023-06291-2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1038/s41586-023-06291-2",
+        "container": "Nature",
+        "published": "2023-07-12",
+        "pages": "172-180",
+        "checked_on": "2026-09-06"
+      },
+      "open_access_full_text": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10396962/",
+      "title_matches": true,
+      "authors_verified": "Karan Singhal, Shekoofeh Azizi, Tao Tu, S. Sara Mahdavi, Jason Wei and others",
+      "relevant_to_question": true,
+      "relevance_note": "The only medical source, and the only basis the synthesis could have for its medical-domain claim. It does test CoT -- and reports that CoT did not help, which the synthesis states the opposite of."
+    },
+    {
+      "ref": "R7",
+      "cited_as": {
+        "title": "Mechanics of Bias and Reasoning: Interpreting the Impact of Chain-of-Thought Prompting on Gender Bias in LLMs",
+        "year": 2026,
+        "id": "2605.20410v1",
+        "url": "http://arxiv.org/abs/2605.20410v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2605.20410v1",
+        "published": "2026-05-19",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Edie Pearman, Sophia Osborne, Mira Kandlikar-Bloch, Mina Arzaghi, Florian Carichon and 1 more",
+      "relevant_to_question": true,
+      "relevance_note": "Evaluates what CoT does and does not change. On topic, and the source of three separate claims."
+    },
+    {
+      "ref": "R8",
+      "cited_as": {
+        "title": "Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models",
+        "year": 2023,
+        "id": "W4385570088",
+        "url": "https://doi.org/10.18653/v1/2023.acl-long.147"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.18653/v1/2023.acl-long.147",
+        "container": "ACL 2023 (Volume 1: Long Papers)",
+        "published": "2023",
+        "pages": "2609-2634",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Lei Wang, Wanyu Xu, Yihuai Lan, Zhiqiang Hu, Yunshi Lan, Roy Ka-Wei Lee, Ee-Peng Lim",
+      "data_quality_note": "The abstract field for this paper in the recorded run is not an abstract: it holds the citation line ('Lei Wang, Wanyu Xu, ... Proceedings of the 61st Annual Meeting ... 2023.'). The pipeline therefore had no content from this paper, and no claim in the synthesis can rest on it.",
+      "relevant_to_question": true,
+      "relevance_note": "On topic by title -- a zero-shot CoT method -- but it contributed no text to this run, so nothing was synthesised from it."
+    },
+    {
+      "ref": "R9",
+      "cited_as": {
+        "title": "YouZhi: Towards High-Concurrency Financial LLMs via Adaptive GQA-to-MLA Transition",
+        "year": 2026,
+        "id": "2606.05868v1",
+        "url": "http://arxiv.org/abs/2606.05868v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv API",
+        "url": "https://arxiv.org/abs/2606.05868v1",
+        "published": "2026-06-04",
+        "primary_category": "cs.CL",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "PSBC LLM Team, Huawei LLM Team, Ruihan Long, Junjie Wu, Tianan Zhang and 54 more",
+      "relevant_to_question": false,
+      "relevance_note": "About KV-cache compression and serving throughput for financial LLMs. Nothing to do with chain-of-thought or reasoning. A retrieval failure: the paper is real and should not be in this list."
+    },
+    {
+      "ref": "R10",
+      "cited_as": {
+        "title": "A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT",
+        "year": 2023,
+        "id": "W4321649710",
+        "url": "https://doi.org/10.48550/arxiv.2302.11382"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "DataCite",
+        "doi": "10.48550/arxiv.2302.11382",
+        "publisher": "arXiv",
+        "year": 2023,
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Jules White, Quchen Fu, Sam Hays, Michael Sandborn, Carlos Olea, Henry Gilbert, Ashraf Elnashar, Jesse Spencer-Smith, Douglas C. Schmidt",
+      "relevant_to_question": false,
+      "relevance_note": "A catalogue of prompt patterns for software tasks. It does not evaluate chain-of-thought or measure reasoning."
+    }
+  ],
+  "claims": [
+    {
+      "id": "consensus-1",
+      "kind": "consensus",
+      "claim": "Chain-of-thought (CoT) prompting improves LLM reasoning capabilities on complex multi-step tasks, particularly mathematical and logical reasoning",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "where": "abstract",
+          "quote": "Chain-of-thought (CoT) prompting is a simple and effective method for improving the reasoning capabilities of Large Language Models (LLMs)."
+        },
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "where": "abstract",
+          "quote": "COT-SEP significantly improves the LLMs' performances on complex reasoning tasks (e.g., GSM8K, AQuA, CSQA), compared with the vanilla CoT"
+        },
+        {
+          "ref": "R3",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2601.03559v2",
+          "where": "abstract",
+          "quote": "Chain-of-Thought (CoT) reasoning improves multi-step mathematical problem solving in large language models"
+        }
+      ],
+      "limits": [
+        "Each source states the improvement as background rather than measuring vanilla CoT against no-CoT itself."
+      ]
+    },
+    {
+      "id": "consensus-2",
+      "kind": "consensus",
+      "claim": "CoT prompting has been validated across multiple domains including mathematics, commonsense reasoning, and medical question answering",
+      "verdict": "contradicted-by-a-cited-paper",
+      "evidence": [
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "where": "abstract",
+          "quote": "complex reasoning tasks (e.g., GSM8K, AQuA, CSQA)",
+          "note": "GSM8K and AQuA are mathematics, CSQA is commonsense. Those two domains are supported."
+        },
+        {
+          "ref": "R6",
+          "evidence_tier": "full-text",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10396962/",
+          "where": "Ablations, COT prompting",
+          "quote": "We did not observe improvements using COT over the standard few-shot prompting strategy across the MedQA, MedMCQA and PubMedQA multiple-choice datasets.",
+          "note": "This is the only medical source in the run, and it reports the opposite of what the claim says about medical question answering."
+        }
+      ],
+      "limits": [
+        "Mathematics and commonsense hold. The medical part does not: the sole medical paper tested CoT and found no improvement over few-shot prompting on all three of its multiple-choice datasets.",
+        "This is a contradiction by a cited source, not a failure to find evidence."
+      ]
+    },
+    {
+      "id": "consensus-3",
+      "kind": "consensus",
+      "claim": "Various enhancements to vanilla CoT (such as COT-SEP, CAP-CoT, DiffCoT) consistently demonstrate improved performance over baseline CoT approaches",
+      "verdict": "supported-with-narrower-scope",
+      "evidence": [
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "where": "abstract",
+          "quote": "COT-SEP significantly improves the LLMs' performances on complex reasoning tasks (e.g., GSM8K, AQuA, CSQA), compared with the vanilla CoT"
+        },
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "where": "abstract",
+          "quote": "CAP-CoT consistently reduces variability across runs while improving reasoning accuracy and robustness to prompt perturbations"
+        },
+        {
+          "ref": "R3",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2601.03559v2",
+          "where": "abstract",
+          "quote": "DiffCoT consistently outperforms existing CoT preference optimization methods"
+        }
+      ],
+      "limits": [
+        "All three results are each paper reporting on its own method. 'Consistently' describes three separate self-evaluations, not an independent comparison across them.",
+        "DiffCoT's stated baseline is other CoT preference-optimization methods, not vanilla CoT."
+      ]
+    },
+    {
+      "id": "consensus-4",
+      "kind": "consensus",
+      "claim": "Model scale correlates with improved reasoning when combined with CoT prompting techniques",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R6",
+          "evidence_tier": "abstract",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10396962/",
+          "where": "abstract",
+          "quote": "comprehension, knowledge recall and reasoning improve with model scale and instruction prompt tuning",
+          "note": "The scale finding is real, but it is attributed to scale and instruction prompt tuning. CoT is not part of this sentence."
+        },
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1038/s41586-025-09422-z",
+          "where": "abstract",
+          "quote": "the emergent reasoning patterns exhibited by these large-scale models can be systematically used to guide and enhance the reasoning capabilities of smaller models"
+        }
+      ],
+      "limits": [
+        "The 'when combined with CoT prompting' half is not supported. The one source that links scale to reasoning explicitly credits instruction prompt tuning, and separately reports that CoT did not help it."
+      ]
+    },
+    {
+      "id": "consensus-5",
+      "kind": "consensus",
+      "claim": "CoT prompting helps elicit step-by-step reasoning processes from LLMs that would not emerge from direct prompting",
+      "verdict": "supported-with-narrower-scope",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "where": "abstract",
+          "quote": "Chain-of-Thought (CoT) prompting has emerged as a simple and effective way to elicit step-by-step solutions from large language models"
+        },
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "where": "abstract",
+          "quote": "The basic idea of CoT is to let LLMs break down their thought processes step-by-step by putting exemplars in the input prompt."
+        }
+      ],
+      "limits": [
+        "The counterfactual -- that such reasoning 'would not emerge from direct prompting' -- is not stated by either source. They describe what CoT elicits, not what direct prompting fails to elicit."
+      ]
+    },
+    {
+      "id": "contradiction-1",
+      "kind": "contradiction",
+      "claim": "Gender bias study (2605.20410v1) claims CoT does not consistently reduce gender bias gaps and that apparent improvements may stem from memorization rather than genuine reasoning, while other papers report CoT as a bias-mitigation approach",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2605.20410v1",
+          "where": "abstract",
+          "quote": "showing that CoT prompting does not consistently reduce the bias gap"
+        },
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2605.20410v1",
+          "where": "abstract",
+          "quote": "Inspection of reasoning chains further suggests that these improvements stem from memorization and familiarity with the dataset rather than genuine understanding of bias."
+        },
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2605.20410v1",
+          "where": "abstract",
+          "quote": "Chain-of-Thought (CoT) prompting has been proposed as a bias-mitigation approach"
+        }
+      ],
+      "limits": [
+        "The 'other papers' side comes from R7's own account of prior work. No other paper in this retrieved set proposes CoT as bias mitigation, so the disagreement is inside one paper's framing rather than between two retrieved sources."
+      ]
+    },
+    {
+      "id": "contradiction-2",
+      "kind": "contradiction",
+      "claim": "While CoT improves reasoning accuracy, the CAP-CoT paper notes that CoT reasoning can be unstable across runs on long, multi-step problems, leading to inconsistent answers",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "where": "abstract",
+          "quote": "CoT reasoning can be unstable across runs on long, multi-step problems, leading to inconsistent answers for unchanged task"
+        }
+      ],
+      "limits": [
+        "Near-verbatim from the source, and correctly attributed."
+      ]
+    },
+    {
+      "id": "contradiction-3",
+      "kind": "contradiction",
+      "claim": "DeepSeek-R1 suggests RL-based reasoning training can outperform CoT prompting trained on human demonstrations, implying CoT's reliance on human annotations may limit its effectiveness",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1038/s41586-025-09422-z",
+          "where": "abstract",
+          "quote": "this success is heavily contingent on extensive human-annotated demonstrations and the capabilities of models are still insufficient for more complex problems"
+        },
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1038/s41586-025-09422-z",
+          "where": "abstract",
+          "quote": "surpassing its counterparts trained through conventional supervised learning on human demonstrations"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "id": "contradiction-4",
+      "kind": "contradiction",
+      "claim": "DiffCoT identifies that traditional CoT is vulnerable to exposure bias and error accumulation, yet other papers do not explicitly address these fundamental limitations",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R3",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2601.03559v2",
+          "where": "abstract",
+          "quote": "remains vulnerable to exposure bias and error accumulation, as early mistakes propagate irreversibly through autoregressive decoding"
+        },
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "where": "abstract",
+          "quote": "an adversarial challenger constructs plausible but deliberately flawed chains using targeted error strategies, and a feedback agent contrasts the two chains",
+          "note": "R5 is built around exposing and correcting errors in reasoning chains, so the claim that other papers do not address error accumulation does not hold across this set."
+        }
+      ],
+      "limits": [
+        "The first half is verbatim and correctly attributed. The second half -- that other papers do not address these limitations -- is not accurate for this set: CAP-CoT is an error-correction method."
+      ]
+    },
+    {
+      "id": "open-gap-1",
+      "kind": "open_gap",
+      "claim": "Whether CoT improvements on benchmarks translate to genuine reasoning understanding versus pattern memorization from training data",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2605.20410v1",
+          "where": "abstract",
+          "quote": "existing evaluations primarily focus on changes in LLM benchmark performance, providing limited insight into whether apparent bias reductions reflect meaningful changes in a model's internal mechanisms"
+        }
+      ],
+      "limits": [
+        "R7 raises this for gender bias specifically. The claim generalises it to reasoning as a whole, which R7 does not."
+      ]
+    },
+    {
+      "id": "open-gap-2",
+      "kind": "open_gap",
+      "claim": "How to reduce dependency on extensive human-annotated demonstrations for effective CoT prompting",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://doi.org/10.1038/s41586-025-09422-z",
+          "where": "abstract",
+          "quote": "the reasoning abilities of LLMs can be incentivized through pure reinforcement learning (RL), obviating the need for human-labelled reasoning trajectories",
+          "note": "R2 states the dependency and then reports a method that removes it."
+        }
+      ],
+      "limits": [
+        "The dependency is real and stated. Calling it an open gap understates the set: the paper that names the problem also reports a solution to it, published in Nature."
+      ]
+    },
+    {
+      "id": "open-gap-3",
+      "kind": "open_gap",
+      "claim": "The computational trade-offs of enhanced CoT methods (COT-SEP, CAP-CoT, DiffCoT) compared to vanilla CoT remain underexplored",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R1",
+          "tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "result": "No statement about computational cost or trade-offs."
+        },
+        {
+          "ref": "R5",
+          "tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "result": "Reports that CAP-CoT works 'within two to three adversarial prompt optimization cycles' but does not frame cost as underexplored."
+        },
+        {
+          "ref": "R3",
+          "tier": "abstract",
+          "url": "https://arxiv.org/abs/2601.03559v2",
+          "result": "No statement about computational cost."
+        }
+      ],
+      "limits": [
+        "Unverified means no source in this set states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-4",
+      "kind": "open_gap",
+      "claim": "Transferability of emergent reasoning patterns from large-scale models to smaller models needs further investigation",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R2",
+          "tier": "abstract",
+          "url": "https://doi.org/10.1038/s41586-025-09422-z",
+          "result": "Not framed as an open question. R2 reports the opposite as a result: 'the emergent reasoning patterns exhibited by these large-scale models can be systematically used to guide and enhance the reasoning capabilities of smaller models.'"
+        }
+      ],
+      "limits": [
+        "Unverified means no source states it as an open question. The nearest source reports a positive result on exactly this transfer."
+      ]
+    },
+    {
+      "id": "open-gap-5",
+      "kind": "open_gap",
+      "claim": "Domain-specific effectiveness of CoT prompting beyond mathematical and commonsense reasoning requires broader validation",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R6",
+          "tier": "full-text",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10396962/",
+          "result": "Tests CoT in the medical domain and reports no improvement, but does not call for broader validation."
+        },
+        {
+          "ref": "R1",
+          "tier": "abstract",
+          "url": "https://arxiv.org/abs/2402.10645v3",
+          "result": "Not found."
+        }
+      ],
+      "limits": [
+        "Unverified means no source states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-6",
+      "kind": "open_gap",
+      "claim": "The relationship between CoT-induced behavioral changes and actual changes in LLM hidden representations remains unclear",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2605.20410v1",
+          "where": "abstract",
+          "quote": "Mechanistic analyses reveal that although CoT balances biased behavior in certain attention head clusters, gender bias remains embedded in hidden representations, indicating only superficial mitigation."
+        }
+      ],
+      "limits": [
+        "Established for gender bias in one study. The claim states it generally."
+      ]
+    },
+    {
+      "id": "open-gap-7",
+      "kind": "open_gap",
+      "claim": "How to ensure stable, consistent CoT reasoning across multiple runs without significant computational overhead",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2604.23270v2",
+          "where": "abstract",
+          "quote": "within two to three adversarial prompt optimization cycles, CAP-CoT consistently reduces variability across runs",
+          "note": "The instability is real and R5 addresses it; the 'without significant computational overhead' half is what remains open, and no source states it as a gap."
+        }
+      ],
+      "limits": [
+        "The stability problem is sourced. The cost constraint attached to it is not stated by any source in this set."
+      ]
+    }
+  ],
+  "public_summary": {
+    "established": [
+      "CoT prompting improves reasoning on complex multi-step tasks, and mathematics and commonsense benchmarks are where the retrieved papers show it.",
+      "CoT reasoning is unstable across runs on long problems, producing different answers to an unchanged question. Stated directly by one of the retrieved papers.",
+      "Reinforcement learning without human reasoning traces can outperform CoT trained on human demonstrations. From the DeepSeek-R1 paper in Nature.",
+      "CoT can change a model's behaviour on a benchmark while leaving the underlying representation unchanged. Shown for gender bias in one study."
+    ],
+    "established_with_limits": [
+      "CoT variants beat their baselines, but every such result is a paper evaluating its own method, and one of the three measures against other variants rather than against vanilla CoT.",
+      "CoT elicits step-by-step solutions. That such reasoning would not emerge from direct prompting is the synthesis's addition, not a claim any retrieved paper makes."
+    ],
+    "contradicted": [
+      "The claim that CoT is validated for medical question answering is contradicted by the only medical paper cited. It tested CoT and reported no improvement over standard few-shot prompting on MedQA, MedMCQA and PubMedQA."
+    ],
+    "not_established": [
+      "That the computational trade-offs of enhanced CoT methods are underexplored.",
+      "That transfer of reasoning patterns from large to small models needs further investigation.",
+      "That domain-specific effectiveness beyond mathematics and commonsense requires broader validation."
+    ],
+    "not_established_note": "These three appear in the generated synthesis but could not be traced to anything in the retrieved papers. That is a failure to find support, not a finding that they are wrong. For the second, the nearest source reports the opposite as a positive result.",
+    "retrieval": "All ten cited papers exist and every title matches its registration record. Three of the ten do not bear on the question, and one of those is about KV-cache compression for financial LLM serving. A fourth contributed nothing at all: the pipeline stored its citation line in place of its abstract."
+  },
+  "summary": {
+    "sources_checked": 10,
+    "sources_that_exist": 10,
+    "sources_relevant": 7,
+    "sources_partly_relevant": 0,
+    "sources_not_relevant": 3,
+    "claims_checked": 16,
+    "claim_verdicts": {
+      "supported": 6,
+      "contradicted-by-a-cited-paper": 1,
+      "supported-with-narrower-scope": 2,
+      "partly-supported": 4,
+      "unverified": 3
+    },
+    "evidence_tiers": {
+      "full_text": 1,
+      "abstract": 23
+    }
+  }
+}

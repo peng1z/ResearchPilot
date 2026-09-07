@@ -3,6 +3,8 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+import { citedInDraft } from "./cited";
+import { checksFor } from "../demo/checks";
 import type {
   PublicRuntimeConfig,
   ReportSearchHit,
@@ -51,6 +53,18 @@ const SOURCE_LABELS: Record<string, string> = {
 };
 
 const ALL_SOURCES = ["semantic_scholar", "arxiv", "openalex"];
+
+/* What opening a drawer costs, so the label is a decision and not a dare. */
+function readingMinutes(markdown: string): number {
+  return Math.max(1, Math.round(markdown.trim().split(/\s+/).length / 220));
+}
+
+/* The three claims a synthesis makes, in the order the argument moves. */
+const SYNTHESIS_PARTS = [
+  { key: "consensus", label: "Consensus" },
+  { key: "contradictions", label: "Contradictions" },
+  { key: "open_gaps", label: "Open gaps" },
+] as const;
 
 /** Papers per source, plus the sources that returned nothing and why. */
 function describeSources(report: ResearchReport) {
@@ -127,9 +141,9 @@ function Citation() {
   }
 
   return (
-    <footer id="cite" className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-8">
+    <footer id="cite" className="border-t border-[var(--rule)] pt-8 mt-4">
       <h2 className="text-xl font-semibold">Cite this work</h2>
-      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
+      <p className="mt-3 max-w-3xl leading-7 text-[var(--ink-2)]">
         This page is the artifact for{" "}
         <a className="underline" href="https://arxiv.org/abs/2603.14629">
           ResearchPilot: A Local-First Multi-Agent System for Literature Synthesis and Related
@@ -141,59 +155,66 @@ function Citation() {
         </a>
         .
       </p>
-      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
-        Version 1 of the paper describes retrieval from Semantic Scholar and arXiv. The recordings
-        below were produced by a later build that also queries OpenAlex, and the OpenAlex results
-        in them are not part of what the paper reports. Where the two differ, the code and the
-        recorded runs describe this build; the paper describes version 1.
-      </p>
-      <p className="mt-3 max-w-3xl leading-7 text-[var(--muted)]">
-        The method paper belongs in a description of how a synthesis was produced. It is not a
-        source for any topic below and does not belong in the reference list of a review drafted
-        with it.
-      </p>
+      <details className="drawer">
+        <summary>Where the paper and this build differ</summary>
+        <div className="drawer-body">
+          <p className="max-w-3xl leading-7 text-[var(--ink-2)]">
+            Version 1 of the paper describes retrieval from Semantic Scholar and arXiv. The
+            recordings here were produced by a later build that also queries OpenAlex, and the
+            OpenAlex results in them are not part of what the paper reports. Where the two
+            differ, the code and the recorded runs describe this build; the paper describes
+            version 1.
+          </p>
+          <p className="mt-3 max-w-3xl leading-7 text-[var(--ink-2)]">
+            The method paper belongs in a description of how a synthesis was produced. It is not
+            a source for any topic above and does not belong in the reference list of a review
+            drafted with it.
+          </p>
+        </div>
+      </details>
       <div className="mt-4 flex flex-wrap gap-3">
         <a
           href="https://arxiv.org/abs/2603.14629"
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           Abstract
         </a>
         <a
           href="https://arxiv.org/pdf/2603.14629"
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           PDF
         </a>
         <a
           href="https://peng1z.github.io/publications/researchpilot/"
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           Paper page
         </a>
         <a
           href="https://peng1z.github.io/publications/researchpilot/citation.bib"
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           BibTeX file
         </a>
         <a
           href="https://peng1z.github.io/publications/researchpilot/citation.ris"
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           RIS
         </a>
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+          className="btn"
         >
           {copied ? "BibTeX copied" : "Copy BibTeX"}
         </button>
       </div>
-      <pre className="mt-4 overflow-x-auto rounded-2xl bg-[var(--panel)] p-4 text-xs leading-5">
-        {BIBTEX}
-      </pre>
+      <details className="drawer">
+        <summary>BibTeX</summary>
+        <pre className="drawer-body overflow-x-auto text-xs leading-5">{BIBTEX}</pre>
+      </details>
     </footer>
   );
 }
@@ -203,29 +224,22 @@ function SourcePanel({ report }: { report: ResearchReport }) {
   const other = report.warnings.filter((warning) => !/ search failed: /.test(warning));
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--panel)] px-4 py-4">
-      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Retrieval</p>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+    <div className="group">
+      <h3>Retrieval</h3>
+      <p className="mt-2">
         {contributed.map((entry) => (
-          <span
-            key={entry.source}
-            className="rounded-full border border-[var(--border)] bg-white px-3 py-1"
-          >
-            {entry.label} <span className="font-semibold">{entry.count}</span>
+          <span key={entry.source} className="tally">
+            <span>{entry.label}</span> <span className="font-semibold">{entry.count}</span>
           </span>
         ))}
         {failed.map((entry) => (
-          <span
-            key={entry.label}
-            className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-amber-900"
-            title={entry.reason}
-          >
+          <span key={entry.label} className="tally text-[var(--ink-3)]" title={entry.reason}>
             {entry.label} unavailable
           </span>
         ))}
-      </div>
+      </p>
       {failed.length > 0 ? (
-        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+        <p className="mt-3 text-sm leading-6 text-[var(--ink-2)]">
           The sources are queried in parallel and each one is allowed to fail on its own. {" "}
           {failed.map((entry) => entry.label).join(" and ")} returned an error on this run, so the
           report was built from the {contributed.length} that answered, and the failure is recorded
@@ -233,7 +247,7 @@ function SourcePanel({ report }: { report: ResearchReport }) {
         </p>
       ) : null}
       {other.length > 0 ? (
-        <ul className="mt-3 space-y-2 text-sm text-amber-900">
+        <ul className="mt-3 space-y-2 text-sm text-[var(--ink-2)]">
           {other.map((warning) => (
             <li key={warning}>{warning}</li>
           ))}
@@ -416,41 +430,32 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-6 py-10 md:px-10">
-      <section className="rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-8 shadow-[0_24px_80px_rgba(24,38,31,0.08)] backdrop-blur">
-        <nav
-          aria-label="Primary"
-          className="mb-3 flex flex-wrap items-baseline justify-between gap-4"
-        >
-          <p className="text-sm uppercase tracking-[0.3em] text-[var(--accent)]">ResearchPilot</p>
-          <span className="flex flex-wrap gap-5 text-sm">
-            <a className="underline" href="https://arxiv.org/abs/2603.14629">
-              Paper
-            </a>
-            <a className="underline" href="https://github.com/peng1z/ResearchPilot">
-              Code
-            </a>
-            <a className="underline" href="#recorded-runs">
-              Examples
-            </a>
-            <a className="underline" href="#cite">
-              Cite
-            </a>
-          </span>
-        </nav>
-        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <main className="mx-auto flex min-h-screen max-w-[46rem] flex-col gap-8 px-6 py-10 md:px-8">
+      <section className="border-b border-[var(--rule)] pb-10">
+        {/* A running head, the way an offprint carries one. The review tool
+            opens with a dark title bar; a document does not have chrome. */}
+        <div className="runninghead mb-10">
+          <span>ResearchPilot · arXiv:2603.14629</span>
+          <nav aria-label="Primary">
+            <a href="https://arxiv.org/abs/2603.14629">Paper</a>
+            <a href="https://github.com/peng1z/ResearchPilot">Code</a>
+            <a href="#recorded-runs">Examples</a>
+            <a href="#cite">Cite</a>
+          </nav>
+        </div>
+        <div>
           <div>
             <h1 className="max-w-3xl text-4xl font-semibold leading-tight md:text-6xl">
               A multi-agent research co-pilot for fast literature synthesis.
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--ink-2)]">
               Give it one research question. It searches Semantic Scholar, arXiv and OpenAlex in
               parallel, extracts structured findings from each abstract, synthesises consensus,
               contradictions and open gaps across them, and drafts a citation-aware related work
               section.
             </p>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--muted)]">
-              <strong className="text-[var(--text)]">
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--ink-2)]">
+              <strong className="text-[var(--ink)]">
                 You are reading recorded runs, not live ones.
               </strong>{" "}
               {apiBase
@@ -458,32 +463,50 @@ export default function Home() {
                 : "Browsing them needs no API key and no backend, and the page requests nothing. To run your own question, open Run Settings and point it at a backend you host."}
             </p>
             <div id="recorded-runs" className="mt-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
-                Recorded runs
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <h2 className="text-base">Recorded runs</h2>
+              <div className="mt-3 border-b border-[var(--rule)]">
                 {demoRuns.map((run) => (
-                  <button
+                  // The badge sits beside the button, not inside it: in the
+                  // button it became part of the accessible name, so the
+                  // control announced itself as the question plus the word
+                  // "checked". Outside, the name stays the question and the
+                  // status is still read.
+                  <div
                     key={run.slug}
-                    type="button"
-                    onClick={() => showDemo(run)}
-                    aria-pressed={demo?.slug === run.slug}
-                    className={`rounded-full border px-4 py-2 text-left text-sm transition ${
-                      demo?.slug === run.slug
-                        ? "border-[var(--accent)] bg-[var(--accent)] text-white"
-                        : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)]"
-                    }`}
+                    className="entry"
+                    style={{ display: "flex", alignItems: "baseline", gap: 10, padding: 0 }}
                   >
-                    {run.question}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => showDemo(run)}
+                      aria-pressed={demo?.slug === run.slug}
+                      className={demo?.slug === run.slug ? "entry-selected" : "entry-muted"}
+                      style={{
+                        flex: 1,
+                        textAlign: "left",
+                        background: "none",
+                        border: 0,
+                        padding: "12px 0",
+                        cursor: "pointer",
+                        fontFamily: "var(--serif)",
+                      }}
+                    >
+                      {run.question}
+                    </button>
+                    {checksFor(run.slug) ? (
+                      <span className="tier" title="Claims checked against their sources">
+                        checked
+                      </span>
+                    ) : null}
+                  </div>
                 ))}
               </div>
-              <p className="mt-3 max-w-2xl text-sm text-[var(--muted)]">
+              <p className="mt-4 max-w-2xl text-sm text-[var(--ink-2)]">
                 These are real pipeline outputs, captured end to end and shipped with the page, so
                 the demo costs nothing to run and needs no server. To run your own question live,
                 add an API key under <span className="font-semibold">Run Settings</span>.
               </p>
-              <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
+              <p className="mt-2 max-w-2xl text-sm text-[var(--ink-2)]">
                 Each run also has its own page, with the retrieval, the papers, the synthesis and
                 the limits of that particular run:{" "}
                 {demoRuns.map((run, index) => (
@@ -498,17 +521,17 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <details className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-5">
+          <details className="mt-10 border-t border-[var(--rule)] pt-6">
             <summary className="cursor-pointer font-semibold">
               Run your own question {apiBase ? "" : "(needs a backend you run)"}
             </summary>
-            <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+            <p className="mt-3 text-sm leading-6 text-[var(--ink-2)]">
               {apiBase
                 ? "A backend is configured. Starting a run will search live sources and call your model."
                 : "This deployment hosts no backend and starts nothing. Point API Base at a ResearchPilot backend you run, and supply a key it can use."}
             </p>
           <form onSubmit={runResearch} className="mt-4">
-            <label htmlFor="question" className="mb-2 block text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+            <label htmlFor="question" className="label">
               Research Question
             </label>
             <textarea
@@ -516,24 +539,24 @@ export default function Home() {
               value={question}
               onChange={(event) => setQuestion(event.target.value)}
               rows={6}
-              className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-base text-[var(--text)] outline-none"
+              className="control"
             />
             <button
               type="button"
               onClick={() => setShowSettings((current) => !current)}
-              className="mt-4 rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]"
+              className="btn mt-4"
             >
               {showSettings ? "Hide Settings" : "Run Settings"}
             </button>
             {showSettings ? (
-              <div className="mt-4 space-y-3 rounded-2xl border border-[var(--border)] bg-white px-4 py-4">
+              <div className="mt-5 space-y-3 border-t border-[var(--rule)] pt-5">
                 <div className="grid gap-3 md:grid-cols-2">
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Provider</span>
+                    <span className="label">Provider</span>
                     <select
                       value={runtime.llm_provider ?? ""}
                       onChange={(event) => updateRuntime("llm_provider", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     >
                       <option value="openai">OpenAI</option>
                       <option value="anthropic">Anthropic</option>
@@ -542,24 +565,24 @@ export default function Home() {
                     </select>
                   </label>
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Model</span>
+                    <span className="label">Model</span>
                     <input
                       value={runtime.llm_model ?? ""}
                       onChange={(event) => updateRuntime("llm_model", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
                   </label>
                   <label className="text-sm md:col-span-2">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
+                    <span className="label">
                       ResearchPilot API Base
                     </span>
                     <input
                       value={apiBase}
                       onChange={(event) => setApiBase(event.target.value.trim())}
                       placeholder="https://your-researchpilot-backend.example.com"
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
-                    <span className="mt-1 block text-xs leading-5 text-[var(--muted)]">
+                    <span className="mt-1 block text-xs leading-5 text-[var(--ink-2)]">
                       {apiBase
                         ? (mixedContentWarning(apiBase) ??
                           "Live runs, saved history and report search will use this backend.")
@@ -567,29 +590,29 @@ export default function Home() {
                     </span>
                   </label>
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">API Key</span>
+                    <span className="label">API Key</span>
                     <input
                       type="password"
                       value={runtime.llm_api_key ?? ""}
                       onChange={(event) => updateRuntime("llm_api_key", event.target.value)}
                       placeholder="Optional per-run override"
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
                   </label>
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Base URL</span>
+                    <span className="label">Base URL</span>
                     <input
                       value={runtime.llm_base_url ?? ""}
                       onChange={(event) => updateRuntime("llm_base_url", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
                   </label>
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Embedding Backend</span>
+                    <span className="label">Embedding Backend</span>
                     <select
                       value={runtime.embedding_backend ?? "auto"}
                       onChange={(event) => updateRuntime("embedding_backend", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     >
                       <option value="auto">auto</option>
                       <option value="remote">remote</option>
@@ -597,23 +620,23 @@ export default function Home() {
                     </select>
                   </label>
                   <label className="text-sm">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Embedding Model</span>
+                    <span className="label">Embedding Model</span>
                     <input
                       value={runtime.embedding_model ?? ""}
                       onChange={(event) => updateRuntime("embedding_model", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
                   </label>
                   <label className="text-sm md:col-span-2">
-                    <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">Local Embedding Model</span>
+                    <span className="label">Local Embedding Model</span>
                     <input
                       value={runtime.local_embedding_model ?? ""}
                       onChange={(event) => updateRuntime("local_embedding_model", event.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] px-3 py-2"
+                      className="control"
                     />
                   </label>
                 </div>
-                <p className="text-xs leading-5 text-[var(--muted)]">
+                <p className="text-xs leading-5 text-[var(--ink-2)]">
                   Settings apply to this run only. Current server default: {config ? `${config.llm_provider}/${config.llm_model}` : "loading..."}.
                 </p>
               </div>
@@ -621,38 +644,31 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+              className="btn btn-primary mt-5 w-full"
             >
               {loading ? "Running Pipeline" : "Start Research"}
             </button>
-            <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
+            <p className="mt-4 text-sm leading-6 text-[var(--ink-2)]">
               Backend streams agent lifecycle events over SSE and returns the final report as structured JSON plus markdown.
             </p>
           </form>
-          </details>
-        </div>
-      </section>
-
-      <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Agent Feed</h2>
-            <span className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">
-              {loading ? "Live" : "Idle"}
-            </span>
+          <div className="group">
+          <div className="mb-4 flex items-baseline gap-3">
+            <h2>Agent feed</h2>
+            <span className="text-sm text-[var(--ink-3)]">{loading ? "live" : "idle"}</span>
           </div>
 
-          <div className="space-y-3">
+          <div>
             {events.length === 0 ? (
-              <p className="text-sm text-[var(--muted)]">No events yet.</p>
+              <p className="text-sm text-[var(--ink-2)]">No events yet.</p>
             ) : (
               events.map((item, index) => (
-                <div key={`${item.event}-${index}`} className="rounded-2xl border border-[var(--border)] px-4 py-3">
+                <div key={`${item.event}-${index}`} className="entry">
                   <div className="flex items-center justify-between gap-3">
                     <strong className="text-sm">{item.agent ?? item.event}</strong>
-                    <span className="text-xs uppercase tracking-[0.2em] text-[var(--accent)]">{item.event}</span>
+                    <span className="text-xs text-[var(--ink-3)]">{item.event}</span>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{item.message}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--ink-2)]">{item.message}</p>
                 </div>
               ))
             )}
@@ -660,34 +676,34 @@ export default function Home() {
 
           {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
 
-          <div className="mt-8 rounded-2xl border border-[var(--border)] px-4 py-4">
-            <h3 className="text-lg font-semibold">Report History</h3>
-            <form onSubmit={searchHistory} className="mt-4 flex gap-2">
+          <div className="group">
+            <h3>Report History</h3>
+            <form onSubmit={searchHistory} className="mt-3 flex gap-2">
               <input
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search past reports"
-                className="min-w-0 flex-1 rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm outline-none"
+                className="control min-w-0 flex-1"
               />
               <button
                 type="submit"
-                className="rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em]"
+                className="btn"
               >
                 Search
               </button>
             </form>
 
             {searchResults.length > 0 ? (
-              <div className="mt-4 space-y-2">
+              <div className="mt-4">
                 {searchResults.map(({ report: item, score }) => (
                   <button
                     key={`search-${item.id}`}
                     type="button"
                     onClick={() => void loadReport(item.id)}
-                    className="block w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-left"
+                    className="entry"
                   >
-                    <p className="text-sm font-semibold text-[var(--text)]">{item.question}</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
+                    <p className="text-sm font-semibold text-[var(--ink)]">{item.question}</p>
+                    <p className="mt-1 text-xs text-[var(--ink-3)]">
                       score {score.toFixed(2)} • {item.paper_count} papers
                     </p>
                   </button>
@@ -695,107 +711,145 @@ export default function Home() {
               </div>
             ) : null}
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-4">
               {history.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => void loadReport(item.id)}
-                  className="block w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-left"
+                  className="entry"
                 >
-                  <p className="text-sm font-semibold text-[var(--text)]">{item.question}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[var(--muted)]">
+                  <p className="text-sm font-semibold text-[var(--ink)]">{item.question}</p>
+                  <p className="mt-1 text-xs text-[var(--ink-3)]">
                     {new Date(item.created_at).toLocaleString()} • {item.paper_count} papers
                     {item.warning_count > 0 ? ` • ${item.warning_count} warnings` : ""}
                   </p>
                 </button>
               ))}
-              {history.length === 0 ? <p className="text-sm text-[var(--muted)]">No saved reports yet.</p> : null}
+              {history.length === 0 ? <p className="text-sm text-[var(--ink-2)]">No saved reports yet.</p> : null}
             </div>
           </div>
+          </div>
+          </details>
         </div>
+      </section>
 
-        <div className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--panel)] p-6">
-          <h2 className="text-2xl font-semibold">Related Work Draft</h2>
-          {report ? (
-            <div className="mt-5 space-y-6">
-              <div className="rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--muted)]">
-                <p className="font-semibold text-[var(--text)]">Question</p>
-                <p className="mt-2">{report.question}</p>
+      <section className="numbered">
+        <h2 className="text-2xl font-semibold" style={{ marginTop: 0 }}>
+          This run
+        </h2>
+        {report ? (
+          <div className="mt-4">
+            <p className="text-[var(--ink-2)]" style={{ marginTop: 0 }}>
+              {report.question}
+            </p>
+
+            {/* What the run cost and covered, before any of its prose. A
+                reader deciding whether to trust the synthesis is asking how
+                many papers it rests on and which sources answered. */}
+            <dl className="particulars">
+              <div className="particular">
+                <dt>Papers</dt>
+                <dd>{report.papers.length}</dd>
               </div>
+              {citedInDraft(report.related_work_markdown) !== null ? (
+                <div className="particular">
+                  <dt>Cited</dt>
+                  <dd>{citedInDraft(report.related_work_markdown)}</dd>
+                </div>
+              ) : null}
+              <div className="particular">
+                <dt>Sources</dt>
+                <dd>{describeSources(report).contributed.length} of 3</dd>
+              </div>
+              <div className="particular">
+                <dt>Model</dt>
+                <dd>{report.tool?.model ?? "not recorded"}</dd>
+              </div>
+            </dl>
 
-              <div className="markdown prose prose-neutral max-w-none">
+            {/* The synthesis is what a visitor came to judge, so it is the one
+                thing that stays open. Everything it rests on is a drawer. */}
+            <div className="group">
+              <h3>Synthesis</h3>
+              {demo && checksFor(demo.slug) ? (
+                <p className="mt-2 text-sm text-[var(--ink-3)]">
+                  Every claim below was checked against the papers it rests on, by an AI agent and
+                  not by a human expert. The verdicts, the evidence and what could not be verified
+                  are on{" "}
+                  <a href={`/runs/${demo.slug}/`}>the page for this run</a>.
+                </p>
+              ) : (
+                <p className="mt-2 text-sm text-[var(--ink-3)]">
+                  Generated from the abstracts below and shipped unedited. No claim here was
+                  checked against its source.
+                </p>
+              )}
+              {SYNTHESIS_PARTS.map(({ key, label }) => {
+                const items = report.synthesis[key];
+                if (items.length === 0) {
+                  return null;
+                }
+                return (
+                  <div key={key} className="claim" data-kind={key}>
+                    <p className="label">{label}</p>
+                    <ul className="mt-1 list-disc space-y-2 pl-5 text-[var(--ink-2)]">
+                      {items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+
+            <details className="drawer numbered">
+              <summary>
+                Related work draft
+                <span className="drawer-count">
+                  {readingMinutes(report.related_work_markdown)} min read
+                </span>
+              </summary>
+              <div className="drawer-body markdown prose prose-neutral max-w-none">
                 <ReactMarkdown>{report.related_work_markdown}</ReactMarkdown>
               </div>
+            </details>
 
-              <SourcePanel report={report} />
-
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-2xl border border-[var(--border)] px-4 py-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Consensus</p>
-                  <ul className="mt-3 space-y-2 text-sm text-[var(--muted)]">
-                    {report.synthesis.consensus.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="rounded-2xl border border-[var(--border)] px-4 py-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Contradictions</p>
-                  <ul className="mt-3 space-y-2 text-sm text-[var(--muted)]">
-                    {report.synthesis.contradictions.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="rounded-2xl border border-[var(--border)] px-4 py-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Open Gaps</p>
-                  <ul className="mt-3 space-y-2 text-sm text-[var(--muted)]">
-                    {report.synthesis.open_gaps.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-[var(--border)] px-4 py-4">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">Retrieved Papers</p>
-                  <span className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">{report.papers.length} papers</span>
-                </div>
-                <div className="mt-4 space-y-3">
-                  {report.references.map((reference) => (
-                    <div key={reference.paper_id} className="rounded-2xl border border-[var(--border)] bg-white px-4 py-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="text-sm font-semibold text-[var(--text)]">
-                            [{reference.label}] {reference.title}
-                          </p>
-                          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
-                            {reference.source} {reference.year ? `• ${reference.year}` : ""}
-                          </p>
-                        </div>
-                        {reference.url ? (
-                          <a
-                            href={reference.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--accent)]"
-                          >
-                            Open
-                          </a>
-                        ) : null}
+            <details className="drawer numbered">
+              <summary>
+                Retrieved papers
+                <span className="drawer-count">{report.papers.length} papers</span>
+              </summary>
+              <div className="drawer-body">
+                {report.references.map((reference) => (
+                  <div key={reference.paper_id} className="entry">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--ink)]">
+                          [{reference.label}] {reference.title}
+                        </p>
+                        <p className="mt-1 text-xs text-[var(--ink-3)]">
+                          {reference.source} {reference.year ? `· ${reference.year}` : ""}
+                        </p>
                       </div>
+                      {reference.url ? (
+                        <a href={reference.url} target="_blank" rel="noreferrer" className="text-sm">
+                          Open
+                        </a>
+                      ) : null}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ) : (
-            <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
-              Submit a question to render the final markdown report here.
-            </p>
-          )}
-        </div>
+            </details>
+
+            <SourcePanel report={report} />
+          </div>
+        ) : (
+          <p className="mt-4 text-sm leading-6 text-[var(--ink-2)]">
+            Submit a question to render the final markdown report here.
+          </p>
+        )}
       </section>
 
       <Citation />
