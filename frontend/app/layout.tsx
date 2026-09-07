@@ -12,6 +12,13 @@ const DESCRIPTION =
   "abstracts, consensus and contradictions synthesised, and a related-work " +
   "section drafted. Artifact for arXiv:2603.14629.";
 
+/* The share card. Relative, so metadataBase makes it absolute. */
+const OG_IMAGE = "/opengraph-image.png";
+const OG_ALT =
+  "A paper-coloured card headed A multi-agent research co-pilot for fast literature " +
+  "synthesis, summarising the recorded runs: 3 runs, 30 papers, from Semantic Scholar, " +
+  "arXiv and OpenAlex.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "ResearchPilot — recorded multi-agent literature synthesis runs",
@@ -32,11 +39,18 @@ export const metadata: Metadata = {
     siteName: "ResearchPilot",
     title: "ResearchPilot — recorded multi-agent literature synthesis runs",
     description: DESCRIPTION,
+    // The card lives in public/ rather than as app/opengraph-image.png.
+    // The file convention wins over an explicit openGraph.images and drops
+    // its alt with it, so the convention costs the alt text; declaring the
+    // whole thing here keeps both. (opengraph-image.alt.txt is accepted as
+    // a file on Next 15.5 and emits nothing at all.)
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ResearchPilot — recorded multi-agent literature synthesis runs",
     description: DESCRIPTION,
+    images: [{ url: OG_IMAGE, alt: OG_ALT }],
   },
 };
 

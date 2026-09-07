@@ -16,6 +16,12 @@ function find(slug: string) {
   return demoRuns.find((run) => run.slug === slug);
 }
 
+const OG_IMAGE = "/opengraph-image.png";
+const OG_ALT =
+  "A paper-coloured card headed A multi-agent research co-pilot for fast literature " +
+  "synthesis, summarising the recorded runs: 3 runs, 30 papers, from Semantic Scholar, " +
+  "arXiv and OpenAlex.";
+
 export async function generateMetadata({
   params,
 }: {
@@ -37,8 +43,23 @@ export async function generateMetadata({
     // Each case owns its own canonical. Pointing these at the paper page would
     // ask a crawler to treat three different runs as one document.
     alternates: { canonical: url },
-    openGraph: { type: "article", url, title: run.question, description },
-    twitter: { card: "summary_large_image", title: run.question, description },
+    // The card has to be repeated here: a page's own openGraph replaces the
+    // root one wholesale rather than merging, so these permalinks -- the
+    // citable URLs, the ones most likely to be pasted anywhere -- were
+    // declaring summary_large_image with no image at all.
+    openGraph: {
+      type: "article",
+      url,
+      title: run.question,
+      description,
+      images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: OG_ALT }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: run.question,
+      description,
+      images: [{ url: OG_IMAGE, alt: OG_ALT }],
+    },
   };
 }
 
