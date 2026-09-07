@@ -35,6 +35,7 @@
      is a second reading of the label and never the only carrier. */
   --ok: #1a6b45;
   --warn: #8a5a00;
+  --bad: #9a2b24;
 
   --measure: 34rem;
 
@@ -625,4 +626,11 @@ main {
   text-transform: uppercase;
   color: var(--ink-3);
   margin-left: 6px;
+}
+
+/* A claim a cited paper says the opposite of. Not the same as unverified,
+   and it should not be able to hide among the amber ones. */
+.verdict-tag[data-v="contradicted-by-a-cited-paper"] {
+  color: var(--bad);
+  border-width: 2px;
 }

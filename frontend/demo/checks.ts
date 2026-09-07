@@ -1,4 +1,6 @@
 import loraChecks from "./lora-vs-finetuning.checks.json";
+import cotChecks from "./chain-of-thought.checks.json";
+import ragChecks from "./rag-hallucination.checks.json";
 
 /** One reference, resolved against the record that registered it. */
 export type SourceCheck = {
@@ -32,7 +34,12 @@ export type ClaimCheck = {
   id: string;
   kind: "consensus" | "contradiction" | "open_gap";
   claim: string;
-  verdict: "supported" | "supported-with-narrower-scope" | "partly-supported" | "unverified";
+  verdict:
+    | "supported"
+    | "supported-with-narrower-scope"
+    | "partly-supported"
+    | "contradicted-by-a-cited-paper"
+    | "unverified";
   evidence: Evidence[];
   /** Where an unverified claim was looked for, so the search is auditable. */
   searched?: { ref: string; tier: string; url: string; result: string }[];
@@ -43,6 +50,8 @@ export type ClaimCheck = {
 export type PublicSummary = {
   established: string[];
   established_with_limits: string[];
+  /** Claims a cited paper says the opposite of. Empty where there are none. */
+  contradicted: string[];
   not_established: string[];
   not_established_note: string;
   retrieval: string;
@@ -70,12 +79,17 @@ const CHECKS: Record<string, RunChecks> = {
   // the file against the verdict and tier vocabularies -- a stronger check
   // than the structural one, since it also catches a typo'd verdict.
   "lora-vs-finetuning": loraChecks as unknown as RunChecks,
+  "chain-of-thought": cotChecks as unknown as RunChecks,
+  "rag-hallucination": ragChecks as unknown as RunChecks,
 };
 
 export const VERDICTS = [
   "supported",
   "supported-with-narrower-scope",
   "partly-supported",
+  // Reserved for a claim a cited paper actively says the opposite of. It is
+  // not the same as unverified, which means nobody said anything either way.
+  "contradicted-by-a-cited-paper",
   "unverified",
 ] as const;
 

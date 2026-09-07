@@ -29,6 +29,7 @@ const VERDICT_WORD: Record<ClaimCheck["verdict"], string> = {
   supported: "supported",
   "supported-with-narrower-scope": "narrower than stated",
   "partly-supported": "partly supported",
+  "contradicted-by-a-cited-paper": "contradicted by a cited paper",
   unverified: "not verified",
 };
 
@@ -296,6 +297,18 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+              {checks.public_summary.contradicted.length > 0 ? (
+                <>
+                  <p className="label" style={{ marginTop: 18 }}>
+                    Contradicted by a paper this run cites
+                  </p>
+                  <ul className="mt-1 space-y-2 leading-7 text-[var(--ink-2)]">
+                    {checks.public_summary.contradicted.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </>
+              ) : null}
               <p className="label" style={{ marginTop: 18 }}>
                 Not established
               </p>

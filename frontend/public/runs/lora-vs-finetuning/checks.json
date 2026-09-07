@@ -563,6 +563,7 @@
     "established_with_limits": [
       "Parameter-efficient methods can approach full fine-tuning on average, and LoRA gave about a 4.5-fold training speed-up in one study. That study is on protein language models (ESM2 3B), not general LLMs, and the parity result comes from a paper whose own analysis says these methods are \"no match for FT in performance under most cases\" before averaging."
     ],
+    "contradicted": [],
     "not_established": [
       "That performance trade-offs across model sizes and task types are insufficiently characterised.",
       "That the relation between LoRA rank and task complexity needs further investigation.",
