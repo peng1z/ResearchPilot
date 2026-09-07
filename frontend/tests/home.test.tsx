@@ -253,3 +253,23 @@ describe("run metadata", () => {
     }
   });
 });
+
+describe("what the run strip claims about itself", () => {
+  // The strip read `references.length` under the label "Cited", which is the
+  // length of the attached reference list, not the number of works the prose
+  // cites. Two of the three recorded runs cite 9 and 8 of their 10, so the
+  // page overstated its own coverage on the line a reader checks first.
+  it("counts the papers the draft cites, not the papers attached to it", () => {
+    render(<Home />);
+
+    const run = demoRuns[0];
+    const distinct = new Set(
+      [...run.report.related_work_markdown.matchAll(/\[R(\d+)\]/g)].map((m) => m[1]),
+    );
+    expect(distinct.size).toBeLessThan(run.report.references.length);
+
+    const cited = screen.getByText("Cited").parentElement as HTMLElement;
+    expect(within(cited).getByText(String(distinct.size))).toBeInTheDocument();
+    expect(within(cited).queryByText(String(run.report.references.length))).toBeNull();
+  });
+});

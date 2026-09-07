@@ -52,6 +52,24 @@ const SOURCE_LABELS: Record<string, string> = {
 
 const ALL_SOURCES = ["semantic_scholar", "arxiv", "openalex"];
 
+/**
+ * How many of the retrieved papers the draft actually cites.
+ *
+ * The strip read `references.length` under the label "Cited", which is the
+ * length of the reference list the pipeline attached, not the number of works
+ * the prose cites. Two of the three recorded runs cite 9 and 8 of their 10,
+ * so the page was overstating its own coverage on the one line a reader
+ * checks first.
+ *
+ * Returns null when the draft carries no [R#] markers at all rather than
+ * falling back to the list length, which would put the wrong number back
+ * under the right label. A missing figure is honest; a wrong one is not.
+ */
+function citedInDraft(markdown: string): number | null {
+  const labels = new Set([...markdown.matchAll(/\[R(\d+)\]/g)].map((match) => match[1]));
+  return labels.size > 0 ? labels.size : null;
+}
+
 /* What opening a drawer costs, so the label is a decision and not a dare. */
 function readingMinutes(markdown: string): number {
   return Math.max(1, Math.round(markdown.trim().split(/\s+/).length / 220));
@@ -728,10 +746,12 @@ export default function Home() {
                 <dt>Papers</dt>
                 <dd>{report.papers.length}</dd>
               </div>
-              <div className="particular">
-                <dt>Cited</dt>
-                <dd>{report.references.length}</dd>
-              </div>
+              {citedInDraft(report.related_work_markdown) !== null ? (
+                <div className="particular">
+                  <dt>Cited</dt>
+                  <dd>{citedInDraft(report.related_work_markdown)}</dd>
+                </div>
+              ) : null}
               <div className="particular">
                 <dt>Sources</dt>
                 <dd>{describeSources(report).contributed.length} of 3</dd>
