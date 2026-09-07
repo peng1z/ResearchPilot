@@ -10,6 +10,23 @@ the contradictions, the references -- came out of actual runs against the live
 Semantic Scholar, arXiv and OpenAlex APIs. To run your own question, put an API
 key you control into **Run Settings**.
 
+One of the three, [the LoRA run](https://researchpilot.peng1z.workers.dev/runs/lora-vs-finetuning/),
+has been checked against its sources and carries the result on the page. Every
+one of its ten references was resolved against the record that registered it --
+arXiv, Crossref, DataCite, with OpenAlex only as corroboration -- and every one
+of its ten synthesis claims was traced to the passage it rests on, quoted, with
+the version and page recorded. Five claims are supported, one holds only in a
+narrower form than stated, one is half-traceable, and three could not be traced
+to anything in the retrieved papers and say so. All ten cited papers are real;
+three of them do not bear on the question, and one is a general-relativity
+paper about electric charge that has no business in a LoRA review.
+
+The checking was done by an AI agent, not by a human expert, and it is itself a
+set of claims about the papers rather than a peer review of them. The full
+record, with every quote, page and URL, is
+[checks.json](https://researchpilot.peng1z.workers.dev/runs/lora-vs-finetuning/checks.json).
+The other two runs are unchecked and are labelled as such.
+
 Paper: [ResearchPilot on arXiv](https://arxiv.org/abs/2603.14629)
 
 It is designed as a portfolio-grade full-stack AI project:

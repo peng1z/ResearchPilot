@@ -565,3 +565,64 @@ main {
   line-height: 1.35;
   word-break: break-word;
 }
+
+/* --- Checked claims ----------------------------------------------------
+   A verdict rides on the claim it belongs to, in the margin where a
+   printed apparatus would put it. Colour repeats what the word says.
+*/
+.verdict-tag {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 1px 7px;
+  border: 1px solid currentColor;
+  margin-right: 8px;
+  vertical-align: 0.12em;
+}
+
+.verdict-tag[data-v="supported"] {
+  color: var(--ok);
+}
+
+.verdict-tag[data-v="supported-with-narrower-scope"],
+.verdict-tag[data-v="partly-supported"] {
+  color: var(--warn);
+}
+
+.verdict-tag[data-v="unverified"] {
+  color: var(--ink-3);
+}
+
+.checked-claim {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-top: 20px;
+}
+
+.evidence {
+  border-top: 1px solid var(--rule);
+  margin-top: 10px;
+  padding-top: 9px;
+  font-size: 0.92rem;
+}
+
+.evidence blockquote {
+  margin: 5px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--rule-strong);
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+.tier {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-left: 6px;
+}

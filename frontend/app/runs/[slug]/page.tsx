@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
+import { checksFor, type ClaimCheck } from "../../../demo/checks";
+
 import { demoRuns } from "../../../demo";
 
 const SITE = "https://researchpilot.peng1z.workers.dev";
@@ -21,6 +23,68 @@ const OG_ALT =
   "A paper-coloured card headed A multi-agent research co-pilot for fast literature " +
   "synthesis, summarising the recorded runs: 3 runs, 30 papers, from Semantic Scholar, " +
   "arXiv and OpenAlex.";
+
+
+const VERDICT_WORD: Record<ClaimCheck["verdict"], string> = {
+  supported: "supported",
+  "supported-with-narrower-scope": "narrower than stated",
+  "partly-supported": "partly supported",
+  unverified: "not verified",
+};
+
+/**
+ * One synthesis claim with what the checking found about it.
+ *
+ * The verdict rides on the claim rather than sitting in a summary above it.
+ * A summary is the loudest thing on a page and the easiest place to say
+ * something the detail below does not support.
+ */
+function CheckedClaim({ text, check }: { text: string; check: ClaimCheck | undefined }) {
+  if (!check) {
+    return <li>{text}</li>;
+  }
+  return (
+    <li className="checked-claim" style={{ listStyle: "none" }}>
+      <p style={{ marginTop: 0 }}>
+        <span className="verdict-tag" data-v={check.verdict}>
+          {VERDICT_WORD[check.verdict]}
+        </span>
+        {text}
+      </p>
+      {check.evidence.map((item) => (
+        <div className="evidence" key={`${item.ref}-${item.where}`}>
+          <a href={item.url}>{item.ref}</a> · {item.where}
+          <span className="tier">
+            {item.evidence_tier === "abstract" ? "abstract only" : "full text"}
+          </span>
+          <blockquote>{item.quote}</blockquote>
+          {item.note ? (
+            <p style={{ marginTop: 6, color: "var(--ink-3)", fontSize: "0.9rem" }}>{item.note}</p>
+          ) : null}
+        </div>
+      ))}
+      {check.searched && check.searched.length > 0 ? (
+        <div className="evidence">
+          <span className="tier" style={{ marginLeft: 0 }}>Where it was looked for</span>
+          <ul style={{ margin: "6px 0 0", paddingLeft: 18, color: "var(--ink-2)" }}>
+            {check.searched.map((item) => (
+              <li key={item.ref}>
+                <a href={item.url}>{item.ref}</a> ({item.tier}) — {item.result}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      {check.limits.length > 0 ? (
+        <ul style={{ margin: "10px 0 0", paddingLeft: 18, color: "var(--ink-2)", fontSize: "0.92rem" }}>
+          {check.limits.map((limit) => (
+            <li key={limit}>{limit}</li>
+          ))}
+        </ul>
+      ) : null}
+    </li>
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -71,6 +135,8 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
   }
 
   const report = run.report;
+  const checks = checksFor(run.slug);
+  const claimFor = (text: string) => checks?.claims.find((c) => c.claim === text);
   const bySource = report.papers.reduce<Record<string, number>>((acc, paper) => {
     acc[paper.source] = (acc[paper.source] ?? 0) + 1;
     return acc;
@@ -203,6 +269,52 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
 
       <section>
         <h2 className="text-xl font-semibold">Synthesis</h2>
+        {checks ? (
+          <>
+            <p className="mt-2 text-[var(--ink-2)]">
+              Every claim below was checked against the papers it rests on, and carries the verdict
+              and the evidence that produced it. Checked on {checks.checked_on} by an AI agent, not
+              by a human expert; see <a href="#how-checked">how this was checked</a> for what that
+              does and does not establish.
+            </p>
+
+            {/* What survives the checking, stated before the generated claims
+                rather than after them. Only conclusions the evidence carries,
+                with their qualifications attached rather than dropped. */}
+            <div className="group">
+              <h3>What the checking established</h3>
+              <ul className="mt-2 space-y-2 leading-7 text-[var(--ink-2)]">
+                {checks.public_summary.established.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="label" style={{ marginTop: 18 }}>
+                Established only in a narrower form than stated
+              </p>
+              <ul className="mt-1 space-y-2 leading-7 text-[var(--ink-2)]">
+                {checks.public_summary.established_with_limits.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="label" style={{ marginTop: 18 }}>
+                Not established
+              </p>
+              <ul className="mt-1 space-y-2 leading-7 text-[var(--ink-2)]">
+                {checks.public_summary.not_established.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="mt-2 text-sm text-[var(--ink-3)]">
+                {checks.public_summary.not_established_note}
+              </p>
+              <p className="mt-4 leading-7 text-[var(--ink-2)]">{checks.public_summary.retrieval}</p>
+            </div>
+          </>
+        ) : (
+          <p className="mt-2 text-[var(--ink-2)]">
+            Generated and shipped unedited. No claim below was checked against its source.
+          </p>
+        )}
         {(
           [
             ["Consensus", report.synthesis.consensus],
@@ -215,9 +327,12 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
             {items.length === 0 ? (
               <p className="mt-2 text-[var(--ink-2)]">None reported for this question.</p>
             ) : (
-              <ul className="mt-2 space-y-2 leading-7 text-[var(--ink-2)]">
+              <ul
+                className="mt-2 space-y-2 leading-7 text-[var(--ink-2)]"
+                style={checks ? { paddingLeft: 0 } : undefined}
+              >
                 {items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <CheckedClaim key={item} text={item} check={claimFor(item)} />
                 ))}
               </ul>
             )}
@@ -232,17 +347,107 @@ export default async function RunPage({ params }: { params: Promise<{ slug: stri
         </div>
       </details>
 
+      {checks ? (
+        <section id="how-checked">
+          <h2 className="text-xl font-semibold">How this run was checked</h2>
+          <p className="mt-3 leading-7 text-[var(--ink-2)]">
+            <strong className="text-[var(--ink)]">{checks.checked_by.not}</strong>{" "}
+            {checks.checked_by.who}, on {checks.checked_on}.
+          </p>
+          <p className="mt-3 leading-7 text-[var(--ink-2)]">{checks.checked_by.method}</p>
+          <ul className="mt-3 space-y-2 leading-7 text-[var(--ink-2)]">
+            {checks.checked_by.limits.map((limit) => (
+              <li key={limit}>{limit}</li>
+            ))}
+          </ul>
+
+          <h3>The sources</h3>
+          <p className="mt-2 text-[var(--ink-2)]">
+            All {checks.sources.length} exist and all {checks.sources.length} titles match the
+            record that registered them. Whether a paper bears on the question is a separate
+            judgement, recorded separately.
+          </p>
+          <div className="mt-3">
+            {checks.sources.map((source) => (
+              <div key={source.ref} className="entry">
+                <p className="text-sm font-semibold text-[var(--ink)]" style={{ marginTop: 0 }}>
+                  <span
+                    className="verdict-tag"
+                    data-v={
+                      source.relevant_to_question === true
+                        ? "supported"
+                        : source.relevant_to_question === "partly"
+                          ? "partly-supported"
+                          : "unverified"
+                    }
+                  >
+                    {source.relevant_to_question === true
+                      ? "on topic"
+                      : source.relevant_to_question === "partly"
+                        ? "partly on topic"
+                        : "off topic"}
+                  </span>
+                  [{source.ref}] {source.cited_as.title}
+                </p>
+                <p className="mt-1 text-sm text-[var(--ink-2)]">{source.relevance_note}</p>
+                {source.version_note ? (
+                  <p className="mt-1 text-sm text-[var(--ink-3)]">{source.version_note}</p>
+                ) : null}
+                {source.data_quality_note ? (
+                  <p className="mt-1 text-sm text-[var(--ink-3)]">{source.data_quality_note}</p>
+                ) : null}
+                <p className="mt-1 text-xs text-[var(--ink-3)]">
+                  Verified against {String(source.primary_record.registry)} on{" "}
+                  {String(source.primary_record.checked_on)}
+                  {source.corroboration ? " · corroborated by OpenAlex" : ""} ·{" "}
+                  <a href={source.cited_as.url}>as cited</a>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-6 text-[var(--ink-2)]">
+            The full record, with every quote, page and URL:{" "}
+            <a href={`/runs/${run.slug}/checks.json`}>checks.json</a>.
+          </p>
+        </section>
+      ) : null}
+
       <section>
         <h2 className="text-xl font-semibold">Limits of this run</h2>
         <ul className="mt-3 space-y-2 leading-7 text-[var(--ink-2)]">
-          <li>
-            The synthesis is generated. It has not been checked against the papers it cites, and
-            nothing here should be read as a verified account of the literature.
-          </li>
-          <li>
-            Findings are extracted from abstracts, not full texts, so a claim qualified in a
-            paper&apos;s body can arrive here unqualified.
-          </li>
+          {checks ? (
+            <>
+              <li>
+                The synthesis was generated, then checked claim by claim. The checking was done by
+                an AI agent, not by a human expert, and it is itself a set of claims about the
+                papers rather than a peer review of them.
+              </li>
+              <li>
+                {checks.claims.filter((c) => c.verdict === "unverified").length} of{" "}
+                {checks.claims.length} claims could not be traced to anything in the retrieved
+                papers. That records a failure to find support, not a finding that the claim is
+                wrong.
+              </li>
+              <li>
+                {checks.sources.filter((s) => s.relevant_to_question === false).length} of the{" "}
+                {checks.sources.length} retrieved papers do not bear on the question at all, and
+                one of those is from an unrelated field. Every paper in the list is real; being
+                real and being relevant were checked separately.
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                The synthesis is generated. It has not been checked against the papers it cites,
+                and nothing here should be read as a verified account of the literature.
+              </li>
+              <li>
+                Findings are extracted from abstracts, not full texts, so a claim qualified in a
+                paper&apos;s body can arrive here unqualified.
+              </li>
+            </>
+          )}
           {failed.length > 0 ? (
             <li>
               {failed.join(" and ")} returned an error, so this run is drawn from the sources that

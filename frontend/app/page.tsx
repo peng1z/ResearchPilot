@@ -4,6 +4,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import { citedInDraft } from "./cited";
+import { checksFor } from "../demo/checks";
 import type {
   PublicRuntimeConfig,
   ReportSearchHit,
@@ -465,17 +466,39 @@ export default function Home() {
               <h2 className="text-base">Recorded runs</h2>
               <div className="mt-3 border-b border-[var(--rule)]">
                 {demoRuns.map((run) => (
-                  <button
+                  // The badge sits beside the button, not inside it: in the
+                  // button it became part of the accessible name, so the
+                  // control announced itself as the question plus the word
+                  // "checked". Outside, the name stays the question and the
+                  // status is still read.
+                  <div
                     key={run.slug}
-                    type="button"
-                    onClick={() => showDemo(run)}
-                    aria-pressed={demo?.slug === run.slug}
-                    className={`entry ${
-                      demo?.slug === run.slug ? "entry-selected" : "entry-muted"
-                    }`}
+                    className="entry"
+                    style={{ display: "flex", alignItems: "baseline", gap: 10, padding: 0 }}
                   >
-                    {run.question}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => showDemo(run)}
+                      aria-pressed={demo?.slug === run.slug}
+                      className={demo?.slug === run.slug ? "entry-selected" : "entry-muted"}
+                      style={{
+                        flex: 1,
+                        textAlign: "left",
+                        background: "none",
+                        border: 0,
+                        padding: "12px 0",
+                        cursor: "pointer",
+                        fontFamily: "var(--serif)",
+                      }}
+                    >
+                      {run.question}
+                    </button>
+                    {checksFor(run.slug) ? (
+                      <span className="tier" title="Claims checked against their sources">
+                        checked
+                      </span>
+                    ) : null}
+                  </div>
                 ))}
               </div>
               <p className="mt-4 max-w-2xl text-sm text-[var(--ink-2)]">
@@ -749,10 +772,19 @@ export default function Home() {
                 thing that stays open. Everything it rests on is a drawer. */}
             <div className="group">
               <h3>Synthesis</h3>
-              <p className="mt-2 text-sm text-[var(--ink-3)]">
-                Generated from the abstracts below and shipped unedited. No claim here was
-                checked against its source.
-              </p>
+              {demo && checksFor(demo.slug) ? (
+                <p className="mt-2 text-sm text-[var(--ink-3)]">
+                  Every claim below was checked against the papers it rests on, by an AI agent and
+                  not by a human expert. The verdicts, the evidence and what could not be verified
+                  are on{" "}
+                  <a href={`/runs/${demo.slug}/`}>the page for this run</a>.
+                </p>
+              ) : (
+                <p className="mt-2 text-sm text-[var(--ink-3)]">
+                  Generated from the abstracts below and shipped unedited. No claim here was
+                  checked against its source.
+                </p>
+              )}
               {SYNTHESIS_PARTS.map(({ key, label }) => {
                 const items = report.synthesis[key];
                 if (items.length === 0) {

@@ -1,0 +1,574 @@
+{
+  "run_slug": "lora-vs-finetuning",
+  "question": "How does LoRA compare to full fine-tuning?",
+  "checked_on": "2026-09-06",
+  "checked_by": {
+    "who": "AI agent (Claude Opus 5), driven by the repository owner",
+    "not": "This is not a human expert review. No domain expert read these papers for this record.",
+    "method": "Layer 1 resolved every reference against its primary registration record: arXiv abstract pages for arXiv preprints, Crossref for publisher-deposited DOIs, DataCite for arXiv DOIs. OpenAlex was consulted only to corroborate; where records differed, the primary publisher record was taken as authoritative. Layer 2 read the full text where a legally public copy existed (arXiv PDF, PubMed Central), and fell back to the abstract otherwise. Each claim records which tier its evidence came from.",
+    "limits": [
+      "Existence and relevance were judged separately: a paper can be real and still not bear on the question.",
+      "A claim the sources do not mention is recorded as unverified. That is not a finding that the claim is false.",
+      "One source (R2) is paywalled in its published form; the evidence quoted for it comes from the arXiv preprint, which carries a different title. That version difference is recorded on every claim that rests on it.",
+      "Most verdicts rest on abstracts even where the full text was retrieved: where a claim was fully addressed by the abstract, that is what the verdict cites. Only 3 of 17 quotes come from inside a paper body."
+    ]
+  },
+  "sources": [
+    {
+      "ref": "R1",
+      "cited_as": {
+        "title": "LoRA-FAIR: Federated LoRA Fine-Tuning with Aggregation and Initialization Refinement",
+        "year": 2024,
+        "id": "2411.14961v3",
+        "url": "http://arxiv.org/abs/2411.14961v3"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2411.14961v3",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Jieming Bian, Lei Wang, Letian Zhang, Jie Xu",
+      "version_note": "v1 22 Nov 2024, v2 12 Mar 2025, v3 12 Oct 2025. The report cites v3 but dates the work 2024, which is the v1 year. The cited version is from 2025.",
+      "venue_not_recorded": "Marked ICCV 2025 on the arXiv page; the report records no venue.",
+      "relevant_to_question": true,
+      "relevance_note": "Federated LoRA. Bears on the cost and communication claims, not on a head-to-head accuracy comparison."
+    },
+    {
+      "ref": "R2",
+      "cited_as": {
+        "title": "Parameter-efficient fine-tuning of large-scale pre-trained language models",
+        "year": 2023,
+        "id": "W4322766882",
+        "url": "https://doi.org/10.1038/s42256-023-00626-4"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1038/s42256-023-00626-4",
+        "container": "Nature Machine Intelligence",
+        "published": "2023-03-02",
+        "pages": "220-235",
+        "checked_on": "2026-09-06"
+      },
+      "corroboration": {
+        "registry": "OpenAlex",
+        "id": "W4322766882",
+        "agrees": true
+      },
+      "title_matches": true,
+      "authors_verified": "Ning Ding, Yujia Qin, Guang Yang, Fuchao Wei, Zonghan Yang, Yusheng Su, and 14 more (20 total)",
+      "version_note": "The published article is paywalled. The evidence quoted in the claim checks below comes from the arXiv preprint arXiv:2203.06904v2 (15 Mar 2022), titled 'Delta Tuning: A Comprehensive Study of Parameter Efficient Methods for Pre-trained Language Models' -- a different title for the same work by the same authors. Quotes are from the preprint and may not appear verbatim in the journal version.",
+      "relevant_to_question": true,
+      "relevance_note": "A systematic study of parameter-efficient methods against full fine-tuning across 100+ NLP tasks. The most directly relevant source in the set."
+    },
+    {
+      "ref": "R3",
+      "cited_as": {
+        "title": "CARE-LoRA: Compressed Activation REconstruction for Memory-Efficient LoRA",
+        "year": 2026,
+        "id": "2607.11940v1",
+        "url": "http://arxiv.org/abs/2607.11940v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2607.11940v1",
+        "submitted": "2026-07-11",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Gengyu Zhang, Haiyin Ran, Zhengbao He, Yuhang Liu, Hanling Tian, Zhehao Huang, Xiaolin Huang",
+      "version_note": "Single version, v1. Year matches.",
+      "relevant_to_question": true,
+      "relevance_note": "A LoRA memory-efficiency method. Supports the cost claims; makes no LoRA-versus-full-fine-tuning accuracy claim."
+    },
+    {
+      "ref": "R4",
+      "cited_as": {
+        "title": "LlamaFactory: Unified Efficient Fine-Tuning of 100+ Language Models",
+        "year": 2024,
+        "id": "W4402667093",
+        "url": "https://doi.org/10.18653/v1/2024.acl-demos.38"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.18653/v1/2024.acl-demos.38",
+        "container": "ACL 2024, Volume 3: System Demonstrations",
+        "published": "2024",
+        "pages": "400-410",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Yaowei Zheng, Richong Zhang, Junhao Zhang, Yanhan Ye, Zheyan Luo",
+      "data_quality_note": "The report lists an author as 'YeYanhan YeYanhan'. That mangled name is present in the Crossref deposit itself, not introduced by ResearchPilot; the ACL Anthology page gives the name as 'Yanhan Ye'.",
+      "relevant_to_question": false,
+      "relevance_note": "A training framework and tooling paper. It does not compare LoRA with full fine-tuning; retrieved on topical overlap with 'fine-tuning'."
+    },
+    {
+      "ref": "R5",
+      "cited_as": {
+        "title": "PLoP: Precise LoRA Placement for Efficient Finetuning of Large Models",
+        "year": 2025,
+        "id": "2506.20629v1",
+        "url": "http://arxiv.org/abs/2506.20629v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2506.20629v1",
+        "submitted": "2025-06-25",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Soufiane Hayou, Nikhil Ghosh, Bin Yu",
+      "version_note": "Single version, v1. Year matches.",
+      "relevant_to_question": true,
+      "relevance_note": "Directly addresses LoRA adapter placement, which is the subject of one contradiction and one gap."
+    },
+    {
+      "ref": "R6",
+      "cited_as": {
+        "title": "Few-Shot Parameter-Efficient Fine-Tuning is Better and Cheaper than In-Context Learning",
+        "year": 2022,
+        "id": "W4280534475",
+        "url": "https://doi.org/10.48550/arxiv.2205.05638"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "DataCite",
+        "doi": "10.48550/arxiv.2205.05638",
+        "publisher": "arXiv",
+        "year": 2022,
+        "checked_on": "2026-09-06"
+      },
+      "corroboration": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2205.05638",
+        "versions": "v1 11 May 2022, v2 26 Aug 2022",
+        "agrees": true
+      },
+      "title_matches": true,
+      "authors_verified": "Haokun Liu, Derek Tam, Mohammed Muqeeth, Jay Mohta, Tenghao Huang, Mohit Bansal, Colin Raffel",
+      "relevant_to_question": false,
+      "relevance_note": "Compares parameter-efficient fine-tuning with in-context learning, not with full fine-tuning. Its headline comparison is against a different baseline than the question asks about."
+    },
+    {
+      "ref": "R7",
+      "cited_as": {
+        "title": "LoRA Done RITE: Robust Invariant Transformation Equilibration for LoRA Optimization",
+        "year": 2024,
+        "id": "2410.20625v2",
+        "url": "http://arxiv.org/abs/2410.20625v2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2410.20625v2",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Jui-Nan Yen, Si Si, Zhao Meng, Felix Yu, Sai Surya Duvvuri, Inderjit S. Dhillon, Cho-Jui Hsieh, Sanjiv Kumar",
+      "version_note": "v1 27 Oct 2024, v2 16 Jul 2025. The report cites v2 but dates the work 2024, which is the v1 year. Marked 'Published as an oral paper at ICLR 2025'; the report records no venue.",
+      "relevant_to_question": true,
+      "relevance_note": "An optimizer for LoRA. Bears on LoRA's memory cost; compares optimizers with each other, not LoRA with full fine-tuning."
+    },
+    {
+      "ref": "R8",
+      "cited_as": {
+        "title": "Fine-tuning protein language models boosts predictions across diverse tasks",
+        "year": 2024,
+        "id": "W4401966068",
+        "url": "https://doi.org/10.1038/s41467-024-51844-2"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.1038/s41467-024-51844-2",
+        "container": "Nature Communications",
+        "published": "2024-08-28",
+        "checked_on": "2026-09-06"
+      },
+      "corroboration": {
+        "registry": "OpenAlex",
+        "id": "W4401966068",
+        "agrees": true
+      },
+      "open_access_full_text": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11358375/",
+      "title_matches": true,
+      "authors_verified": "Robert Schmirler, Michael Heinzinger, Burkhard Rost",
+      "relevant_to_question": "partly",
+      "relevance_note": "Uses LoRA and compares it against full fine-tuning, so it is on-topic in method. But the domain is protein language models (ESM2, ProtT5, Ankh) on eight protein prediction tasks, and the paper makes no claim about general large language models. It is the sole source of the 4.5x figure the synthesis quotes without that scope."
+    },
+    {
+      "ref": "R9",
+      "cited_as": {
+        "title": "Does Gravity Care About Electric Charge? A Minimalist Model and Experimental Test",
+        "year": 2026,
+        "id": "2601.16325v1",
+        "url": "http://arxiv.org/abs/2601.16325v1"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "arXiv",
+        "url": "https://arxiv.org/abs/2601.16325v1",
+        "submitted": "2026-01-22",
+        "primary_category": "gr-qc",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Renato Vieira dos Santos",
+      "relevant_to_question": false,
+      "relevance_note": "A general-relativity paper on whether gravitational acceleration depends on electric charge. It has no connection to LoRA, fine-tuning or machine learning. A retrieval failure: the paper is real, and it should not be in this reference list."
+    },
+    {
+      "ref": "R10",
+      "cited_as": {
+        "title": "Heterogeneous LoRA for Federated Fine-tuning of On-Device Foundation Models",
+        "year": 2024,
+        "id": "W4404782226",
+        "url": "https://doi.org/10.18653/v1/2024.emnlp-main.717"
+      },
+      "exists": true,
+      "primary_record": {
+        "registry": "Crossref",
+        "doi": "10.18653/v1/2024.emnlp-main.717",
+        "container": "EMNLP 2024",
+        "published": "2024",
+        "pages": "12903-12913",
+        "checked_on": "2026-09-06"
+      },
+      "title_matches": true,
+      "authors_verified": "Yae Jee Cho, Luyang Liu, Zheng Xu, Aldi Fahrezi, Gauri Joshi",
+      "relevant_to_question": true,
+      "relevance_note": "Federated LoRA on edge devices. Supports the communication-efficiency claim explicitly against full fine-tuning."
+    }
+  ],
+  "claims": [
+    {
+      "id": "consensus-1",
+      "kind": "consensus",
+      "claim": "LoRA significantly reduces computational and memory costs compared to full fine-tuning by optimizing only low-rank adaptation matrices instead of all model parameters",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R3",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2607.11940v1",
+          "where": "abstract",
+          "quote": "Low-Rank Adaptation (LoRA) ... mitigates this challenge by optimizing only low-rank adaptation matrices, thereby greatly reducing the number of trainable parameters."
+        },
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "where": "p.1, abstract",
+          "quote": "Its small memory footprint allows practitioners to adapt large models to specific tasks at a fraction of the cost of full finetuning.",
+          "note": "The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        },
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2411.14961v3",
+          "where": "abstract",
+          "quote": "Parameter-efficient fine-tuning (PEFT) methods like Low-Rank Adaptation (LoRA) reduce this cost by introducing low-rank matrices for tuning fewer parameters."
+        },
+        {
+          "ref": "R7",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2410.20625v2",
+          "where": "abstract",
+          "quote": "Low-rank adaption (LoRA) is a widely used parameter-efficient finetuning method for LLM that reduces memory requirements."
+        }
+      ],
+      "limits": [
+        "The sources assert reduced cost; none of the four quantifies the reduction in the passages cited here."
+      ]
+    },
+    {
+      "id": "consensus-2",
+      "kind": "consensus",
+      "claim": "Parameter-efficient fine-tuning methods including LoRA can achieve performance comparable to full fine-tuning while consuming substantially fewer computational resources (up to 4.5x training acceleration reported)",
+      "verdict": "supported-with-narrower-scope",
+      "evidence": [
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2203.06904",
+          "where": "abstract (preprint v2)",
+          "quote": "a series of delta tuning methods ... could achieve performance on a par with full-parameter fine-tuning",
+          "note": "Quoted from the arXiv preprint, which is titled 'Delta Tuning: A Comprehensive Study of Parameter Efficient Methods for Pre-trained Language Models'. The cited record is the paywalled Nature Machine Intelligence version. The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        },
+        {
+          "ref": "R2",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2203.06904v2",
+          "where": "p.18, Performance Analysis",
+          "quote": "since different delta tuning methods significantly reduce the amounts of tunable parameters, they are no match for FT in performance under most cases. But after averaging the results over all datasets, the gap between the delta tuning methods and the fine-tuning method is not insurmountable",
+          "note": "The same paper qualifies its own abstract: parity is the averaged picture, not the per-case one."
+        },
+        {
+          "ref": "R8",
+          "evidence_tier": "full-text",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11358375/",
+          "where": "Results and Discussion",
+          "quote": "For the largest model (ESM2 3B), LoRA was about 4.5-fold faster.",
+          "note": "This is the sole source of the 4.5x figure."
+        }
+      ],
+      "limits": [
+        "The 4.5x figure is specific to protein language models -- ESM2 3B among ESM2/ProtT5/Ankh across eight protein prediction tasks -- and R8 makes no claim about general large language models. The synthesis states it without that scope.",
+        "'Comparable' rests on R2, whose own analysis section says delta tuning is 'no match for FT in performance under most cases' and reaches parity only on the average across datasets.",
+        "R2's evidence here is from the 2022 preprint, not the 2023 published version."
+      ]
+    },
+    {
+      "id": "consensus-3",
+      "kind": "consensus",
+      "claim": "LoRA provides enhanced communication efficiency due to reduced parameter update volumes, making it particularly suitable for federated learning and edge device deployment",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R10",
+          "evidence_tier": "abstract",
+          "url": "https://aclanthology.org/2024.emnlp-main.717/",
+          "where": "abstract",
+          "quote": "HET-LORA has enhanced computation and communication efficiency compared to full finetuning making it more feasible for the edge."
+        },
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2411.14961v3",
+          "where": "abstract",
+          "quote": "LoRA-FAIR maintains computational and communication efficiency, yielding superior performance over state-of-the-art methods."
+        }
+      ],
+      "limits": [
+        "The stated mechanism -- 'due to reduced parameter update volumes' -- is not asserted in either passage quoted. The sources report the efficiency; the causal explanation is the synthesis's own.",
+        "Both sources evaluate a proposed variant (HET-LORA, LoRA-FAIR) rather than plain LoRA."
+      ]
+    },
+    {
+      "id": "consensus-4",
+      "kind": "consensus",
+      "claim": "Full fine-tuning is computationally prohibitive for large foundation models, whereas LoRA enables adaptation at a fraction of the cost",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R1",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2411.14961v3",
+          "where": "abstract",
+          "quote": "full parameter fine-tuning is often computationally prohibitive for large models"
+        },
+        {
+          "ref": "R2",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/abs/2203.06904",
+          "where": "abstract (preprint v2)",
+          "quote": "fine-tuning all the parameters of a colossal model and retaining separate instances for different tasks are practically infeasible",
+          "note": "The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        },
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "where": "p.1, abstract",
+          "quote": "at a fraction of the cost of full finetuning",
+          "note": "The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        },
+        {
+          "ref": "R10",
+          "evidence_tier": "abstract",
+          "url": "https://aclanthology.org/2024.emnlp-main.717/",
+          "where": "abstract",
+          "quote": "their colossal parameter space prohibits their training on resource-constrained edge-devices"
+        }
+      ],
+      "limits": []
+    },
+    {
+      "id": "contradiction-1",
+      "kind": "contradiction",
+      "claim": "One paper suggests potential modest reduction in absolute performance with LoRA compared to full fine-tuning, while another claims comparable improvements can be reached",
+      "verdict": "partly-supported",
+      "evidence": [
+        {
+          "ref": "R2",
+          "evidence_tier": "full-text",
+          "url": "https://arxiv.org/pdf/2203.06904v2",
+          "where": "p.5, summary of findings",
+          "quote": "existing delta tuning methods are still no match for the conventional fine-tuning either in performance or convergence",
+          "note": "This is the closest thing in the set to the 'reduction in performance' side, and it is stronger than 'modest': it says no match under most cases, not a modest shortfall."
+        },
+        {
+          "ref": "R8",
+          "evidence_tier": "abstract",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11358375/",
+          "where": "abstract",
+          "quote": "parameter-efficient fine-tuning can reach similar improvements consuming substantially fewer resources"
+        }
+      ],
+      "limits": [
+        "No source in the retrieved set describes a *modest* reduction. The wording of the claim is weaker than the evidence found for it.",
+        "The two sides are not comparable: R2 is delta-tuning methods generally on 100+ NLP tasks; R8 is LoRA on protein language models. Framing them as a contradiction sets a general-NLP finding against a protein-domain one.",
+        "The claim says 'one paper ... another', but does not name either. The mapping above was reconstructed during this check, not read off the report."
+      ]
+    },
+    {
+      "id": "contradiction-2",
+      "kind": "contradiction",
+      "claim": "Literature is non-conclusive on optimal LoRA placement: the original LoRA paper suggested attention modules while other works suggest MLP modules",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "where": "p.1, abstract",
+          "quote": "Few works have studied the problem of adapter placement, with nonconclusive results: original LoRA paper suggested placing adapters in attention modules, while other works suggested placing them in the MLP modules.",
+          "note": "The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        }
+      ],
+      "limits": [
+        "The claim is near-verbatim from a single source. It is R5 reporting the state of the literature, not two retrieved papers disagreeing with each other.",
+        "The original LoRA paper (Hu et al.) is not in this reference list, so the attribution to it rests entirely on R5's account."
+      ]
+    },
+    {
+      "id": "open-gap-1",
+      "kind": "open_gap",
+      "claim": "The extent of performance trade-offs between LoRA and full fine-tuning across different model sizes and task types remains insufficiently characterized",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R2",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2203.06904v2",
+          "result": "Not stated as an open problem. R2 does study scale (Section 5.3) and reports that 'As the model size increases, the performance gap between prompt-tuning and full parameter fine-tuning is narrowed' (p.10) -- a finding, and the opposite of leaving the question uncharacterised."
+        },
+        {
+          "ref": "R5",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "result": "Not found."
+        }
+      ],
+      "limits": [
+        "Unverified means no source in this set states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-2",
+      "kind": "open_gap",
+      "claim": "Optimal strategies for LoRA placement (attention vs MLP modules) are not yet definitively established in the literature",
+      "verdict": "supported",
+      "evidence": [
+        {
+          "ref": "R5",
+          "evidence_tier": "abstract",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "where": "p.1, abstract",
+          "quote": "Few works have studied the problem of adapter placement, with nonconclusive results",
+          "note": "The quoted passage is the paper's abstract. The full text was retrieved and searched as well, but this verdict rests on the abstract."
+        }
+      ],
+      "limits": [
+        "Rests on the same single source as contradiction-2; the two are one finding stated twice."
+      ]
+    },
+    {
+      "id": "open-gap-3",
+      "kind": "open_gap",
+      "claim": "The relationship between LoRA rank selection and task complexity requires further investigation",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R5",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "result": "Rank appears on 8 pages as a hyperparameter and as an axis others have modified, never tied to task complexity or named as an open question."
+        },
+        {
+          "ref": "R2",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2203.06904v2",
+          "result": "Not found. Rank is fixed at 8 for LoRA in the experimental setup and is not related to task properties."
+        }
+      ],
+      "limits": [
+        "Unverified means no source in this set states it. It is not a finding that the claim is false."
+      ]
+    },
+    {
+      "id": "open-gap-4",
+      "kind": "open_gap",
+      "claim": "Long-term effects of LoRA adaptation on model generalization compared to full fine-tuning are not well understood",
+      "verdict": "unverified",
+      "evidence": [],
+      "searched": [
+        {
+          "ref": "R5",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2506.20629v1",
+          "result": "The word 'generalization' occurs once, on p.19, about initialization schemes in a theorem appendix. Nothing about LoRA's generalization versus full fine-tuning."
+        },
+        {
+          "ref": "R10",
+          "tier": "abstract",
+          "url": "https://aclanthology.org/2024.emnlp-main.717/",
+          "result": "Mentions that on-device models 'poorly generalize to downstream tasks due to their limited sizes' -- about model size, not about LoRA versus full fine-tuning."
+        },
+        {
+          "ref": "R2",
+          "tier": "full-text",
+          "url": "https://arxiv.org/pdf/2203.06904v2",
+          "result": "Not found."
+        }
+      ],
+      "limits": [
+        "Unverified means no source in this set states it. It is not a finding that the claim is false."
+      ]
+    }
+  ],
+  "summary": {
+    "sources_checked": 10,
+    "sources_that_exist": 10,
+    "sources_relevant": 6,
+    "sources_partly_relevant": 1,
+    "sources_not_relevant": 3,
+    "claims_checked": 10,
+    "claim_verdicts": {
+      "supported": 5,
+      "supported-with-narrower-scope": 1,
+      "partly-supported": 1,
+      "unverified": 3
+    },
+    "evidence_tiers": {
+      "full_text": 3,
+      "abstract": 14
+    }
+  },
+  "public_summary": {
+    "established": [
+      "LoRA reduces the compute and memory cost of adaptation relative to full fine-tuning, by training low-rank matrices instead of all parameters. Four of the ten sources state this directly.",
+      "Full fine-tuning is described as prohibitive or infeasible for large models by four of the ten sources, in both general-NLP and on-device settings.",
+      "LoRA improves communication efficiency in federated and edge settings. Both supporting sources evaluate a proposed variant rather than plain LoRA, and neither states the mechanism the synthesis gives for it.",
+      "Where to place LoRA adapters is unsettled in the literature. This rests on a single source reporting the state of the field, not on two retrieved papers disagreeing."
+    ],
+    "established_with_limits": [
+      "Parameter-efficient methods can approach full fine-tuning on average, and LoRA gave about a 4.5-fold training speed-up in one study. That study is on protein language models (ESM2 3B), not general LLMs, and the parity result comes from a paper whose own analysis says these methods are \"no match for FT in performance under most cases\" before averaging."
+    ],
+    "not_established": [
+      "That performance trade-offs across model sizes and task types are insufficiently characterised.",
+      "That the relation between LoRA rank and task complexity needs further investigation.",
+      "That long-term effects of LoRA on generalization versus full fine-tuning are poorly understood."
+    ],
+    "not_established_note": "These three appear in the generated synthesis but could not be traced to anything in the retrieved papers. That is a failure to find support, not a finding that they are wrong.",
+    "retrieval": "All ten cited papers exist and every title matches its registration record. Three of the ten do not bear on the question, and one of those is a general-relativity paper about electric charge and gravity."
+  }
+}
