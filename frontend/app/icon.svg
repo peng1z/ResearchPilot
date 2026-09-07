@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="ResearchPilot">
+  <!--
+    A confluence: three sources searched in parallel, joined into one
+    synthesis. That is the whole pipeline, and it is the one shape this
+    project has that the review tool does not.
+
+    Paper ground and the sepia the page is set in, so the mark belongs to
+    the document rather than to a UI kit. A light chip beside the tool's
+    near-black one, which is most of the difference at tab size.
+
+    Strokes are heavy and the drawing runs nearly edge to edge on purpose.
+    The mark is the icon here, not the ground: the tool's chip is filled
+    near-black and reads as a block at any size, this one has to carry
+    itself. The first version used the page's hairline weights, sat in the
+    middle of a lot of paper, and vanished at 16px, which is the only size
+    that matters.
+  -->
+  <rect width="32" height="32" fill="#faf8f4"/>
+  <g fill="none" stroke="#6b3f2a" stroke-linecap="round">
+    <path d="M5 5.5H9.5Q16 5.5 16 16" stroke-width="3.6"/>
+    <path d="M5 16H16" stroke-width="3.6"/>
+    <path d="M5 26.5H9.5Q16 26.5 16 16" stroke-width="3.6"/>
+    <path d="M15.5 16H27" stroke-width="5"/>
+  </g>
+</svg>
