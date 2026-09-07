@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 
 import type { Metadata } from "next";
 import Home from "../app/page";
+import { citedInDraft } from "../app/cited";
 import { metadata as rootMetadata } from "../app/layout";
 import { generateMetadata as runMetadata } from "../app/runs/[slug]/page";
 import { demoRuns } from "../demo";
@@ -262,19 +263,55 @@ describe("what the run strip claims about itself", () => {
   // length of the attached reference list, not the number of works the prose
   // cites. Two of the three recorded runs cite 9 and 8 of their 10, so the
   // page overstated its own coverage on the line a reader checks first.
+  // Counted here by splitting the document rather than by regex, so the test
+  // does not reproduce the implementation it is checking.
+  function citedInProse(markdown: string): number {
+    const parts = markdown.split(/^#{1,6}[ \t]*References[ \t]*$/im);
+    const labels = new Set([...parts[0].matchAll(/\[R(\d+)\]/g)].map((m) => m[1]));
+    return labels.size;
+  }
+
   it("counts the papers the draft cites, not the papers attached to it", () => {
     render(<Home />);
 
     const run = demoRuns[0];
-    const distinct = new Set(
-      [...run.report.related_work_markdown.matchAll(/\[R(\d+)\]/g)].map((m) => m[1]),
-    );
-    expect(distinct.size).toBeLessThan(run.report.references.length);
+    const cited = citedInProse(run.report.related_work_markdown);
+    expect(cited).toBeLessThan(run.report.references.length);
 
-    const cited = screen.getByText("Cited").parentElement as HTMLElement;
-    expect(within(cited).getByText(String(distinct.size))).toBeInTheDocument();
-    expect(within(cited).queryByText(String(run.report.references.length))).toBeNull();
+    const cell = screen.getByText("Cited").parentElement as HTMLElement;
+    expect(within(cell).getByText(String(cited))).toBeInTheDocument();
+    expect(within(cell).queryByText(String(run.report.references.length))).toBeNull();
   });
+
+  // The reference list opens every entry with its own [R#], so counting the
+  // whole document counts an entry for existing rather than for being cited.
+  // That only diverges where an entry is never cited in the prose, which is
+  // the one case this figure exists to reveal -- and the first version of the
+  // count read correct on two of the three runs and wrong on that one.
+  it("ignores the reference list at the foot of the draft", () => {
+    expect(
+      citedInDraft("Body cites [R1] and [R2].\n\n## References\n\n[R1] a\n[R2] b\n[R3] c\n"),
+    ).toBe(2);
+    expect(citedInDraft("Body cites [R1].\n\nNo reference section here.\n")).toBe(1);
+    expect(citedInDraft("Nothing cited at all.\n")).toBeNull();
+  });
+
+  // Every recorded run, not just the first: the run the bug showed up on was
+  // the third, and a test that checked only demoRuns[0] passed throughout.
+  it.each(demoRuns.map((run, index) => [run.slug, index] as const))(
+    "reports the prose citation count for %s",
+    (slug, index) => {
+      render(<Home />);
+      const run = demoRuns[index];
+      fireEvent.click(screen.getByRole("button", { name: run.question }));
+
+      const cited = citedInProse(run.report.related_work_markdown);
+      expect(citedInDraft(run.report.related_work_markdown)).toBe(cited);
+
+      const cell = screen.getByText("Cited").parentElement as HTMLElement;
+      expect(within(cell).getByText(String(cited))).toBeInTheDocument();
+    },
+  );
 });
 
 describe("what a shared link previews as", () => {
